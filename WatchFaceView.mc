@@ -90,11 +90,14 @@ class WatchFaceView extends WatchUi.WatchFace {
     private var clockTime = null as System.ClockTime?;
 
     private var currentTime = null as Toybox.WatchUi.Text?;
-    private var currentSeconds = null as Toybox.WatchUi.Text?;
     private var weekDay = null as Toybox.WatchUi.Text?;
     private var month = null as Toybox.WatchUi.Text?;
     private var date = null as Toybox.WatchUi.Text?;
     private var stepsCount = null as Toybox.WatchUi.Text?;
+    private var solarCharging = null as Toybox.WatchUi.Text?;
+    private var bluetooth = null as Toybox.WatchUi.Text?;
+    private var alarm = null as Toybox.WatchUi.Text?;
+    private var vibrate = null as Toybox.WatchUi.Text?;
     private var background = null as Toybox.WatchUi.Drawable?;
     private var foreground = null as Toybox.WatchUi.Drawable?;
     private var dayNightBand = null as WatchUi.BitmapResource?;
@@ -106,7 +109,7 @@ class WatchFaceView extends WatchUi.WatchFace {
     private var battery = null as Toybox.WatchUi.Text?;
     private var barometerData = new [52] as Array<Graphics.Point2D>;
     private var heartRateData = new [52] as Array<Graphics.Point2D>;
-    private var stepsData = new [52] as Array<Graphics.Point2D>;
+    private var stepsData = new [28] as Array<Graphics.Point2D>;
 
     private var renderPhase = false;
 
@@ -121,6 +124,8 @@ class WatchFaceView extends WatchUi.WatchFace {
         for (var i = 0; i < 52; i++) {
             self.barometerData[i] = [0, 0];
             self.heartRateData[i] = [0, 0];
+        }
+        for (var i = 0; i < 28; i++) {
             self.stepsData[i] = [0, 0];
         }
     }
@@ -141,7 +146,6 @@ class WatchFaceView extends WatchUi.WatchFace {
         self.background = View.findDrawableById("background");
         self.foreground = View.findDrawableById("foreground") as Toybox.WatchUi.Drawable;
         self.currentTime = View.findDrawableById("currentTime") as Toybox.WatchUi.Text;
-        self.currentSeconds = View.findDrawableById("currentSeconds") as Toybox.WatchUi.Text;
         self.weekDay = View.findDrawableById("weekDay");
         self.stepsCount = View.findDrawableById("stepsCount");
         self.month = View.findDrawableById("month");
@@ -152,7 +156,11 @@ class WatchFaceView extends WatchUi.WatchFace {
         self.heartRate = View.findDrawableById("heartRate");
         self.energyLevel = View.findDrawableById("energyLevel");
         self.barometer = View.findDrawableById("barometer");
-        self.battery = View.findDrawableById("battery");
+        self.battery = View.findDrawableById("battery") as Toybox.WatchUi.Text;
+        self.solarCharging = View.findDrawableById("solarCharging") as Toybox.WatchUi.Text;
+        self.bluetooth = View.findDrawableById("bluetooth") as Toybox.WatchUi.Text;
+        self.alarm = View.findDrawableById("alarm") as Toybox.WatchUi.Text;
+        self.vibrate = View.findDrawableById("vibrate") as Toybox.WatchUi.Text;
         self.hand = WatchUi.loadResource(@Rez.Drawables.SecondsHand);
 
         //self.currentTime.setFont(Graphics.getVectorFont({:face => "BionicBold", :size => 50}));
@@ -171,6 +179,12 @@ class WatchFaceView extends WatchUi.WatchFace {
         self.batteryLevelTexture = new Graphics.BitmapTexture({
             :bitmap => self.batteryLevelBitmap
         });
+
+        self.solarCharging.setFont(WatchUi.loadResource(Rez.Fonts.system12));
+        self.bluetooth.setFont(WatchUi.loadResource(Rez.Fonts.system12));
+        self.alarm.setFont(WatchUi.loadResource(Rez.Fonts.system12));
+        self.vibrate.setFont(WatchUi.loadResource(Rez.Fonts.system12));
+        //self.battery.setFont(WatchUi.loadResource(Rez.Fonts.lcdDisplay9));
     }
 
     // Called when this View is brought to the foreground. Restore
@@ -234,11 +248,14 @@ class WatchFaceView extends WatchUi.WatchFace {
         self.month.draw(infoBufferdc);
         self.date.draw(infoBufferdc);
         self.currentTime.draw(infoBufferdc);
-        self.currentSeconds.draw(infoBufferdc);
         self.heartRate.draw(infoBufferdc);
         self.energyLevel.draw(infoBufferdc);
         self.barometer.draw(infoBufferdc);
         self.battery.draw(infoBufferdc);
+        self.solarCharging.draw(infoBufferdc);
+        self.bluetooth.draw(infoBufferdc);
+        self.alarm.draw(infoBufferdc);
+        self.vibrate.draw(infoBufferdc);
         //self.bg.draw(bufferdc);
         //self.infoWeekDay.draw(bufferdc);
         //self.infoStress.draw(bufferdc);
@@ -434,6 +451,40 @@ class WatchFaceView extends WatchUi.WatchFace {
             var now = Time.now();
             var date = Date.info(now, Time.FORMAT_SHORT);
 
+            var stats = System.getSystemStats();
+            if (stats.solarIntensity > 49) {
+                self.solarCharging.setText("7");
+                self.solarCharging.setColor(0x55AAAA);
+            } else if (stats.solarIntensity > 24) {
+                self.solarCharging.setText("6");
+                self.solarCharging.setColor(0x55AAAA);
+            } else if (stats.solarIntensity > 0) {
+                self.solarCharging.setText("5");
+                self.solarCharging.setColor(0x55AAAA);
+            } else {
+                self.solarCharging.setText("5");
+                self.solarCharging.setColor(0x000055);
+            }
+
+            var settings = Toybox.System.getDeviceSettings();
+            if (settings.phoneConnected) {
+                self.bluetooth.setText("1");
+            } else {
+                self.bluetooth.setText("3");
+            }
+
+            if (settings.alarmCount > 0) {
+                self.alarm.setColor(0x55AAAA);
+            } else {
+                self.alarm.setColor(0x000055);
+            }
+
+            if (settings.vibrateOn) {
+                self.vibrate.setColor(0x55AAAA);
+            } else {
+                self.vibrate.setColor(0x000055);
+            }
+
             var stressIterator = Toybox.SensorHistory.getHeartRateHistory({ :period => 1 });
             var sample = stressIterator.next();
             if (sample != null && sample.data != null) {
@@ -456,13 +507,10 @@ class WatchFaceView extends WatchUi.WatchFace {
                         sample, self.heartRateData
                     );
                 }
-                if (Toybox.SensorHistory has :getStressHistory) {
-                    sample = Toybox.SensorHistory.getStressHistory({});
-                    self.graphDataToArray(
-                        81, 164,
-                        sample, self.stepsData
-                    );
-                }
+                self.stepsHistoryToArray(
+                    78, 164,
+                    self.stepsData
+                );
 		    }
             var activityInfo = Activity.getActivityInfo();
             if (activityInfo != null && activityInfo.currentHeartRate != null) {
@@ -480,7 +528,6 @@ class WatchFaceView extends WatchUi.WatchFace {
             self.seconds = self.clockTime.sec;
 
             self.currentTime.setText(Lang.format("$1$:$2$", [self.clockTime.hour.format("%02d"), self.clockTime.min.format("%02d")]));
-            self.currentSeconds.setText(self.clockTime.sec.format("%02d"));
             self.weekDay.setText(WEEK_DAYS[date.day_of_week]);
             self.weekDay.setColor(date.day_of_week == Date.DAY_SUNDAY ? 0xFF5500 : 0x55AAAA);
             self.month.setText(MONTHS[date.month]);
@@ -549,6 +596,32 @@ class WatchFaceView extends WatchUi.WatchFace {
 		}
 		return sum;
 	}
+
+    function stepsHistoryToArray(offsetX, offsetY, items) {
+        var history = ActivityMonitor.getHistory();
+        var max = 10000;
+        var length = self.min(items.size() / 4, history.size());
+        var height = 10.0;
+
+        if (history != null) {
+            for (var i = 0; i < length; i++) {
+                var value = self.min(history[i].steps, max);
+                value = value * height / max;
+                var x = offsetX - i;
+                var y = offsetY - value;
+                items[4 * i] = [3 * x, offsetY];
+                items[4 * i + 1] = [3 * x, offsetY - value];
+                items[4 * i + 2] = [3 * x + 2, offsetY - value];
+                items[4 * i + 3] = [3 * x + 2, offsetY];
+            }
+            for (var i = length; i < items.size() / 4; i++) {
+                items[4 * i] = [offsetX, offsetY];
+                items[4 * i + 1] = [offsetX, offsetY];
+                items[4 * i + 2] = [offsetX, offsetY];
+                items[4 * i + 3] = [offsetX, offsetY];
+            }
+        }
+    }
 
     function graphDataToArray(offsetX, offsetY, sample, items) {
         var max = sample.getMax();
