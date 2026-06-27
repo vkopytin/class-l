@@ -10,6 +10,7 @@
     <bitmap id="dayNightBand" filename="day-night-band.png" />
     <bitmap id="barometerScale" filename="barometer-scale.png" />
     <bitmap id="batteryLevel" filename="battery-level.png" />
+    <bitmap id="moonPhaseTiles" filename="moon-phases-20x20.png" />
 
     <drawable-list id="background">
         <bitmap id="bg" filename="clock-example.png" y="0" scaleX="260" scaleY="260" />

@@ -23,6 +23,9 @@ const MONTHS = {
     Date.MONTH_NOVEMBER => "NOV",
     Date.MONTH_DECEMBER => "DEC"
 };
+const EPOCH = 2440587.5;
+const SYNODIC_MONTH = 29.53058770576;
+
 
 class WatchFaceView extends WatchUi.WatchFace {
     private const ONE_RAD = Math.PI * 2.0 / 60.0;
@@ -48,8 +51,7 @@ class WatchFaceView extends WatchUi.WatchFace {
 
     private var hand = null as WatchUi.BitmapResource;
     private var handDisk = null as WatchUi.BitmapResource;
-    private var barometerScale = null as WatchUi.BitmapResource;
-    private var barometerScaleTexture = null as Graphics.BitmapTexture;
+    private var moonPhaseTiles = null as WatchUi.BitmapResource;
     private var batteryLevelBitmap = null as WatchUi.BitmapResource;
     private var batteryLevelTexture = null as Graphics.BitmapTexture;
     private var drawBuffer = [null as Graphics.BufferedBitmap, null as Graphics.BufferedBitmap];
@@ -64,6 +66,7 @@ class WatchFaceView extends WatchUi.WatchFace {
     private const transform2 = new Graphics.AffineTransform();
     private const transformMove = new Graphics.AffineTransform();
     private const transformDayNight = new Graphics.AffineTransform();
+    private const transformMoonPhase = new Graphics.AffineTransform();
 
     private const drawBitmapOptions = {
         :transform => self.transform
@@ -110,6 +113,7 @@ class WatchFaceView extends WatchUi.WatchFace {
     private var barometerData = new [52] as Array<Graphics.Point2D>;
     private var heartRateData = new [52] as Array<Graphics.Point2D>;
     private var stepsData = new [28] as Array<Graphics.Point2D>;
+    private var moonPhaseTile = [15, 15];
 
     private var renderPhase = false;
 
@@ -140,7 +144,7 @@ class WatchFaceView extends WatchUi.WatchFace {
         self.backLayout = Rez.Layouts.main(dc);
         setLayout(self.backLayout);
 
-        self.barometerScale = WatchUi.loadResource(@Rez.Drawables.barometerScale);
+        self.moonPhaseTiles = WatchUi.loadResource(@Rez.Drawables.moonPhaseTiles);
         self.dayNightBand = WatchUi.loadResource(Rez.Drawables.dayNightBand);
         self.batteryLevelBitmap = WatchUi.loadResource(Rez.Drawables.batteryLevel);
         self.background = View.findDrawableById("background");
@@ -173,9 +177,6 @@ class WatchFaceView extends WatchUi.WatchFace {
         self.frontBuffer = Graphics.createBufferedBitmap(self.initBufferOptions).get();
         self.infoBuffer = Graphics.createBufferedBitmap(self.initBufferOptions).get();
 
-        self.barometerScaleTexture = new Graphics.BitmapTexture({
-            :bitmap => self.barometerScale,
-        });
         self.batteryLevelTexture = new Graphics.BitmapTexture({
             :bitmap => self.batteryLevelBitmap
         });
@@ -210,6 +211,55 @@ class WatchFaceView extends WatchUi.WatchFace {
 
         //backBufferdc.drawBitmap2(0, 98, self.dayNightBand, self.drawDayNightOptions);
         self.background.draw(backBufferdc);
+
+        // sun set and sunrise arcs
+        var arcRadius = 130;
+        var arcX = 130;
+        var arcY = 130;
+        backBufferdc.setPenWidth(3);
+        // night arc
+        backBufferdc.setColor(0xFF5555, Graphics.COLOR_TRANSPARENT);
+        var sunriseAngle = 210 - 240 * self.sunriseTime / 86400.0;
+        var sunsetAngle = 210 - 240 * self.sunsetTime / 86400.0;
+        backBufferdc.drawArc(
+            arcX,
+            arcY,
+            arcRadius,
+            Graphics.ARC_CLOCKWISE,
+            210,
+            sunriseAngle
+        );
+        // day arc
+        backBufferdc.setColor(0xFF5500, Graphics.COLOR_TRANSPARENT);
+        backBufferdc.drawArc(
+            arcX,
+            arcY,
+            arcRadius,
+            Graphics.ARC_CLOCKWISE,
+            sunriseAngle,
+            sunsetAngle
+        );
+        // night arc
+        backBufferdc.setColor(0x555555, Graphics.COLOR_TRANSPARENT);
+        backBufferdc.drawArc(
+            arcX,
+            arcY,
+            arcRadius,
+            Graphics.ARC_CLOCKWISE,
+            sunsetAngle,
+            -30
+        );
+
+        backBufferdc.drawBitmap2(
+            40 - self.moonPhaseTile[0],
+            193 - self.moonPhaseTile[1],
+            self.moonPhaseTiles, {
+            :bitmapX => self.moonPhaseTile[0],
+            :bitmapY => self.moonPhaseTile[1],
+            :bitmapWidth => 20,
+            :bitmapHeight => 20
+        });
+
         backBufferdc = null;
     }
 
@@ -272,47 +322,7 @@ class WatchFaceView extends WatchUi.WatchFace {
         infoBufferdc.setFill(self.batteryLevelTexture);
         infoBufferdc.fillRectangle(114, 228, barWidth, 9);
 
-        // sun set and sunrise arcs
-        var arcRadius = 130;
-        var arcX = 130;
-        var arcY = 130;
-        infoBufferdc.setPenWidth(3);
-        // night arc
-        infoBufferdc.setColor(0xFF5555, Graphics.COLOR_TRANSPARENT);
-        var sunriseAngle = 210 - 240 * self.sunriseTime / 86400.0;
-        var sunsetAngle = 210 - 240 * self.sunsetTime / 86400.0;
-        infoBufferdc.drawArc(
-            arcX,
-            arcY,
-            arcRadius,
-            Graphics.ARC_CLOCKWISE,
-            210,
-            sunriseAngle
-        );
-        // day arc
-        infoBufferdc.setColor(0xFF5500, Graphics.COLOR_TRANSPARENT);
-        infoBufferdc.drawArc(
-            arcX,
-            arcY,
-            arcRadius,
-            Graphics.ARC_CLOCKWISE,
-            sunriseAngle,
-            sunsetAngle
-        );
-        // night arc
-        infoBufferdc.setColor(0x555555, Graphics.COLOR_TRANSPARENT);
-        infoBufferdc.drawArc(
-            arcX,
-            arcY,
-            arcRadius,
-            Graphics.ARC_CLOCKWISE,
-            sunsetAngle,
-            -30
-        );
-
-        // barometer vertical graph from 860 to 1090 hPa, 58 pixels height
         infoBufferdc.setColor(0x55AAAA, Graphics.COLOR_TRANSPARENT);
-        //infoBufferdc.setFill(self.barometerScaleTexture);
         infoBufferdc.fillPolygon(self.barometerData);
         infoBufferdc.fillPolygon(self.stepsData);
         infoBufferdc.setColor(0xFF5500, Graphics.COLOR_TRANSPARENT);
@@ -464,6 +474,61 @@ class WatchFaceView extends WatchUi.WatchFace {
             } else {
                 self.solarCharging.setText("5");
                 self.solarCharging.setColor(0x000055);
+            }
+
+            var phase = self.moonPhase(now);
+            if (phase < 1.135) {
+                self.moonPhaseTile = [15, 15];
+            } else if (phase < 2.272) {
+                self.moonPhaseTile = [48, 15];
+            } else if (phase < 3.407) {
+                self.moonPhaseTile = [80, 15];
+            } else if (phase < 4.543) {
+                self.moonPhaseTile = [113, 15];
+            } else if (phase < 5.679) {
+                self.moonPhaseTile = [146, 15];
+            } else if (phase < 6.815) {
+                self.moonPhaseTile = [178, 15];
+            } else if (phase < 7.951) {
+                self.moonPhaseTile = [15, 54];
+            } else if (phase < 9.086) {
+                self.moonPhaseTile = [48, 54];
+            } else if (phase < 10.222) {
+                self.moonPhaseTile = [80, 54];
+            } else if (phase < 11.358) {
+                self.moonPhaseTile = [113, 54];
+            } else if (phase < 12.494) {
+                self.moonPhaseTile = [146, 54];
+            } else if (phase < 13.629) {
+                self.moonPhaseTile = [178, 54];
+            } else if (phase < 14.765) {
+                self.moonPhaseTile = [15, 94];
+            } else if (phase < 15.901) {
+                self.moonPhaseTile = [15, 94];
+            } else if (phase < 17.037) {
+                self.moonPhaseTile = [48, 94];
+            } else if (phase < 18.173) {
+                self.moonPhaseTile = [80, 94];
+            } else if (phase < 19.308) {
+                self.moonPhaseTile = [113, 94];
+            } else if (phase < 20.444) {
+                self.moonPhaseTile = [146, 94];
+            } else if (phase < 21.58) {
+                self.moonPhaseTile = [178, 94];
+            } else if (phase < 22.716) {
+                self.moonPhaseTile = [15, 133];
+            } else if (phase < 23.852) {
+                self.moonPhaseTile = [48, 133];
+            } else if (phase < 24.987) {
+                self.moonPhaseTile = [80, 133];
+            } else if (phase < 26.123) {
+                self.moonPhaseTile = [113, 133];
+            } else if (phase < 27.259) {
+                self.moonPhaseTile = [146, 133];
+            } else if (phase < 28.394) {
+                self.moonPhaseTile = [178, 133];
+            } else {
+                self.moonPhaseTile = [15, 173];
             }
 
             var settings = Toybox.System.getDeviceSettings();
@@ -658,5 +723,15 @@ class WatchFaceView extends WatchUi.WatchFace {
             }
         }
         return result;
+    }
+
+    function moonPhase(now as Toybox.Time.Moment) {
+        var time = (now.value() * 1000.0) / 86400000.0 + EPOCH;
+        var phase = (time - 2451550.1) / SYNODIC_MONTH;
+        var moonAge = phase - Math.floor(phase);
+        if (moonAge < 0) {
+            moonAge = moonAge + 1.0;
+        }
+        return moonAge * SYNODIC_MONTH;
     }
 }

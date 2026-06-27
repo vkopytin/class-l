@@ -1,1 +1,1 @@
-![Preview](/resources/drawables/class-l-screenshot?raw=true "Class L")
+![Preview](/resources/drawables/class-l-screenshot.png?raw=true "Class L")
