@@ -113,7 +113,7 @@ class WatchFaceView extends WatchUi.WatchFace {
     private var barometerData = new [52] as Array<Graphics.Point2D>;
     private var heartRateData = new [52] as Array<Graphics.Point2D>;
     private var stepsData = new [28] as Array<Graphics.Point2D>;
-    private var moonPhaseTile = [15, 15];
+    private var moonPhaseTile = [15, 15] as [Number, Number];
 
     private var renderPhase = false;
 
@@ -192,6 +192,8 @@ class WatchFaceView extends WatchUi.WatchFace {
     // the state of this View and prepare it to be shown. This includes
     // loading resources into memory.
     function onShow() as Void {
+        self.secondsClock.setSeconds(100);
+        self.syncData();
         self.timer.nextTick();
         if (self.sleepMode == false) {
             self.timer.start();
@@ -617,6 +619,7 @@ class WatchFaceView extends WatchUi.WatchFace {
     // The user has just looked at their watch. Timers and animations may be started here.
     function onExitSleep() as Void {
         self.sleepMode = false;
+        self.secondsClock.setSeconds(100);
         self.syncData();
         self.timer.nextTick();
         self.timer.start();
