@@ -552,12 +552,12 @@ class WatchFaceView extends WatchUi.WatchFace {
                 self.vibrate.setColor(0x000055);
             }
 
-            var stressIterator = Toybox.SensorHistory.getHeartRateHistory({ :period => 1 });
-            var sample = stressIterator.next();
-            if (sample != null && sample.data != null) {
-                // set (sample.data);
-            }
             if (Toybox has :SensorHistory) {
+                var bodyBatteryIterator = Toybox.SensorHistory.getBodyBatteryHistory({ :period => 1 });
+                var sample = bodyBatteryIterator.next();
+                if (sample != null && sample.data != null) {
+                    self.energyLevel.setText(Lang.format("$1$%", [sample.data.format("%d")]));
+                }
                 if (Toybox.SensorHistory has :getPressureHistory) {
                     sample = Toybox.SensorHistory.getPressureHistory({});
                     var value = self.graphDataToArray(
@@ -584,11 +584,6 @@ class WatchFaceView extends WatchUi.WatchFace {
                 self.heartRate.setText(activityInfo.currentHeartRate.format("%d"));
             }
 
-            var bodyBatteryIterator = Toybox.SensorHistory.getBodyBatteryHistory({ :period => 1 });
-            sample = bodyBatteryIterator.next();
-            if (sample != null && sample.data != null) {
-                self.energyLevel.setText(Lang.format("$1$%", [sample.data.format("%d")]));
-            }
             self.battery.setText(Lang.format("$1$%", [self.batteryLevel.format("%d")]));
 
             self.clockTime = System.getClockTime();
