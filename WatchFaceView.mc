@@ -119,9 +119,7 @@ class WatchFaceView extends WatchUi.WatchFace {
 
     function initialize() {
         Complications.registerComplicationChangeCallback(method(:updateComplication));
-        Complications.subscribeToUpdates(new Complications.Id(Complications.COMPLICATION_TYPE_SUNRISE));
-        Complications.subscribeToUpdates(new Complications.Id(Complications.COMPLICATION_TYPE_SUNSET));
-        Complications.subscribeToUpdates(new Complications.Id(Complications.COMPLICATION_TYPE_BATTERY));
+        self.subscribeToComplications();
 
         WatchFace.initialize();
         self.transformMove.translate(130.0, 111.0);
@@ -198,6 +196,101 @@ class WatchFaceView extends WatchUi.WatchFace {
         if (self.sleepMode == false) {
             self.timer.start();
         }
+    }
+
+    // Called when this View is removed from the screen. Save the
+    // state of this View here. This includes freeing resources from
+    // memory.
+    function onHide() as Void {
+        self.timer.stop();
+    }
+
+    // The user has just looked at their watch. Timers and animations may be started here.
+    function onExitSleep() as Void {
+        self.sleepMode = false;
+        self.secondsClock.setSeconds(100);
+        self.syncData();
+        self.timer.nextTick();
+        self.timer.start();
+        self.subscribeToComplications();
+    }
+
+    // Terminate any active timers and prepare for slow updates.
+    function onEnterSleep() as Void {
+        self.sleepMode = true;
+        self.timer.stop();
+        Complications.unsubscribeFromAllUpdates();
+    }
+
+    // Update the view
+    function onUpdate(dc as Dc) as Void {
+        if (self.renderPhase) {
+            self.renderPhase = false;
+        } else {
+            self.syncData();
+        }
+        dc.clearClip();
+        if (self.sleepMode) {
+            self.syncData();
+            self.engineTick(1000);
+            self.currentDrawBuffer = self.currentDrawBuffer ^ 1;
+        }
+
+        var buffer = self.drawBuffer[self.currentDrawBuffer];
+        dc.drawBitmap2(0, 0, buffer, self.emptyOpts);
+
+        self.secondsClock.drawSecondsHand(dc, buffer, buffer);
+    }
+
+    // Handle the partial update event
+    function onPartialUpdate( dc as Dc ) {
+        self.lastTime = System.getTimer();
+        var angle = self.seconds * self.ONE_RAD;
+
+        //self.transform2.initialize();
+        //self.transform2.rotate(-angle);
+        //self.transform2.translate(-130.0, -130.0);
+        //dc.setClip(self.clearRange[0], self.clearRange[1], self.clearRange[2], self.clearRange[3]);
+        //dc.setColor(0x55AAAA, Graphics.COLOR_BLACK);
+        //dc.drawText(168, 177, Graphics.FONT_TINY, self.seconds.format("%02d"), Graphics.TEXT_JUSTIFY_CENTER);
+
+        if (self.quota < 999) {
+            //self.seconds++;
+            self.quota += 2 - (System.getTimer() - self.lastTime);
+            //return;
+        }
+
+        var clip = self.transformMove.transformPoints(
+            self.transform.transformPoints(self.initClip)
+        );
+        //dc.setColor(Graphics.COLOR_WHITE, Graphics.COLOR_TRANSPARENT);
+        //var minX = clip[0][0] < clip[1][0] ? clip[0][0] : clip[2][0] < clip[1][0] ? clip[2][0] : clip[1][0];
+        var minX = self.min(clip[0][0], self.min(clip[1][0], self.min(clip[2][0], clip[3][0])));
+        var minY = self.min(clip[0][1], self.min(clip[1][1], self.min(clip[2][1], clip[3][1])));
+        var maxX = self.max(clip[0][0], self.max(clip[1][0], self.max(clip[2][0], clip[3][0])));
+        var maxY = self.max(clip[0][1], self.max(clip[1][1], self.max(clip[2][1], clip[3][1])));
+        dc.setClip(minX, minY, maxX - minX, maxY - minY);
+
+        //if (seconds < 16) {
+        //    dc.setClip(clip[0][0], clip[1][1], clip[2][0] - clip[0][0], clip[3][1] - clip[1][1]);
+        //} else if (seconds < 31) {
+        //    dc.setClip(clip[3][0], clip[0][1], clip[1][0] - clip[3][0], clip[2][1] - clip[0][1]);
+        //} else if (seconds < 46) {
+        //    dc.setClip(clip[2][0], clip[3][1], clip[0][0] - clip[2][0], clip[1][1] - clip[3][1]);
+        //} else {
+        //    dc.setClip(clip[1][0], clip[2][1], clip[3][0] - clip[1][0], clip[0][1] - clip[2][1]);
+        //}
+
+        self.transform.initialize();
+        self.transform.rotate(angle);
+        self.transform.translate(-4.0, -54.0);
+        dc.drawBitmap2(0, 0, self.drawBuffer[self.currentDrawBuffer], self.emptyOpts);
+        //dc.fillPolygon(clip);
+        //dc.drawRectangle(minX, minY, maxX - minX, maxY - minY);
+        dc.drawBitmap2(130, 111, self.buffer, self.drawBitmapOptions);
+
+        self.seconds++;
+        self.quota += 1 - (System.getTimer() - self.lastTime);
     }
 
     function updateBackBuffer(dc as Dc, refresh as Boolean) as Void {
@@ -333,85 +426,6 @@ class WatchFaceView extends WatchUi.WatchFace {
         infoBufferdc = null;
     }
 
-    // Update the view
-    function onUpdate(dc as Dc) as Void {
-        if (self.renderPhase) {
-            self.renderPhase = false;
-        } else {
-            self.syncData();
-        }
-        dc.clearClip();
-        if (self.sleepMode) {
-            self.syncData();
-            self.engineTick(1000);
-            self.currentDrawBuffer = self.currentDrawBuffer ^ 1;
-        }
-
-        var buffer = self.drawBuffer[self.currentDrawBuffer];
-        dc.drawBitmap2(0, 0, buffer, self.emptyOpts);
-
-        self.secondsClock.drawSecondsHand(dc, buffer, buffer);
-    }
-
-    function min(a, b) {
-        return a < b ? a : b;
-    }
-
-    function max(a, b) {
-        return a > b ? a : b;
-    }
-
-    // Handle the partial update event
-    function onPartialUpdate( dc as Dc ) {
-        self.lastTime = System.getTimer();
-        var angle = self.seconds * self.ONE_RAD;
-
-        //self.transform2.initialize();
-        //self.transform2.rotate(-angle);
-        //self.transform2.translate(-130.0, -130.0);
-        //dc.setClip(self.clearRange[0], self.clearRange[1], self.clearRange[2], self.clearRange[3]);
-        //dc.setColor(0x55AAAA, Graphics.COLOR_BLACK);
-        //dc.drawText(168, 177, Graphics.FONT_TINY, self.seconds.format("%02d"), Graphics.TEXT_JUSTIFY_CENTER);
-
-        if (self.quota < 999) {
-            //self.seconds++;
-            self.quota += 2 - (System.getTimer() - self.lastTime);
-            //return;
-        }
-
-        var clip = self.transformMove.transformPoints(
-            self.transform.transformPoints(self.initClip)
-        );
-        //dc.setColor(Graphics.COLOR_WHITE, Graphics.COLOR_TRANSPARENT);
-        //var minX = clip[0][0] < clip[1][0] ? clip[0][0] : clip[2][0] < clip[1][0] ? clip[2][0] : clip[1][0];
-        var minX = self.min(clip[0][0], self.min(clip[1][0], self.min(clip[2][0], clip[3][0])));
-        var minY = self.min(clip[0][1], self.min(clip[1][1], self.min(clip[2][1], clip[3][1])));
-        var maxX = self.max(clip[0][0], self.max(clip[1][0], self.max(clip[2][0], clip[3][0])));
-        var maxY = self.max(clip[0][1], self.max(clip[1][1], self.max(clip[2][1], clip[3][1])));
-        dc.setClip(minX, minY, maxX - minX, maxY - minY);
-
-        //if (seconds < 16) {
-        //    dc.setClip(clip[0][0], clip[1][1], clip[2][0] - clip[0][0], clip[3][1] - clip[1][1]);
-        //} else if (seconds < 31) {
-        //    dc.setClip(clip[3][0], clip[0][1], clip[1][0] - clip[3][0], clip[2][1] - clip[0][1]);
-        //} else if (seconds < 46) {
-        //    dc.setClip(clip[2][0], clip[3][1], clip[0][0] - clip[2][0], clip[1][1] - clip[3][1]);
-        //} else {
-        //    dc.setClip(clip[1][0], clip[2][1], clip[3][0] - clip[1][0], clip[0][1] - clip[2][1]);
-        //}
-
-        self.transform.initialize();
-        self.transform.rotate(angle);
-        self.transform.translate(-4.0, -54.0);
-        dc.drawBitmap2(0, 0, self.drawBuffer[self.currentDrawBuffer], self.emptyOpts);
-        //dc.fillPolygon(clip);
-        //dc.drawRectangle(minX, minY, maxX - minX, maxY - minY);
-        dc.drawBitmap2(130, 111, self.buffer, self.drawBitmapOptions);
-
-        self.seconds++;
-        self.quota += 1 - (System.getTimer() - self.lastTime);
-    }
-
     function engineTick(deltaTime) as Void {
         self.clockTime = System.getClockTime();
         self.seconds = self.clockTime.sec;
@@ -477,6 +491,7 @@ class WatchFaceView extends WatchUi.WatchFace {
                 self.solarCharging.setText("5");
                 self.solarCharging.setColor(0x000055);
             }
+            self.batteryLevel = stats.battery;
 
             var phase = self.moonPhase(now);
             if (phase < 1.135) {
@@ -604,26 +619,10 @@ class WatchFaceView extends WatchUi.WatchFace {
         }
     }
 
-    // Called when this View is removed from the screen. Save the
-    // state of this View here. This includes freeing resources from
-    // memory.
-    function onHide() as Void {
-        self.timer.stop();
-    }
-
-    // The user has just looked at their watch. Timers and animations may be started here.
-    function onExitSleep() as Void {
-        self.sleepMode = false;
-        self.secondsClock.setSeconds(100);
-        self.syncData();
-        self.timer.nextTick();
-        self.timer.start();
-    }
-
-    // Terminate any active timers and prepare for slow updates.
-    function onEnterSleep() as Void {
-        self.sleepMode = true;
-        self.timer.stop();
+    function subscribeToComplications() as Void {
+        Complications.subscribeToUpdates(new Complications.Id(Complications.COMPLICATION_TYPE_SUNRISE));
+        Complications.subscribeToUpdates(new Complications.Id(Complications.COMPLICATION_TYPE_SUNSET));
+        Complications.subscribeToUpdates(new Complications.Id(Complications.COMPLICATION_TYPE_BATTERY));
     }
 
     function updateComplication(complicationId as Toybox.Complications.Id) as Void {
@@ -731,5 +730,13 @@ class WatchFaceView extends WatchUi.WatchFace {
             moonAge = moonAge + 1.0;
         }
         return moonAge * SYNODIC_MONTH;
+    }
+
+    function min(a, b) {
+        return a < b ? a : b;
+    }
+
+    function max(a, b) {
+        return a > b ? a : b;
     }
 }
