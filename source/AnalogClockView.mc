@@ -10,8 +10,8 @@ class AnalogClockView extends WatchUi.Drawable {
     private var seconds = 0;
     private var locX = 0;
     private var locY = 0;
-    private var hourHand = null as WatchUi.BitmapResource?;
-    private var minuteHand = null as WatchUi.BitmapResource?;
+    private var hourHand = null as WatchUi.BitmapResource   ? ;
+    private var minuteHand = null as WatchUi.BitmapResource ? ;
     private var hourHandTransform = new Graphics.AffineTransform();
     private var minuteHandTransform = new Graphics.AffineTransform();
 
@@ -35,7 +35,7 @@ class AnalogClockView extends WatchUi.Drawable {
         var posY = self.locY;
         Drawable.draw(dc);
 
-        var secondAngle = (self.seconds/ 60.0) * 2.0 * Math.PI;
+        var secondAngle = (self.seconds / 60.0) * 2.0 * Math.PI;
         var minuteAngle = (self.minutes / 60.0) * 2.0 * Math.PI;
         var hourAngle = self.hours / 12.0 * 2.0 * Math.PI;
 
@@ -43,22 +43,24 @@ class AnalogClockView extends WatchUi.Drawable {
         minuteHandTransform.translate(posX, posY);
         minuteHandTransform.scale(1.0, 1.0);
         minuteHandTransform.rotate(minuteAngle + secondAngle / 60.0);
-        minuteHandTransform.translate(-8.0, -58.0);
+        minuteHandTransform.translate(-10.0, -88.0);
 
         hourHandTransform = new Graphics.AffineTransform();
         hourHandTransform.translate(posX, posY);
         hourHandTransform.scale(1.0, 1.0);
         hourHandTransform.rotate(hourAngle + minuteAngle / 12.0);
-        hourHandTransform.translate(-9.0, -38.0);
+        hourHandTransform.translate(-13.0, -66.0);
 
-        dc.drawBitmap2(0, 0, self.hourHand, {
-            :transform => hourHandTransform,
-        });
+        dc.drawBitmap2(0, 0, self.hourHand,
+                       {
+                           :transform => hourHandTransform,
+                       });
 
-        dc.drawBitmap2(0, 0, self.minuteHand, {
-            :transform => minuteHandTransform,
-        });
+        dc.drawBitmap2(0, 0, self.minuteHand,
+                       {
+                           :transform => minuteHandTransform,
+                       });
 
-        //dc.fillCircle(posX, posY, 4);
+        // dc.fillCircle(posX, posY, 4);
     }
 }

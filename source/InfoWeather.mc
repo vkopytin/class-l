@@ -6,11 +6,13 @@ import Toybox.Activity;
 import Toybox.Application;
 
 class InfoWeather extends WatchUi.Drawable {
+    private var weatherConditions = null as WatchUi.BitmapResource;
     private var color = Graphics.COLOR_BLACK;
     private var colorAccent = 0xAA5500;
     private var font = Graphics.FONT_TINY;
 
     function initialize(params) {
+        self.weatherConditions = WatchUi.loadResource(@Rez.Drawables.weatherConditions);
         Drawable.initialize(params);
         self.color = params.get(:color);
     }
@@ -18,13 +20,16 @@ class InfoWeather extends WatchUi.Drawable {
     function draw(dc as Dc) {
         Drawable.draw(dc);
 
-        self.drawWeatherIcon(dc, self.locX + width * 0.10, self.locY, self.locX, self.color);
-        self.drawTemperature(dc, self.locX + 8, self.locY, false, self.color);
+        self.drawWeatherIcon(dc, self.locX, self.locY, self.locX, self.color);
+        self.drawTemperature(dc, self.locX + 40, self.locY, false, self.color);
     }
 
     function drawWeatherIcon(dc, x, y, x2, fontColor) {
         var weather = Toybox.Weather.getCurrentConditions();
         if (weather == null) {
+            dc.drawBitmap2(x - 10, y - 26, self.weatherConditions,
+                           { :bitmapX => 10, :bitmapY => 24, :bitmapWidth => 40,
+                             :bitmapHeight => 40 });
             return false;
         }
         var cond = weather.condition;
@@ -32,29 +37,24 @@ class InfoWeather extends WatchUi.Drawable {
 
         if (cond != null and cond instanceof Number) {
             var clockTime = System.getClockTime().hour;
-            var WeatherFont = Application.loadResource(Rez.Fonts.WeatherFont);
 
             // gets the correct symbol (sun/moon) depending on actual sun events
-            var position =
-                Toybox.Weather.getCurrentConditions()
-                    .observationLocationPosition;  // or
-                                                // Activity.Info.currentLocation
-                                                // if observation is null?
-            var today =
-                Toybox.Weather.getCurrentConditions()
-                    .observationTime;  // or new Time.Moment(Time.now().value()); ?
+            var position = Toybox.Weather.getCurrentConditions()
+                               .observationLocationPosition; // or
+                                                             // Activity.Info.currentLocation
+                                                             // if observation is null?
+            var today = Toybox.Weather.getCurrentConditions()
+                            .observationTime; // or new Time.Moment(Time.now().value()); ?
 
             if (position != null and today != null) {
                 if (Weather.getSunset(position, today) != null) {
-                    sunset = Time.Gregorian.info(Weather.getSunset(position, today),
-                                                Time.FORMAT_SHORT);
+                    sunset = Time.Gregorian.info(Weather.getSunset(position, today), Time.FORMAT_SHORT);
                     sunset = sunset.hour;
                 } else {
                     sunset = 18;
                 }
                 if (Weather.getSunrise(position, today) != null) {
-                    sunrise = Time.Gregorian.info(Weather.getSunrise(position, today),
-                                                Time.FORMAT_SHORT);
+                    sunrise = Time.Gregorian.info(Weather.getSunrise(position, today), Time.FORMAT_SHORT);
                     sunrise = sunrise.hour;
                 } else {
                     sunrise = 6;
@@ -65,184 +65,257 @@ class InfoWeather extends WatchUi.Drawable {
             }
 
             // weather icon test
-            // weather.condition = 6;
-
-            dc.setColor(fontColor, Graphics.COLOR_TRANSPARENT);
-            if (cond == 20) {  // Cloudy
-                dc.drawText(x2 - 1, y - 1, WeatherFont, "I",
-                            Graphics.TEXT_JUSTIFY_RIGHT);  // Cloudy
-            } else if (cond == 0 or cond == 5) {         // Clear or Windy
-                if (clockTime >= sunset or clockTime < sunrise) {
-                dc.drawText(x2 - 2, y - 1, WeatherFont, "f",
-                            Graphics.TEXT_JUSTIFY_RIGHT);  // Clear Night
-                } else {
-                dc.drawText(x2, y - 2, WeatherFont, "H",
-                            Graphics.TEXT_JUSTIFY_RIGHT);  // Clear Day
-                }
-            } else if (cond == 1 or cond == 23 or cond == 40 or
-                        cond == 52) {  // Partly Cloudy or Mostly Clear or fair or thin
-                                        // clouds
-                if (clockTime >= sunset or clockTime < sunrise) {
-                dc.drawText(x2 - 1, y - 2, WeatherFont, "g",
-                            Graphics.TEXT_JUSTIFY_RIGHT);  // Partly Cloudy Night
-                } else {
-                dc.drawText(x2, y - 2, WeatherFont, "G",
-                            Graphics.TEXT_JUSTIFY_RIGHT);  // Partly Cloudy Day
-                }
-            } else if (cond == 2 or cond == 22) {  // Mostly Cloudy or Partly Clear
-                if (clockTime >= sunset or clockTime < sunrise) {
-                dc.drawText(x2, y, WeatherFont, "h",
-                            Graphics.TEXT_JUSTIFY_RIGHT);  // Mostly Cloudy Night
-                } else {
-                dc.drawText(x, y, WeatherFont, "B",
-                            Graphics.TEXT_JUSTIFY_RIGHT);  // Mostly Cloudy Day
-                }
-            } else if (cond == 3 or cond == 14 or cond == 15 or cond == 11 or
-                        cond == 13 or cond == 24 or cond == 25 or cond == 26 or
-                        cond == 27 or
-                        cond == 45) {  // Rain or Light Rain or heavy rain or showers
-                                        // or unkown or chance
-                if (clockTime >= sunset or clockTime < sunrise) {
-                dc.drawText(x2, y, WeatherFont, "c",
-                            Graphics.TEXT_JUSTIFY_RIGHT);  // Rain Night
-                } else {
-                dc.drawText(x, y, WeatherFont, "D",
-                            Graphics.TEXT_JUSTIFY_RIGHT);  // Rain Day
-                }
-            } else if (cond == 4 or cond == 10 or cond == 16 or cond == 17 or
-                        cond == 34 or cond == 43 or cond == 46 or cond == 48 or
-                        cond ==
-                            51) {  // Snow or Hail or light or heavy snow or ice or
-                                    // chance or cloudy chance or flurries or ice snow
-                if (clockTime >= sunset or clockTime < sunrise) {
-                dc.drawText(x2, y, WeatherFont, "e",
-                            Graphics.TEXT_JUSTIFY_RIGHT);  // Snow Night
-                } else {
-                dc.drawText(x, y, WeatherFont, "F",
-                            Graphics.TEXT_JUSTIFY_RIGHT);  // Snow Day
-                }
-            } else if (cond == 6 or cond == 12 or cond == 28 or cond == 32 or
-                        cond == 36 or cond == 41 or
-                        cond == 42) {  // Thunder or scattered or chance or tornado or
-                                        // squall or hurricane or tropical storm
-                if (clockTime >= sunset or clockTime < sunrise) {
-                dc.drawText(x2, y, WeatherFont, "b",
-                            Graphics.TEXT_JUSTIFY_RIGHT);  // Thunder Night
-                } else {
-                dc.drawText(x, y, WeatherFont, "C",
-                            Graphics.TEXT_JUSTIFY_RIGHT);  // Thunder Day
-                }
-            } else if (cond == 7 or cond == 18 or cond == 19 or cond == 21 or
-                        cond == 44 or cond == 47 or cond == 49 or
-                        cond == 50) {  // Wintry Mix (Snow and Rain) or chance or
-                                        // cloudy chance or freezing rain or sleet
-                if (clockTime >= sunset or clockTime < sunrise) {
-                dc.drawText(x2, y, WeatherFont, "d",
-                            Graphics.TEXT_JUSTIFY_RIGHT);  // Snow+Rain Night
-                } else {
-                dc.drawText(x, y, WeatherFont, "E",
-                            Graphics.TEXT_JUSTIFY_RIGHT);  // Snow+Rain Day
-                }
-            } else if (cond == 8 or cond == 9 or cond == 29 or cond == 30 or
-                        cond == 31 or cond == 33 or cond == 35 or cond == 37 or
-                        cond == 38 or
-                        cond == 39) {  // Fog or Hazy or Mist or Dust or Drizzle or
-                                        // Smoke or Sand or sandstorm or ash or haze
-                if (clockTime >= sunset or clockTime < sunrise) {
-                dc.drawText(x2, y, WeatherFont, "a",
-                            Graphics.TEXT_JUSTIFY_RIGHT);  // Fog Night
-                } else {
-                dc.drawText(x, y, WeatherFont, "A",
-                            Graphics.TEXT_JUSTIFY_RIGHT);  // Fog Day
-                }
+            // cond = Weather.CONDITION_UNKNOWN;
+            var tileCoordinates = [10, 26];
+            switch (cond) {
+                case Weather.CONDITION_CLEAR:
+                    tileCoordinates = [10, 26];
+                    break;
+                case Weather.CONDITION_PARTLY_CLOUDY:
+                    tileCoordinates = [80, 26];
+                    break;
+                case Weather.CONDITION_MOSTLY_CLOUDY:
+                    tileCoordinates = [145, 26];
+                    break;
+                case Weather.CONDITION_RAIN:
+                    tileCoordinates = [216, 26];
+                    break;
+                case Weather.CONDITION_SNOW:
+                    tileCoordinates = [280, 26];
+                    break;
+                case Weather.CONDITION_WINDY:
+                    tileCoordinates = [350, 28];
+                    break;
+                case Weather.CONDITION_THUNDERSTORMS:
+                    tileCoordinates = [414, 27];
+                    break;
+                case Weather.CONDITION_WINTRY_MIX:
+                    tileCoordinates = [480, 27];
+                    break;
+                case Weather.CONDITION_FOG:
+                    tileCoordinates = [548, 27];
+                    break;
+                case Weather.CONDITION_HAZY:
+                    tileCoordinates = [614, 27];
+                    break;
+                case Weather.CONDITION_HAIL:
+                    tileCoordinates = [10, 100];
+                    break;
+                case Weather.CONDITION_SCATTERED_SHOWERS:
+                    tileCoordinates = [76, 102];
+                    break;
+                case Weather.CONDITION_SCATTERED_THUNDERSTORMS:
+                    tileCoordinates = [146, 102];
+                    break;
+                case Weather.CONDITION_UNKNOWN_PRECIPITATION:
+                    tileCoordinates = [214, 102];
+                    break;
+                case Weather.CONDITION_LIGHT_RAIN:
+                    tileCoordinates = [282, 100];
+                    break;
+                case Weather.CONDITION_HEAVY_RAIN:
+                    tileCoordinates = [348, 100];
+                    break;
+                case Weather.CONDITION_LIGHT_SNOW:
+                    tileCoordinates = [414, 100];
+                    break;
+                case Weather.CONDITION_HEAVY_SNOW:
+                    tileCoordinates = [480, 100];
+                    break;
+                case Weather.CONDITION_LIGHT_RAIN_SNOW:
+                    tileCoordinates = [548, 101];
+                    break;
+                case Weather.CONDITION_HEAVY_RAIN_SNOW:
+                    tileCoordinates = [614, 101];
+                    break;
+                case Weather.CONDITION_CLOUDY:
+                    tileCoordinates = [10, 173];
+                    break;
+                case Weather.CONDITION_RAIN_SNOW:
+                    tileCoordinates = [76, 173];
+                    break;
+                case Weather.CONDITION_PARTLY_CLEAR:
+                    tileCoordinates = [146, 173];
+                    break;
+                case Weather.CONDITION_MOSTLY_CLEAR:
+                    tileCoordinates = [214, 173];
+                    break;
+                case Weather.CONDITION_LIGHT_SHOWERS:
+                    tileCoordinates = [282, 175];
+                    break;
+                case Weather.CONDITION_SHOWERS:
+                    tileCoordinates = [348, 172];
+                    break;
+                case Weather.CONDITION_HEAVY_SHOWERS:
+                    tileCoordinates = [414, 173];
+                    break;
+                case Weather.CONDITION_CHANCE_OF_SHOWERS:
+                    tileCoordinates = [480, 175];
+                    break;
+                case Weather.CONDITION_CHANCE_OF_THUNDERSTORMS:
+                    tileCoordinates = [548, 175];
+                    break;
+                case Weather.CONDITION_MIST:
+                    tileCoordinates = [614, 175];
+                    break;
+                case Weather.CONDITION_DUST:
+                    tileCoordinates = [10, 241];
+                    break;
+                case Weather.CONDITION_DRIZZLE:
+                    tileCoordinates = [76, 241];
+                    break;
+                case Weather.CONDITION_TORNADO:
+                    tileCoordinates = [146, 240];
+                    break;
+                case Weather.CONDITION_SMOKE:
+                    tileCoordinates = [214, 242];
+                    break;
+                case Weather.CONDITION_ICE:
+                    tileCoordinates = [282, 242];
+                    break;
+                case Weather.CONDITION_SAND:
+                    tileCoordinates = [344, 242];
+                    break;
+                case Weather.CONDITION_SQUALL:
+                    tileCoordinates = [412, 242];
+                    break;
+                case Weather.CONDITION_SANDSTORM:
+                    tileCoordinates = [480, 242];
+                    break;
+                case Weather.CONDITION_VOLCANIC_ASH:
+                    tileCoordinates = [548, 240];
+                    break;
+                case Weather.CONDITION_HAZE:
+                    tileCoordinates = [614, 242];
+                    break;
+                case Weather.CONDITION_FAIR:
+                    tileCoordinates = [10, 308];
+                    break;
+                case Weather.CONDITION_HURRICANE:
+                    tileCoordinates = [76, 308];
+                    break;
+                case Weather.CONDITION_TROPICAL_STORM:
+                    tileCoordinates = [146, 308];
+                    break;
+                case Weather.CONDITION_CHANCE_OF_SNOW:
+                    tileCoordinates = [214, 312];
+                    break;
+                case Weather.CONDITION_CHANCE_OF_RAIN_SNOW:
+                    tileCoordinates = [280, 312];
+                    break;
+                case Weather.CONDITION_CLOUDY_CHANCE_OF_RAIN:
+                    tileCoordinates = [344, 312];
+                    break;
+                case Weather.CONDITION_CLOUDY_CHANCE_OF_SNOW:
+                    tileCoordinates = [412, 312];
+                    break;
+                case Weather.CONDITION_CLOUDY_CHANCE_OF_RAIN_SNOW:
+                    tileCoordinates = [480, 312];
+                    break;
+                case Weather.CONDITION_FLURRIES:
+                    tileCoordinates = [548, 308];
+                    break;
+                case Weather.CONDITION_FREEZING_RAIN:
+                    tileCoordinates = [614, 308];
+                    break;
+                case Weather.CONDITION_SLEET:
+                    tileCoordinates = [10, 371];
+                    break;
+                case Weather.CONDITION_ICE_SNOW:
+                    tileCoordinates = [77, 371];
+                    break;
+                case Weather.CONDITION_THIN_CLOUDS:
+                    tileCoordinates = [146, 371];
+                    break;
+                case Weather.CONDITION_UNKNOWN:
+                default:
+                    tileCoordinates = [214, 371];
             }
+            dc.drawBitmap2(x - tileCoordinates[0], y - tileCoordinates[1], self.weatherConditions,
+                           { :bitmapX => tileCoordinates[0], :bitmapY => tileCoordinates[1],
+                             :bitmapWidth => 44, :bitmapHeight => 41 });
+
             return true;
         } else {
             return false;
         }
     }
 
-  function drawTemperature(dc, x, y, showBoolean, fontColor) {
-    var TempMetric = System.getDeviceSettings().temperatureUnits;
-    var temp = null, units = "", minTemp = null, maxTemp = null;
-    var weather = Weather.getCurrentConditions();
-    if (weather == null) {
-      return;
-    }
-
-    if ((weather.lowTemperature != null) and (weather.highTemperature != null)) {
-        // and weather.lowTemperature instanceof Number ;  and
-        // weather.highTemperature instanceof Number
-      minTemp = weather.lowTemperature;
-      maxTemp = weather.highTemperature;
-    }
-
-    var offset = 0;
-
-    if (showBoolean == false and
-        (weather.feelsLikeTemperature !=
-         null)) {  // feels like ;  and weather.feelsLikeTemperature instanceof
-                   // Number
-      if (TempMetric == System.UNIT_METRIC or
-          Storage.getValue(16) == true) {  // Celsius
-        units = "°C";
-        temp = weather.feelsLikeTemperature;
-      } else {
-        temp = (weather.feelsLikeTemperature * 9 / 5) + 32;
-        if (minTemp != null and maxTemp != null) {
-          minTemp = (minTemp * 9 / 5) + 32;
-          maxTemp = (maxTemp * 9 / 5) + 32;
+    function drawTemperature(dc, x, y, showBoolean, fontColor) {
+        var TempMetric = System.getDeviceSettings().temperatureUnits;
+        var temp = null, units = "", minTemp = null, maxTemp = null;
+        var weather = Weather.getCurrentConditions();
+        if (weather == null) {
+            return;
         }
-        // temp = Lang.format("$1$", [temp.format("%d")] );
-        units = "°F";
-      }
-    } else if ((weather.temperature != null)) {
-      // real temperature ;  and weather.temperature
-      // instanceof Number
-      if (TempMetric == System.UNIT_METRIC or
-          Storage.getValue(16) == true) {  // Celsius
-        units = "°C";
-        temp = weather.temperature;
-      } else {
-        temp = (weather.temperature * 9 / 5) + 32;
-        if (minTemp != null and maxTemp != null) {
-          minTemp = (minTemp * 9 / 5) + 32;
-          maxTemp = (maxTemp * 9 / 5) + 32;
+
+        if ((weather.lowTemperature != null) and(weather.highTemperature != null)) {
+            // and weather.lowTemperature instanceof Number ;  and
+            // weather.highTemperature instanceof Number
+            minTemp = weather.lowTemperature;
+            maxTemp = weather.highTemperature;
         }
-        // temp = Lang.format("$1$", [temp.format("%d")] );
-        units = "°F";
-      }
-    }
 
-    if (temp != null) {  // and temp instanceof Number
-      dc.setColor(fontColor, Graphics.COLOR_TRANSPARENT);
-      if ((minTemp != null) and
-          (maxTemp != null)) {  //  and minTemp instanceof Number ;  and maxTemp
-                                //  instanceof Number
-        if (temp <= minTemp) {
-          if (fontColor == Graphics.COLOR_WHITE) {  // Dark Theme
-            dc.setColor(Graphics.COLOR_BLUE,
-                        Graphics.COLOR_TRANSPARENT);  // Light Blue 0x55AAFF
-          } else {                                    // Light Theme
-            dc.setColor(0x0055AA, Graphics.COLOR_TRANSPARENT);
-          }
-        } else if (temp >= maxTemp) {
-          if (fontColor == Graphics.COLOR_WHITE) {              // Dark Theme
-            dc.setColor(0xFFAA00, Graphics.COLOR_TRANSPARENT);  // Light Orange
-          } else {                                              // Light Theme
-            dc.setColor(0xAA5500, Graphics.COLOR_TRANSPARENT);
-          }
+        var offset = 0;
+
+        if (showBoolean ==
+            false and(weather.feelsLikeTemperature != null)) { // feels like ;  and weather.feelsLikeTemperature
+                                                               // instanceof Number
+            if (TempMetric == System.UNIT_METRIC or Storage.getValue(16) == true) { // Celsius
+                units = "°C"; // C
+                temp = weather.feelsLikeTemperature;
+            } else {
+                temp = (weather.feelsLikeTemperature * 9 / 5) + 32;
+                if (minTemp != null and maxTemp != null) {
+                    minTemp = (minTemp * 9 / 5) + 32;
+                    maxTemp = (maxTemp * 9 / 5) + 32;
+                }
+                // temp = Lang.format("$1$", [temp.format("%d")] );
+                units = "°F"; // F
+            }
+        } else if ((weather.temperature != null)) {
+            // real temperature ;  and weather.temperature
+            // instanceof Number
+            if (TempMetric == System.UNIT_METRIC or Storage.getValue(16) == true) { // Celsius
+                units = "°C"; // C
+                temp = weather.temperature;
+            } else {
+                temp = (weather.temperature * 9 / 5) + 32;
+                if (minTemp != null and maxTemp != null) {
+                    minTemp = (minTemp * 9 / 5) + 32;
+                    maxTemp = (maxTemp * 9 / 5) + 32;
+                }
+                // temp = Lang.format("$1$", [temp.format("%d")] );
+                units = "°F"; // F
+            }
         }
-      }
 
-      temp = temp.format("%d");
+        if (temp != null) { // and temp instanceof Number
+            dc.setColor(fontColor, Graphics.COLOR_TRANSPARENT);
+            if ((minTemp != null) and(maxTemp != null)) { //  and minTemp instanceof Number ;  and maxTemp
+                                                          //  instanceof Number
+                if (temp <= minTemp) {
+                    if (fontColor == Graphics.COLOR_WHITE) { // Dark Theme
+                        dc.setColor(Graphics.COLOR_BLUE,
+                                    Graphics.COLOR_TRANSPARENT); // Light Blue 0x55AAFF
+                    } else { // Light Theme
+                        dc.setColor(0x0055AA, Graphics.COLOR_TRANSPARENT);
+                    }
+                } else if (temp >= maxTemp) {
+                    if (fontColor == Graphics.COLOR_WHITE) { // Dark Theme
+                        dc.setColor(0xFFAA00, Graphics.COLOR_TRANSPARENT); // Light Orange
+                    } else { // Light Theme
+                        dc.setColor(0xAA5500, Graphics.COLOR_TRANSPARENT);
+                    }
+                }
+            }
 
-      dc.drawText(x, y + offset, self.font, temp,
-                  Graphics.TEXT_JUSTIFY_LEFT);
-      dc.setColor(fontColor, Graphics.COLOR_TRANSPARENT);
-      dc.drawText(x + dc.getTextWidthInPixels(temp, self.font),
-                  y + offset, self.font, units,
-                  Graphics.TEXT_JUSTIFY_LEFT);
+            temp = temp.format("%d");
+
+            dc.drawText(x, y + offset, self.font, temp, Graphics.TEXT_JUSTIFY_LEFT);
+            dc.setColor(fontColor, Graphics.COLOR_TRANSPARENT);
+            dc.drawText(x + dc.getTextWidthInPixels(temp, self.font), y + offset, self.font, units,
+                        Graphics.TEXT_JUSTIFY_LEFT);
+        }
     }
-  }
 }

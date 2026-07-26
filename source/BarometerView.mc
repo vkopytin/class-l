@@ -6,18 +6,16 @@ import Toybox.Activity;
 
 class BarometerView extends WatchUi.Drawable {
     private var label as WatchUi.Text?;
-    private var barometerData = new [52] as Array<Graphics.Point2D>;
+    private var barometerData = new[52] as Array<Graphics.Point2D>;
     private var color = Graphics.COLOR_PURPLE;
     private var sensor = :getPressureHistory;
     private var labelScale = 1.0;
 
-    function setLabel(label as WatchUi.Text or Null) {
-        self.label = label;
-    }
+    function setLabel(label as WatchUi.Text or Null) { self.label = label; }
 
     function initialize(params) {
 
-        Drawable.initialize(params);
+        Drawable.initialize(params as Lang.Dictionary);
 
         if (params.hasKey(:color)) {
             self.color = params.get(:color);
@@ -34,19 +32,14 @@ class BarometerView extends WatchUi.Drawable {
         }
     }
 
-    public function setText(text as Lang.String) as Void {
-        self.label.setText(text);
-    }
+    public function setText(text as Lang.String) as Void { self.label.setText(text); }
 
     public function updateData() {
         if (Toybox has :SensorHistory) {
             if (Toybox.SensorHistory has self.sensor) {
                 var items = new Method(Toybox.SensorHistory, self.sensor);
-                var sample = items.invoke({}) as Toybox.SensorHistory.SensorHistoryIterator;
-                var value = self.graphDataToArray(
-                    self.locX, self.locY,
-                    sample, self.barometerData
-                );
+                var sample = items.invoke( {}) as Toybox.SensorHistory.SensorHistoryIterator;
+                var value = self.graphDataToArray(self.locX, self.locY, sample, self.barometerData);
                 self.label.setText((value / self.labelScale).format("%d"));
             }
         }
@@ -72,12 +65,14 @@ class BarometerView extends WatchUi.Drawable {
             var data = sample.next();
             var value = data.data;
             result = value;
-            value = arraySumm([
-                data, sample.next(), sample.next(), sample.next(),
-                sample.next(), sample.next(), sample.next(), sample.next(),
-                sample.next(), sample.next(), sample.next(), sample.next(),
-                sample.next(), sample.next()
-            ], min) / 14.0;
+            value = arraySumm(
+                        [
+                            data, sample.next(), sample.next(), sample.next(), sample.next(), sample.next(),
+                            sample.next(), sample.next(), sample.next(), sample.next(), sample.next(), sample.next(),
+                            sample.next(), sample.next()
+                        ],
+                        min) /
+                    14.0;
             for (var i = 0; i < length; i++) {
                 value = (value - min) * self.height / diff;
                 var x = offsetX - i;
@@ -86,28 +81,30 @@ class BarometerView extends WatchUi.Drawable {
                 items[4 * i + 1] = [offsetX - 5 * i, offsetY - value];
                 items[4 * i + 2] = [offsetX - 5 * i + 3, offsetY - value];
                 items[4 * i + 3] = [offsetX - 5 * i + 3, offsetY];
-                value = arraySumm([
-                    sample.next(), sample.next(), sample.next(), sample.next(),
-                    sample.next(), sample.next(), sample.next(), sample.next(),
-                    sample.next(), sample.next(), sample.next(), sample.next(),
-                    sample.next(), sample.next()
-                ], min) / 14.0;
+                value = arraySumm(
+                            [
+                                sample.next(), sample.next(), sample.next(), sample.next(), sample.next(),
+                                sample.next(), sample.next(), sample.next(), sample.next(), sample.next(),
+                                sample.next(), sample.next(), sample.next(), sample.next()
+                            ],
+                            min) /
+                        14.0;
             }
         }
         return result;
     }
 
     function arraySumm(array, def) {
-		var sum = 0;
-		for (var i = 0; i < array.size(); i++) {
-			if (array[i] == null || array[i].data == null) {
-				array[i] = def;
+        var sum = 0;
+        for (var i = 0; i < array.size(); i++) {
+            if (array[i] == null || array[i].data == null) {
+                array[i] = def;
             } else {
-				array[i] = array[i].data;
-			}
-			sum += array[i];
-		}
-		return sum;
-	}
+                array[i] = array[i].data;
+            }
+            sum += array[i];
+        }
+        return sum;
+    }
 
 }
