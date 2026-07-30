@@ -8,14 +8,23 @@ class SunsetView extends WatchUi.Drawable {
     private var sunriseTime = 25123.0;
     private var sunsetTime = 65123.0;
     private var arcRadius = 226;
+    private var forceRedraw = true;
+    private var clearRect = [0, 0, 0, 0];
+    private var back = null as Graphics.BufferedBitmap;
 
+    function setBack(bb as Graphics.BufferedBitmap) { self.back = bb; }
     function setData(sunrise as Lang.Number, sunset as Lang.Number) {
+        var ss = self.sunriseTime;
+        var sr = self.sunsetTime;
         if (sunrise > sunset) {
             self.sunriseTime = sunset;
             self.sunsetTime = sunrise;
         } else {
             self.sunriseTime = sunrise;
             self.sunsetTime = sunset;
+        }
+        if (ss != self.sunriseTime or sr != self.sunsetTime) {
+            self.forceRedraw = true;
         }
     }
 
@@ -25,9 +34,15 @@ class SunsetView extends WatchUi.Drawable {
         if (params.hasKey(:radius)) {
             self.arcRadius = params.get(:radius);
         }
+        if (params.hasKey(:clearRect)) {
+            self.clearRect = params.get(:clearRect);
+        }
     }
 
     function draw(dc as Dc) {
+        if (!self.forceRedraw) {
+            return;
+        }
 
         Drawable.draw(dc);
 
@@ -37,33 +52,12 @@ class SunsetView extends WatchUi.Drawable {
         dc.setColor(0x555555, Graphics.COLOR_TRANSPARENT);
         var sunriseAngle = 210 - 240 * self.sunriseTime / 86400.0;
         var sunsetAngle = 210 - 240 * self.sunsetTime / 86400.0;
-        dc.drawArc(
-            self.locX,
-            self.locY,
-            arcRadius,
-            Graphics.ARC_CLOCKWISE,
-            210,
-            sunriseAngle
-        );
+        dc.drawArc(self.locX, self.locY, arcRadius, Graphics.ARC_CLOCKWISE, 210, sunriseAngle);
         // day arc
         dc.setColor(0xFF5500, Graphics.COLOR_TRANSPARENT);
-        dc.drawArc(
-            self.locX,
-            self.locY,
-            arcRadius,
-            Graphics.ARC_CLOCKWISE,
-            sunriseAngle,
-            sunsetAngle
-        );
+        dc.drawArc(self.locX, self.locY, arcRadius, Graphics.ARC_CLOCKWISE, sunriseAngle, sunsetAngle);
         // night arc
         dc.setColor(0x555555, Graphics.COLOR_TRANSPARENT);
-        dc.drawArc(
-            self.locX,
-            self.locY,
-            arcRadius,
-            Graphics.ARC_CLOCKWISE,
-            sunsetAngle,
-            -30
-        );
+        dc.drawArc(self.locX, self.locY, arcRadius, Graphics.ARC_CLOCKWISE, sunsetAngle, -30);
     }
 }

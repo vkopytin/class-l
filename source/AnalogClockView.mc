@@ -8,12 +8,13 @@ class AnalogClockView extends WatchUi.Drawable {
     private var hours = 0;
     private var minutes = 0;
     private var seconds = 0;
-    private var locX = 0;
-    private var locY = 0;
-    private var hourHand = null as WatchUi.BitmapResource   ? ;
-    private var minuteHand = null as WatchUi.BitmapResource ? ;
+    private var minuteMapCenter = [-10.0, -88.0];
+    private var hourMapCenter = [-13.0, -66.0];
+    private var hourHand = null as WatchUi.BitmapResource;
+    private var minuteHand = null as WatchUi.BitmapResource;
     private var hourHandTransform = new Graphics.AffineTransform();
     private var minuteHandTransform = new Graphics.AffineTransform();
+    private var backDc = null as Graphics.Dc;
 
     function setTime(hours, minutes, seconds) {
         self.hours = hours;
@@ -21,11 +22,13 @@ class AnalogClockView extends WatchUi.Drawable {
         self.seconds = seconds;
     }
 
+    function setBackDc(dc as Graphics.Dc) { self.backDc = dc; }
+
     function initialize(params) {
         Drawable.initialize(params);
 
-        self.locX = params.get(:locX);
-        self.locY = params.get(:locY);
+        self.hourMapCenter = params.get(:hourMapCenter);
+        self.minuteMapCenter = params.get(:minuteMapCenter);
         self.hourHand = WatchUi.loadResource(params.get(:hourHandResId));
         self.minuteHand = WatchUi.loadResource(params.get(:minuteHandResId));
     }
@@ -43,13 +46,13 @@ class AnalogClockView extends WatchUi.Drawable {
         minuteHandTransform.translate(posX, posY);
         minuteHandTransform.scale(1.0, 1.0);
         minuteHandTransform.rotate(minuteAngle + secondAngle / 60.0);
-        minuteHandTransform.translate(-10.0, -88.0);
+        minuteHandTransform.translate(self.minuteMapCenter[0], self.minuteMapCenter[1]);
 
         hourHandTransform = new Graphics.AffineTransform();
         hourHandTransform.translate(posX, posY);
         hourHandTransform.scale(1.0, 1.0);
         hourHandTransform.rotate(hourAngle + minuteAngle / 12.0);
-        hourHandTransform.translate(-13.0, -66.0);
+        hourHandTransform.translate(self.hourMapCenter[0], self.hourMapCenter[1]);
 
         dc.drawBitmap2(0, 0, self.hourHand,
                        {
@@ -62,5 +65,11 @@ class AnalogClockView extends WatchUi.Drawable {
                        });
 
         // dc.fillCircle(posX, posY, 4);
+    }
+
+    function clearRect() {
+        if (self.backDc == null) {
+            return;
+        }
     }
 }

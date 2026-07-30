@@ -2,41 +2,165 @@
     <layout id="main">
         <drawable id="background" />
         <drawable id="foreground" />
-
         <drawable id="analogClock" class="AnalogClockView">
             <param name="locX">130</param>
             <param name="locY">112</param>
+            <param name="minuteMapCenter">[-8.0, -59.0]</param>
+            <param name="hourMapCenter">[-9.0, -39.0]</param>
             <param name="hourHandResId">@Drawables.HourHand</param>
             <param name="minuteHandResId">@Drawables.MinuteHand</param>
         </drawable>
-
-        <label id="currentTime" visible="true" x="130" y="168" text="10:10" color="#FFFFFF" font="Graphics.FONT_LARGE" justification="Graphics.TEXT_JUSTIFY_CENTER" />
-        <label id="date" visible="true" x="28" y="114" text="JAN 01" color="#FF5500" font="Graphics.FONT_TINY" justification="Graphics.TEXT_JUSTIFY_CENTER" />
-        <label id="month" visible="true" x="28" y="136" text="JAN 01" color="#FFFFFF" font="Graphics.FONT_GLANCE" justification="Graphics.TEXT_JUSTIFY_CENTER" />
-        <label id="weekDay" visible="true" x="30" y="151" text="MON" color="#55AAAA" font="Graphics.FONT_GLANCE" justification="Graphics.TEXT_JUSTIFY_CENTER" />
-        <label id="stepsCount" visible="true" x="227" y="122" text="12345" color="#FFFFFF" font="Graphics.FONT_GLANCE" justification="Graphics.TEXT_JUSTIFY_CENTER" />
-        <label id="heartRate" visible="true" x="200" y="46" text="75" color="#FFFFFF" font="Graphics.FONT_GLANCE" justification="Graphics.TEXT_JUSTIFY_CENTER" />
-        <label id="energyLevel" visible="false" x="140" y="203" text="80%" color="#AAAAAA" font="Graphics.FONT_GLANCE" justification="Graphics.TEXT_JUSTIFY_CENTER" />
-        <label id="barometer" visible="true" x="60" y="44" text="1013" color="#FFFFFF" font="Graphics.FONT_GLANCE" justification="Graphics.TEXT_JUSTIFY_CENTER" />
-        <label id="battery" visible="true" x="130" y="236" text="80%" color="#FFFFFF" font="Graphics.FONT_XTINY" justification="Graphics.TEXT_JUSTIFY_CENTER" />
-
-        <label id="solarCharging" visible="true" x="76" y="176" text="5" color="#000055" font="Graphics.FONT_XTINY" justification="Graphics.TEXT_JUSTIFY_CENTER" />
-        <label id="bluetooth" visible="true" x="76" y="190" text="5" color="#55AAAA" font="Graphics.FONT_XTINY" justification="Graphics.TEXT_JUSTIFY_CENTER" />
-        <label id="alarm" visible="true" x="182" y="176" text="0" color="#000055" font="Graphics.FONT_XTINY" justification="Graphics.TEXT_JUSTIFY_CENTER" />
-        <label id="vibrate" visible="true" x="182" y="190" text="8" color="#000055" font="Graphics.FONT_XTINY" justification="Graphics.TEXT_JUSTIFY_CENTER" />
-
+        <drawable id="sunset" class="SunsetView">
+            <param name="locX">130</param>
+            <param name="locY">130</param>
+            <param name="radius">129</param>
+        </drawable>
+        <drawable id="barometer" class="BarometerView">
+            <param name="locX">56</param>
+            <param name="locY">88</param>
+            <param name="height">13.0</param>
+            <param name="color">0x55AAAA</param>
+            <param name="sensor">:getPressureHistory</param>
+            <param name="labelScale">100.0</param>
+            <param name="barWidth">3</param>
+            <param name="barGap">1</param>
+            <param name="clearRect">[19,48,54,42]</param>
+        </drawable>
+        <label id="barometerLabel" visible="true" x="60" y="44" text="1013" color="#FFFFFF" font="Graphics.FONT_GLANCE" justification="Graphics.TEXT_JUSTIFY_CENTER" />
+        <drawable id="heartRate" class="BarometerView">
+            <param name="locX">238</param>
+            <param name="locY">88</param>
+            <param name="height">13.0</param>
+            <param name="color">0xFF5500</param>
+            <param name="sensor">:getHeartRateHistory</param>
+            <param name="labelScale">1.0</param>
+            <param name="barWidth">3</param>
+            <param name="barGap">1</param>
+            <param name="clearRect">[190,48,54,42]</param>
+        </drawable>
+        <label id="heartRateLabel" visible="true" x="200" y="46" text="75" color="#FFFFFF" font="Graphics.FONT_GLANCE" justification="Graphics.TEXT_JUSTIFY_CENTER" />
+        <drawable id="stepsHistory" class="StepsView">
+            <param name="locX">240</param>
+            <param name="locY">164</param>
+            <param name="height">12.0</param>
+            <param name="color">0x55AAAA</param>
+            <param name="labelScale">1.0</param>
+            <param name="barWidth">3</param>
+            <param name="barGap">1</param>
+            <param name="clearRect">[207,153,40,14]</param>
+        </drawable>
+        <drawable class="TextBlockView" id="stepsCount">
+            <param name="locX">227</param>
+            <param name="locY">122</param>
+            <param name="text">"12345"</param>
+            <param name="color">0xFFFFFF</param>
+            <param name="font">Graphics.FONT_GLANCE</param>
+            <param name="justification">Graphics.TEXT_JUSTIFY_CENTER</param>
+            <param name="padding">[1,-3,1,-2]</param>
+        </drawable>
+        <drawable id="battery" class="BatteryView">
+            <param name="locX">114</param>
+            <param name="locY">228</param>
+            <param name="width">31</param>
+            <param name="height">9</param>
+            <param name="clearRect">[113,227, 33, 27]</param>
+        </drawable>
+        <label id="batteryLabel" visible="true" x="130" y="236" text="80%" color="#FFFFFF" font="Graphics.FONT_XTINY" justification="Graphics.TEXT_JUSTIFY_CENTER" />
+        <drawable id="currentTime" class="TextBlockView">
+            <param name="text">"10:10"</param>
+            <param name="locX">130</param>
+            <param name="locY">167</param>
+            <param name="color">0xFFFFFF</param>
+            <param name="font">Graphics.FONT_LARGE</param>
+            <param name="justification">Graphics.TEXT_JUSTIFY_CENTER</param>
+            <param name="clearRect">[90,176,80,30]</param>
+            <param name="padding">[0,-3,0,-3]</param>
+        </drawable>
+        <drawable id="date" class="TextBlockView">
+            <param name="locX">28</param>
+            <param name="locY">114</param>
+            <param name="text">"25"</param>
+            <param name="color">0xFF5500</param>
+            <param name="font">Graphics.FONT_TINY</param>
+            <param name="justification">Graphics.TEXT_JUSTIFY_CENTER</param>
+            <param name="padding">[0,-3,0,-3]</param>
+        </drawable>
+        <drawable class="TextBlockView" id="month">
+            <param name="locX">28</param>
+            <param name="locY">136</param>
+            <param name="text">"JAN"</param>
+            <param name="color">0xFFFFFF</param>
+            <param name="font">Graphics.FONT_GLANCE</param>
+            <param name="justification">Graphics.TEXT_JUSTIFY_CENTER</param>
+            <param name="padding">[0,-3,0,-3]</param>
+        </drawable>
+        <drawable class="TextBlockView" id="weekDay">
+            <param name="locX">30</param>
+            <param name="locY">151</param>
+            <param name="text">"MON"</param>
+            <param name="color">0x55AAAA</param>
+            <param name="font">Graphics.FONT_GLANCE</param>
+            <param name="justification">Graphics.TEXT_JUSTIFY_CENTER</param>
+            <param name="padding">[0,-3,0,-3]</param>
+        </drawable>
+        <drawable class="TextBlockView" id="energyLevel">
+            <param name="locX">140</param>
+            <param name="locY">203</param>
+            <param name="text">"80%"</param>
+            <param name="color">0xAAAAAA</param>
+            <param name="font">Graphics.FONT_GLANCE</param>
+            <param name="justification">Graphics.TEXT_JUSTIFY_CENTER</param>
+        </drawable>
+        <drawable class="TextBlockView" id="solarCharging">
+            <param name="locX">76</param>
+            <param name="locY">176</param>
+            <param name="text">"5"</param>
+            <param name="color">0x000055</param>
+            <param name="font">Graphics.FONT_XTINY</param>
+            <param name="justification">Graphics.TEXT_JUSTIFY_CENTER</param>
+        </drawable>
+        <drawable class="TextBlockView" id="bluetooth">
+            <param name="locX">76</param>
+            <param name="locY">193</param>
+            <param name="text">"5"</param>
+            <param name="color">0x55AAAA</param>
+            <param name="font">Graphics.FONT_XTINY</param>
+            <param name="justification">Graphics.TEXT_JUSTIFY_CENTER</param>
+        </drawable>
+        <drawable class="TextBlockView" id="alarm">
+            <param name="locX">182</param>
+            <param name="locY">176</param>
+            <param name="text">"\uE190"</param>
+            <param name="color">0x000055</param>
+            <param name="font">Graphics.FONT_XTINY</param>
+            <param name="justification">Graphics.TEXT_JUSTIFY_CENTER</param>
+        </drawable>
+        <drawable class="TextBlockView" id="vibrate">
+            <param name="locX">182</param>
+            <param name="locY">193</param>
+            <param name="text">"\uE62D"</param>
+            <param name="color">0x000055</param>
+            <param name="font">Graphics.FONT_XTINY</param>
+            <param name="justification">Graphics.TEXT_JUSTIFY_CENTER</param>
+        </drawable>
         <drawable id="secondsClock" class="SecondsClockView">
             <param name="locX">130</param>
             <param name="locY">112</param>
+            <param name="mapCenter">[-5.0, -55.0]</param>
+            <param name="clipCoords">[[1.0, 76.0], [1.0, 0.0], [10.0, 0.0], [10.0, 76.0]]</param>
             <param name="rezId">@Drawables.SecondsHand</param>
         </drawable>
-
         <drawable id="infoWeather" class="InfoWeather">
-            <param name="locX">110</param>
-            <param name="locY">10</param>
+            <param name="locX">90</param>
+            <param name="locY">6</param>
             <param name="width">40</param>
             <param name="color">0x55AAAA</param>
+            <param name="clearRect">[87,6, 91, 40]</param>
+        </drawable>
+        <drawable id="moonPhases" class="MoonPhasesView">
+            <param name="locX">39</param>
+            <param name="locY">191</param>
+            <param name="tileSize">20</param>
         </drawable>
     </layout>
-
 </resources>
