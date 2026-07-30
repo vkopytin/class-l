@@ -22,30 +22,37 @@ class WatchFaceView extends WatchUi.WatchFace {
     private var sleepMode = false;
     private var isBurnInProtection = false;
     private const initBufferOptions = {
-        :width => 454,
-        :height => 454,
+        :width => 260,
+        :height => 260,
     };
-    private var width = 454;
-    private var height = 454;
+    private var width = 260;
+    private var height = 260;
     private var seconds = 0;
     private var minutes = 0;
     private var quota = 1010;
 
     private var sunriseTime = 0;
     private var sunsetTime = 0;
+    private var batteryLevel = 0;
+    private var barometerLevel = 0;
 
     private var backLayout = [] as Array<Toybox.WatchUi.Drawable>;
     private var analogClock = null as AnalogClockView;
 
     private var hand = null as WatchUi.BitmapResource;
     private var handDisk = null as WatchUi.BitmapResource;
+    private var moonPhaseTiles = null as WatchUi.BitmapResource;
+    private var batteryLevelBitmap = null as WatchUi.BitmapResource;
+    private var batteryLevelTexture = null as Graphics.BitmapTexture;
+    private var drawBuffer = [null as Graphics.BufferedBitmap, null as Graphics.BufferedBitmap];
+    private var currentDrawBuffer = 0;
     private var buffer = null as Graphics.BufferedBitmap;
-    private var backBuffer = null as Graphics.BufferedBitmap;
-    private var infoBuffer = null as Graphics.BufferedBitmap;
+    private var buffer2 = null as Graphics.BufferedBitmap;
 
     private const transform = new Graphics.AffineTransform();
     private const transform2 = new Graphics.AffineTransform();
     private const transformMove = new Graphics.AffineTransform();
+    private const transformDayNight = new Graphics.AffineTransform();
     private const transformMoonPhase = new Graphics.AffineTransform();
 
     private const drawBitmapOptions = { :transform => self.transform };
@@ -55,34 +62,40 @@ class WatchFaceView extends WatchUi.WatchFace {
         :height => 76,
     };
     private const initBufferOptions2 = {
-        :width => 454,
-        :height => 454,
+        :width => 260,
+        :height => 260,
     };
+    private const drawDayNightOptions = { :transform => self.transformDayNight };
 
     private const initClip = [[1.0, 78.0], [1.0, 0.0], [12.0, 0.0], [12.0, 78.0]];
+    private const clearRange = [156, 183, 25, 20];
     private const emptyOpts = {};
     private var lastTime = 0;
-    private var clockTime = null as System.ClockTime;
+    private var clockTime = null as System.ClockTime ? ;
 
-    private var currentTime = null as TextBlockView;
-    private var weekDay = null as TextBlockView;
-    private var month = null as TextBlockView;
-    private var date = null as TextBlockView;
-    private var stepsHistory = null as StepsView;
-    private var solarCharging = null as TextBlockView;
-    private var bluetooth = null as TextBlockView;
-    private var alarm = null as TextBlockView;
-    private var vibrate = null as TextBlockView;
-    private var background = null as Toybox.WatchUi.Drawable;
-    private var secondsClock = null as SecondsClockView;
-    private var sunset = null as SunsetView;
-    private var infoWeather = null as InfoWeather;
-    private var heartRate = null as BarometerView;
-    private var energyLevel = null as TextBlockView;
-    private var barometer = null as BarometerView;
-    private var battery = null as BatteryView;
-    private var moonPhases = null as MoonPhasesView;
-
+    private var currentTime = null as Toybox.WatchUi.Text     ? ;
+    private var weekDay = null as Toybox.WatchUi.Text         ? ;
+    private var month = null as Toybox.WatchUi.Text           ? ;
+    private var date = null as Toybox.WatchUi.Text            ? ;
+    private var stepsCount = null as Toybox.WatchUi.Text      ? ;
+    private var solarCharging = null as Toybox.WatchUi.Text   ? ;
+    private var bluetooth = null as Toybox.WatchUi.Text       ? ;
+    private var alarm = null as Toybox.WatchUi.Text           ? ;
+    private var vibrate = null as Toybox.WatchUi.Text         ? ;
+    private var background = null as Toybox.WatchUi.Drawable  ? ;
+    private var foreground = null as Toybox.WatchUi.Drawable  ? ;
+    private var dayNightBand = null as WatchUi.BitmapResource ? ;
+    private var secondsClock = null as SecondsClockView       ? ;
+    private var infoWeather = null as InfoWeather             ? ;
+    private var heartRate = null as Toybox.WatchUi.Text       ? ;
+    private var energyLevel = null as Toybox.WatchUi.Text     ? ;
+    private var barometer = null as Toybox.WatchUi.Text       ? ;
+    private var battery = null as Toybox.WatchUi.Text         ? ;
+    private var barometerData = new[52] as Array<Graphics.Point2D>;
+    private var heartRateData = new[52] as Array<Graphics.Point2D>;
+    private var stepsData = new[28] as Array<Graphics.Point2D>;
+    private var moonPhaseTile = [15, 15] as [Number, Number];
+    private var moonTileCoords = [] as Array<[Number, Number]>;
     private var renderPhase = false;
 
     function initialize() {
@@ -91,6 +104,16 @@ class WatchFaceView extends WatchUi.WatchFace {
 
         WatchFace.initialize();
         self.transformMove.translate(130.0, 111.0);
+        for (var i = 0; i < 52; i++) {
+            self.barometerData[i] = [0, 0];
+            self.heartRateData[i] = [0, 0];
+        }
+        for (var i = 0; i < 28; i++) {
+            self.stepsData[i] = [0, 0];
+        }
+
+        self.moonTileCoords = Application.loadResource(Rez.JsonData.moonTileCoords);
+        self.moonPhaseTiles = WatchUi.loadResource(@Rez.Drawables.moonPhaseTiles);
     }
 
     // Load your resources here
@@ -99,63 +122,47 @@ class WatchFaceView extends WatchUi.WatchFace {
         self.height = dc.getHeight();
         self.initBufferOptions[:width] = self.width;
         self.initBufferOptions[:height] = self.height;
-        self.buffer = Graphics.createBufferedBitmap(self.initBufferOptions1).get();
-        self.backBuffer = Graphics.createBufferedBitmap(self.initBufferOptions).get();
-        self.infoBuffer = Graphics.createBufferedBitmap(self.initBufferOptions).get();
-
         dc.setAntiAlias(true);
         self.backLayout = Rez.Layouts.main(dc);
         setLayout(self.backLayout);
 
+        self.moonPhaseTiles = WatchUi.loadResource(@Rez.Drawables.moonPhaseTiles);
+        self.dayNightBand = WatchUi.loadResource(Rez.Drawables.dayNightBand);
+        self.batteryLevelBitmap = WatchUi.loadResource(Rez.Drawables.batteryLevel);
         self.background = View.findDrawableById("background");
-        self.currentTime = View.findDrawableById("currentTime") as TextBlockView;
-        self.currentTime.setBack(self.backBuffer);
-        self.weekDay = View.findDrawableById("weekDay") as TextBlockView;
-        self.weekDay.setBack(self.backBuffer);
-        self.stepsHistory = View.findDrawableById("stepsHistory") as StepsView;
-        self.stepsHistory.setBack(self.backBuffer);
-        self.month = View.findDrawableById("month") as StepsView;
-        self.month.setBack(self.backBuffer);
-        self.date = View.findDrawableById("date") as StepsView;
-        self.date.setBack(self.backBuffer);
+        self.foreground = View.findDrawableById("foreground") as Toybox.WatchUi.Drawable;
+        self.currentTime = View.findDrawableById("currentTime") as Toybox.WatchUi.Text;
+        self.weekDay = View.findDrawableById("weekDay");
+        self.stepsCount = View.findDrawableById("stepsCount");
+        self.month = View.findDrawableById("month");
+        self.date = View.findDrawableById("date");
         self.analogClock = View.findDrawableById("analogClock") as AnalogClockView;
         self.secondsClock = View.findDrawableById("secondsClock") as SecondsClockView;
         self.infoWeather = View.findDrawableById("infoWeather") as InfoWeather;
-        self.infoWeather.setBack(self.backBuffer);
-        self.heartRate = View.findDrawableById("heartRate") as BarometerView;
-        self.heartRate.setBack(self.backBuffer);
+        self.heartRate = View.findDrawableById("heartRate");
         self.energyLevel = View.findDrawableById("energyLevel");
-        self.barometer = View.findDrawableById("barometer") as BarometerView;
-        self.barometer.setBack(self.backBuffer);
-        self.battery = View.findDrawableById("battery") as BatteryView;
-        self.battery.setBack(self.backBuffer);
-        self.solarCharging = View.findDrawableById("solarCharging") as TextBlockView;
-        self.solarCharging.setBack(self.backBuffer);
-        self.bluetooth = View.findDrawableById("bluetooth") as TextBlockView;
-        self.bluetooth.setBack(self.backBuffer);
-        self.alarm = View.findDrawableById("alarm") as TextBlockView;
-        self.alarm.setBack(self.backBuffer);
-        self.vibrate = View.findDrawableById("vibrate") as TextBlockView;
-        self.vibrate.setBack(self.backBuffer);
-        self.sunset = View.findDrawableById("sunset") as SunsetView;
-        self.moonPhases = View.findDrawableById("moonPhases") as MoonPhasesView;
+        self.barometer = View.findDrawableById("barometer");
+        self.battery = View.findDrawableById("battery") as Toybox.WatchUi.Text;
+        self.solarCharging = View.findDrawableById("solarCharging") as Toybox.WatchUi.Text;
+        self.bluetooth = View.findDrawableById("bluetooth") as Toybox.WatchUi.Text;
+        self.alarm = View.findDrawableById("alarm") as Toybox.WatchUi.Text;
+        self.vibrate = View.findDrawableById("vibrate") as Toybox.WatchUi.Text;
         self.hand = WatchUi.loadResource(@Rez.Drawables.SecondsHand);
+
+        // self.currentTime.setFont(Graphics.getVectorFont({:face => "BionicBold", :size => 50}));
+        self.drawBuffer = [
+            Graphics.createBufferedBitmap(self.initBufferOptions).get(),
+            Graphics.createBufferedBitmap(self.initBufferOptions).get()
+        ];
+        self.buffer = Graphics.createBufferedBitmap(self.initBufferOptions1).get();
+
+        self.batteryLevelTexture = new Graphics.BitmapTexture({ :bitmap => self.batteryLevelBitmap });
 
         self.solarCharging.setFont(WatchUi.loadResource(Rez.Fonts.system12));
         self.bluetooth.setFont(WatchUi.loadResource(Rez.Fonts.system12));
         self.alarm.setFont(WatchUi.loadResource(Rez.Fonts.system12));
         self.vibrate.setFont(WatchUi.loadResource(Rez.Fonts.system12));
         // self.battery.setFont(WatchUi.loadResource(Rez.Fonts.lcdDisplay9));
-
-        self.barometer.setLabel(View.findDrawableById("barometerLabel"));
-        self.heartRate.setLabel(View.findDrawableById("heartRateLabel"));
-        var stepsCount = View.findDrawableById("stepsCount") as TextBlockView;
-        self.stepsHistory.setLabel(stepsCount);
-        stepsCount.setBack(self.backBuffer);
-        self.battery.setLabel(View.findDrawableById("batteryLabel"));
-        self.battery.setBack(self.backBuffer);
-
-        self.updateBackBuffer(self.backBuffer.getDc(), true);
     }
 
     // Called when this View is brought to the foreground. Restore
@@ -216,13 +223,21 @@ class WatchFaceView extends WatchUi.WatchFace {
         if (self.sleepMode) {
             self.syncData();
             self.engineTick(1000);
+            self.currentDrawBuffer = self.currentDrawBuffer ^ 1;
         }
 
-        dc.drawBitmap(0, 0, self.backBuffer);
-        dc.drawBitmap(0, 0, self.infoBuffer);
-        // dc.drawBitmap2(0, 0, buffer, self.emptyOpts);
+        self.clockTime = System.getClockTime();
+        self.seconds = self.clockTime.sec;
 
-        self.secondsClock.drawSecondsHand(dc, self.backBuffer, self.backBuffer);
+        self.currentTime.setText(
+            Lang.format("$1$:$2$", [self.clockTime.hour.format("%02d"), self.clockTime.min.format("%02d")]));
+
+        self.secondsClock.setSeconds(clockTime.sec);
+
+        var buffer = self.drawBuffer[self.currentDrawBuffer];
+        dc.drawBitmap2(0, 0, buffer, self.emptyOpts);
+
+        self.secondsClock.drawSecondsHand(dc, buffer, buffer);
     }
 
     // Handle the partial update event
@@ -265,7 +280,7 @@ class WatchFaceView extends WatchUi.WatchFace {
         self.transform.initialize();
         self.transform.rotate(angle);
         self.transform.translate(-4.0, -54.0);
-        dc.drawBitmap2(0, 0, self.backBuffer, self.emptyOpts);
+        dc.drawBitmap2(0, 0, self.drawBuffer[self.currentDrawBuffer], self.emptyOpts);
         // dc.fillPolygon(clip);
         // dc.drawRectangle(minX, minY, maxX - minX, maxY - minY);
         dc.drawBitmap2(130, 111, self.buffer, self.drawBitmapOptions);
@@ -282,9 +297,31 @@ class WatchFaceView extends WatchUi.WatchFace {
         backBufferdc.setColor(Graphics.COLOR_BLACK, Graphics.COLOR_BLACK);
         backBufferdc.clear();
 
+        // backBufferdc.drawBitmap2(0, 98, self.dayNightBand, self.drawDayNightOptions);
         self.background.draw(backBufferdc);
 
-        backBufferdc = null;
+        // sun set and sunrise arcs
+        var arcRadius = cfg.sunsetRadius;
+        var arcX = cfg.sunsetX;
+        var arcY = cfg.sunsetY;
+        backBufferdc.setPenWidth(3);
+        // night arc
+        backBufferdc.setColor(0xFF5555, Graphics.COLOR_TRANSPARENT);
+        var sunriseAngle = 210 - 240 * self.sunriseTime / 86400.0;
+        var sunsetAngle = 210 - 240 * self.sunsetTime / 86400.0;
+        backBufferdc.drawArc(arcX, arcY, arcRadius, Graphics.ARC_CLOCKWISE, 210, sunriseAngle);
+        // day arc
+        backBufferdc.setColor(0xFF5500, Graphics.COLOR_TRANSPARENT);
+        backBufferdc.drawArc(arcX, arcY, arcRadius, Graphics.ARC_CLOCKWISE, sunriseAngle, sunsetAngle);
+        // night arc
+        backBufferdc.setColor(0x555555, Graphics.COLOR_TRANSPARENT);
+        backBufferdc.drawArc(arcX, arcY, arcRadius, Graphics.ARC_CLOCKWISE, sunsetAngle, -30);
+
+        backBufferdc.drawBitmap2(cfg.moonPhaseX - self.moonPhaseTile[0], cfg.moonPhaseY - self.moonPhaseTile[1],
+                                 self.moonPhaseTiles,
+                                 { :bitmapX => self.moonPhaseTile[0], :bitmapY => self.moonPhaseTile[1],
+                                   :bitmapWidth => cfg.moonPhaseTileSize,
+                                   :bitmapHeight => cfg.moonPhaseTileSize });
     }
 
     function updateFrontBuffer(frontBufferdc as Dc, refresh as Boolean) as Void {
@@ -292,6 +329,13 @@ class WatchFaceView extends WatchUi.WatchFace {
             return;
         }
 
+        // frontBufferdc.setColor(Graphics.COLOR_TRANSPARENT, Graphics.COLOR_TRANSPARENT);
+        // frontBufferdc.clear();
+
+        frontBufferdc.setAntiAlias(true);
+
+        // self.stepsComplication.draw(frontBufferdc);
+        // self.foreground.draw(frontBufferdc);
         self.analogClock.draw(frontBufferdc);
         self.secondsClock.draw(frontBufferdc);
         frontBufferdc = null;
@@ -301,12 +345,13 @@ class WatchFaceView extends WatchUi.WatchFace {
         // infoBufferdc.setColor(Graphics.COLOR_TRANSPARENT, Graphics.COLOR_TRANSPARENT);
         // infoBufferdc.clear();
 
-        self.moonPhases.draw(infoBufferdc);
+        infoBufferdc.setAntiAlias(true);
+
+        self.weekDay.draw(infoBufferdc);
         self.infoWeather.draw(infoBufferdc);
-        self.stepsHistory.draw(infoBufferdc);
+        self.stepsCount.draw(infoBufferdc);
         self.month.draw(infoBufferdc);
         self.date.draw(infoBufferdc);
-        self.weekDay.draw(infoBufferdc);
         self.currentTime.draw(infoBufferdc);
         self.heartRate.draw(infoBufferdc);
         self.energyLevel.draw(infoBufferdc);
@@ -316,31 +361,55 @@ class WatchFaceView extends WatchUi.WatchFace {
         self.bluetooth.draw(infoBufferdc);
         self.alarm.draw(infoBufferdc);
         self.vibrate.draw(infoBufferdc);
-        self.sunset.draw(infoBufferdc);
+        // self.bg.draw(bufferdc);
+        // self.infoWeekDay.draw(bufferdc);
+        // self.infoStress.draw(bufferdc);
+        // self.bodyBattery.draw(bufferdc);
+        // self.infoWeather.draw(bufferdc);
+        // self.infoMoon.draw(bufferdc);
+        // infoBufferdc.drawBitmap(0, 0, self.frontBuffer);
+        // self.infoDateStatus.draw(bufferdc);
+        // self.analogClock.draw(bufferdc);
+
+        // buttery level bar
+        var barWidth = cfg.batteryWidth * self.batteryLevel / 100.0;
+        infoBufferdc.setColor(Graphics.COLOR_LT_GRAY, Graphics.COLOR_TRANSPARENT);
+        infoBufferdc.setFill(self.batteryLevelTexture);
+        infoBufferdc.fillRectangle(cfg.batteryX, cfg.batteryY, barWidth, cfg.batteryHeight);
+
+        infoBufferdc.setColor(0x55AAAA, Graphics.COLOR_TRANSPARENT);
+        infoBufferdc.fillPolygon(self.barometerData);
+        infoBufferdc.fillPolygon(self.stepsData);
+        infoBufferdc.setColor(0xFF5500, Graphics.COLOR_TRANSPARENT);
+        infoBufferdc.fillPolygon(self.heartRateData);
 
         infoBufferdc = null;
     }
 
     function engineTick(deltaTime) as Void {
-        if (self.renderPhase) {
-            self.syncData();
-            return;
-        }
         self.clockTime = System.getClockTime();
         self.seconds = self.clockTime.sec;
+        // self.secondsDisk.setSeconds(clockTime.sec);
         self.analogClock.setTime(self.clockTime.hour, self.clockTime.min, self.clockTime.sec);
+        var currentDrawBuffer = self.currentDrawBuffer;
+        self.currentDrawBuffer = self.currentDrawBuffer ^ 1;
+        var buffer = self.drawBuffer[currentDrawBuffer];
 
-        var dc = self.backBuffer.getDc();
+        var dc = buffer.getDc();
         dc.setAntiAlias(true);
 
         try {
             self.quota = 1030;
 
             var refresh = self.minutes != self.clockTime.min;
-            // self.updateBackBuffer(dc, refresh);
-            self.updateFrontBuffer(dc, refresh);
-            self.updateInfoBuffer(self.infoBuffer.getDc());
+            self.updateBackBuffer(dc, true);
+            self.updateFrontBuffer(dc, true);
+            self.updateInfoBuffer(dc);
             self.minutes = self.clockTime.min;
+
+            dc.drawBitmap(0, 0, buffer);
+            dc.drawBitmap(0, 0, buffer);
+            dc.drawBitmap(0, 0, buffer);
 
             var bufferdc = self.buffer.getDc();
             bufferdc.drawBitmap(0, 0, self.hand);
@@ -360,10 +429,14 @@ class WatchFaceView extends WatchUi.WatchFace {
 
     function syncData() as Void {
         try {
+            var activityMonitor = ActivityMonitor.getInfo();
+            if (activityMonitor != null && activityMonitor.steps != null) {
+                var steps = activityMonitor.steps;
+                self.stepsCount.setText(steps.format("%d"));
+            }
+
             var now = Time.now();
             var date = Date.info(now, Time.FORMAT_SHORT);
-
-            self.sunset.setData(self.sunriseTime, self.sunsetTime);
 
             var stats = System.getSystemStats();
             if (stats.solarIntensity != null) {
@@ -389,6 +462,12 @@ class WatchFaceView extends WatchUi.WatchFace {
                     self.solarCharging.setColor(0x000055);
                 }
             }
+            self.batteryLevel = stats.battery;
+
+            var phase = self.moonPhase(now);
+            self.moonPhaseTile = self.moonTileCoords[phase];
+
+            self.infoWeather.updateData();
 
             var settings = Toybox.System.getDeviceSettings();
             if (settings.phoneConnected) {
@@ -411,23 +490,30 @@ class WatchFaceView extends WatchUi.WatchFace {
                 self.vibrate.setColor(0x000055);
             }
 
-            self.barometer.updateData();
-            self.heartRate.updateData();
-            self.stepsHistory.updateData();
-            self.battery.updateData();
-            self.moonPhases.updateData(now);
-            self.infoWeather.updateData();
             if (Toybox has :SensorHistory) {
                 var bodyBatteryIterator = Toybox.SensorHistory.getBodyBatteryHistory({ :period => 1 });
                 var sample = bodyBatteryIterator.next();
                 if (sample != null && sample.data != null) {
                     self.energyLevel.setText(Lang.format("$1$%", [sample.data.format("%d")]));
                 }
+                if (Toybox.SensorHistory has :getPressureHistory) {
+                    sample = Toybox.SensorHistory.getPressureHistory( {});
+                    var value = self.graphDataToArray(cfg.barometerX, cfg.barometerY, sample, self.barometerData);
+                    self.barometerLevel = value;
+                    self.barometer.setText((value / 100).format("%d"));
+                }
+                if (Toybox.SensorHistory has :getHeartRateHistory) {
+                    sample = Toybox.SensorHistory.getHeartRateHistory( {});
+                    self.graphDataToArray(cfg.heartRateX, cfg.heartRateY, sample, self.heartRateData);
+                }
+                self.stepsHistoryToArray(cfg.stepsX, cfg.stepsY, self.stepsData);
             }
             var activityInfo = Activity.getActivityInfo();
             if (activityInfo != null && activityInfo.currentHeartRate != null) {
                 self.heartRate.setText(activityInfo.currentHeartRate.format("%d"));
             }
+
+            self.battery.setText(Lang.format("$1$%", [self.batteryLevel.format("%d")]));
 
             self.clockTime = System.getClockTime();
             self.seconds = self.clockTime.sec;
@@ -440,9 +526,11 @@ class WatchFaceView extends WatchUi.WatchFace {
             self.date.setText(date.day.format("%02d"));
 
             self.secondsClock.setSeconds(clockTime.sec);
+
+            var dayNightPosition = (self.clockTime.hour + self.clockTime.min / 60.0) / 24.0 * 240.0 - 200.0;
+            self.transformDayNight.initialize();
+            self.transformDayNight.translate(dayNightPosition, 70.0);
         } catch (ex) {
-            var message = ex.getErrorMessage();
-            System.println(message);
         }
     }
 
@@ -468,14 +556,12 @@ class WatchFaceView extends WatchUi.WatchFace {
                 }
                 break;
             case Complications.COMPLICATION_TYPE_BATTERY:
-                if (self.battery != null) {
-                    self.battery.setValue(complication.value);
-                }
+                self.batteryLevel = complication.value;
                 break;
         }
     }
 
-    function arraySumm(array, def as Lang.Number) {
+    function arraySumm(array, def) {
         var sum = 0;
         for (var i = 0; i < array.size(); i++) {
             if (array[i] == null || array[i].data == null) {
@@ -500,10 +586,10 @@ class WatchFaceView extends WatchUi.WatchFace {
                 value = value * height / max;
                 var x = offsetX - i;
                 var y = offsetY - value;
-                items[4 * i] = [3 * x, offsetY];
-                items[4 * i + 1] = [3 * x, offsetY - value];
-                items[4 * i + 2] = [3 * x + 2, offsetY - value];
-                items[4 * i + 3] = [3 * x + 2, offsetY];
+                items[4 * i] = [cfg.graphBarWidth * x, offsetY];
+                items[4 * i + 1] = [cfg.graphBarWidth * x, offsetY - value];
+                items[4 * i + 2] = [cfg.graphBarWidth * x + cfg.graphBarGap, offsetY - value];
+                items[4 * i + 3] = [cfg.graphBarWidth * x + cfg.graphBarGap, offsetY];
             }
             for (var i = length; i < items.size() / 4; i++) {
                 items[4 * i] = [offsetX, offsetY];
@@ -512,6 +598,58 @@ class WatchFaceView extends WatchUi.WatchFace {
                 items[4 * i + 3] = [offsetX, offsetY];
             }
         }
+    }
+
+    function graphDataToArray(offsetX, offsetY, sample, items) {
+        var max = sample.getMax();
+        var min = sample.getMin();
+        var diff = max - min;
+        var length = 13;
+        var height = cfg.graphHeight;
+        var result = 0.0;
+        if (sample != null) {
+            // iterate over the samples and draw the graph
+            var data = sample.next();
+            var value = data.data;
+            result = value;
+            value = arraySumm(
+                        [
+                            data, sample.next(), sample.next(), sample.next(), sample.next(), sample.next(),
+                            sample.next(), sample.next(), sample.next(), sample.next(), sample.next(), sample.next(),
+                            sample.next(), sample.next()
+                        ],
+                        min) /
+                    14.0;
+            for (var i = 0; i < length; i++) {
+                value = (value - min) * height / diff;
+                var x = offsetX - i;
+                var y = offsetY - value;
+                items[4 * i] = [cfg.graphBarWidth * x, offsetY];
+                items[4 * i + 1] = [cfg.graphBarWidth * x, offsetY - value];
+                items[4 * i + 2] = [cfg.graphBarWidth * x + cfg.graphBarGap, offsetY - value];
+                items[4 * i + 3] = [cfg.graphBarWidth * x + cfg.graphBarGap, offsetY];
+                value = arraySumm(
+                            [
+                                sample.next(), sample.next(), sample.next(), sample.next(), sample.next(),
+                                sample.next(), sample.next(), sample.next(), sample.next(), sample.next(),
+                                sample.next(), sample.next(), sample.next(), sample.next()
+                            ],
+                            min) /
+                        14.0;
+            }
+        }
+        return result;
+    }
+
+    function moonPhase(now as Toybox.Time.Moment) {
+        var time = (now.value() * 1000.0) / 86400000.0 + EPOCH;
+        var phase = (time - 2451550.1) / SYNODIC_MONTH;
+        var moonAge = phase - Math.floor(phase);
+        if (moonAge < 0) {
+            moonAge = moonAge + 1.0;
+        }
+        // return moonAge * SYNODIC_MONTH;
+        return (moonAge * 25).toNumber();
     }
 
     function min(a, b) { return a < b ? a : b; }

@@ -10,62 +10,28 @@ class InfoWeather extends WatchUi.Drawable {
     private var color = Graphics.COLOR_BLACK;
     private var colorAccent = 0xAA5500;
     private var font = Graphics.FONT_TINY;
-    private var forceRedraw = true;
-    private var clearRect = [0, 0, 0, 0];
-    private var back = null as Graphics.BufferedBitmap;
     private var weather = null as Toybox.Weather.CurrentConditions;
     private var cond = null as Toybox.Weather.Condition;
     private var temperature = 0;
     private var minTemp = 0;
     private var maxTemp = 0;
 
-    function setBack(bb as Graphics.BufferedBitmap) { self.back = bb; }
-
     function initialize(params) {
         self.weatherConditions = WatchUi.loadResource(@Rez.Drawables.weatherConditions);
         Drawable.initialize(params);
         self.color = params.get(:color);
-        if (params.hasKey(:clearRect)) {
-            self.clearRect = params.get(:clearRect);
-        }
     }
 
     public function updateData() {
         self.weather = Toybox.Weather.getCurrentConditions();
-        if (self.cond != weather.condition) {
-            self.cond = weather.condition;
-            self.forceRedraw = true;
-        }
-        if (self.temperature != weather.temperature) {
-            self.temperature = weather.temperature;
-            self.forceRedraw = true;
-        }
-        if (self.minTemp != weather.lowTemperature) {
-            self.minTemp = weather.lowTemperature;
-            self.forceRedraw = true;
-        }
-        if (self.maxTemp != weather.highTemperature) {
-            self.maxTemp = weather.highTemperature;
-            self.forceRedraw = true;
-        }
+        self.cond = weather.condition;
+        self.temperature = weather.temperature;
+        self.minTemp = weather.lowTemperature;
+        self.maxTemp = weather.highTemperature;
     }
 
     function draw(dc as Dc) {
-        if (!self.forceRedraw) {
-            return;
-        }
-        self.forceRedraw = false;
-
         Drawable.draw(dc);
-
-        if (self.back == null) {
-            dc.setPenWidth(1);
-            dc.drawRectangle(self.clearRect[0], self.clearRect[1], self.clearRect[2], self.clearRect[3]);
-        } else {
-            dc.setClip(self.clearRect[0], self.clearRect[1], self.clearRect[2], self.clearRect[3]);
-            dc.setColor(Graphics.COLOR_TRANSPARENT, Graphics.COLOR_TRANSPARENT);
-            dc.clear();
-        }
 
         self.drawWeatherIcon(dc, self.locX, self.locY, self.locX, self.color);
         self.drawTemperature(dc, self.locX + 40, self.locY + 2, false, self.color);

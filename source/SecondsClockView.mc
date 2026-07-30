@@ -8,28 +8,22 @@ class SecondsClockView extends WatchUi.Drawable {
     const oneRad = Math.PI * 2.0 / 60.0;
     private var previousSeconds = 0;
     private var seconds = 0;
-    private var mapCoords = [-5.0, -54.0];
-    private var hand = null as WatchUi.BitmapResource;
-    private var buffer = null as Graphics.BufferedBitmap;
+    private var hand = null as WatchUi.BitmapResource    ? ;
+    private var buffer = null as Graphics.BufferedBitmap ? ;
     private var transform = new Graphics.AffineTransform();
     private var transformMove = new Graphics.AffineTransform();
     private var drawBitmapOptions = { :transform => self.transform };
     private var initBufferOptions = {
-        :width => 16,
-        :height => 132,
+        :width => cfg.secondsClockTextureX,
+        :height => cfg.secondsClockTextureY,
     };
-    private var initClip = [[1.0, 132.0], [1.0, 0.0], [14.0, 0.0], [14.0, 132.0]];
+    private var locX = 130;
+    private var locY = 130;
 
     function initialize(params) {
         Drawable.initialize(params);
-
-        if (params.hasKey(:mapCoords)) {
-            self.mapCoords = params.get(:mapCoords);
-        }
-        if (params.hasKey(:clipCoords)) {
-            self.initClip = params.get(:clipCoords);
-        }
-
+        self.locX = params.get(:locX);
+        self.locY = params.get(:locY);
         self.hand = WatchUi.loadResource(params.get(:rezId));
         self.transformMove.translate(self.locX, self.locY);
         self.buffer = Graphics.createBufferedBitmap(self.initBufferOptions).get();
@@ -65,11 +59,13 @@ class SecondsClockView extends WatchUi.Drawable {
 
         self.transform.initialize();
         self.transform.rotate(angle);
-        self.transform.translate(self.mapCoords[0], self.mapCoords[1]);
+        self.transform.translate(cfg.secondsKnobPivotX, cfg.secondsKnobPivotY);
         self.clearSecondsHand(dc, backBuffer, true);
         dc.drawBitmap2(posX, posY, self.buffer, self.drawBitmapOptions);
     }
 
+    // private var initClip = [[-5.0, 68.0],[-5.0, -1.0],[22.0, -1.0],[22.0,68.0]];
+    private var initClip = cfg.secondsClipRegion;
     function clearSecondsHand(dc as Dc, buffer as BufferedBitmap, reset) {
         dc.clearClip();
         var clip = self.transform.transformPoints(self.initClip);
