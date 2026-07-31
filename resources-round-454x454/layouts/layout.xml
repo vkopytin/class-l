@@ -1,7 +1,6 @@
 <resources>
     <layout id="main">
         <drawable id="background" />
-        <drawable id="foreground" />
         <drawable id="analogClock" class="AnalogClockView">
             <param name="locX">cfg.clockX</param>
             <param name="locY">cfg.clockY</param>

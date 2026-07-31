@@ -84,7 +84,6 @@ class WatchFaceView extends WatchUi.WatchFace {
     private var alarm = null as Toybox.WatchUi.Text;
     private var vibrate = null as Toybox.WatchUi.Text;
     private var background = null as Toybox.WatchUi.Drawable;
-    private var foreground = null as Toybox.WatchUi.Drawable;
     private var secondsClock = null as SecondsClockView;
     private var infoWeather = null as InfoWeather;
     private var heartRate = null as Toybox.WatchUi.Text;
@@ -111,8 +110,6 @@ class WatchFaceView extends WatchUi.WatchFace {
         for (var i = 0; i < 28; i++) {
             self.stepsData[i] = [0, 0];
         }
-
-        self.moonPhaseTiles = WatchUi.loadResource(@Rez.Drawables.moonPhaseTiles);
     }
 
     // Load your resources here
@@ -129,7 +126,6 @@ class WatchFaceView extends WatchUi.WatchFace {
         self.batteryLevelBitmap = WatchUi.loadResource(Rez.Drawables.batteryLevel);
         self.twilightTiles = WatchUi.loadResource(@Rez.Drawables.twilightTiles);
         self.background = View.findDrawableById("background");
-        self.foreground = View.findDrawableById("foreground") as Toybox.WatchUi.Drawable;
         self.currentTime = View.findDrawableById("currentTime") as Toybox.WatchUi.Text;
         self.weekDay = View.findDrawableById("weekDay");
         self.stepsCount = View.findDrawableById("stepsCount");
@@ -341,7 +337,6 @@ class WatchFaceView extends WatchUi.WatchFace {
         frontBufferdc.setAntiAlias(true);
 
         // self.stepsComplication.draw(frontBufferdc);
-        // self.foreground.draw(frontBufferdc);
         self.analogClock.draw(frontBufferdc);
         self.secondsClock.draw(frontBufferdc);
         frontBufferdc = null;
