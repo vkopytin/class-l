@@ -73,24 +73,24 @@ class WatchFaceView extends WatchUi.WatchFace {
     private var lastTime = 0;
     private var clockTime = null as System.ClockTime ? ;
 
-    private var currentTime = null as Toybox.WatchUi.Text     ? ;
-    private var weekDay = null as Toybox.WatchUi.Text         ? ;
-    private var month = null as Toybox.WatchUi.Text           ? ;
-    private var date = null as Toybox.WatchUi.Text            ? ;
-    private var stepsCount = null as Toybox.WatchUi.Text      ? ;
-    private var solarCharging = null as Toybox.WatchUi.Text   ? ;
-    private var bluetooth = null as Toybox.WatchUi.Text       ? ;
-    private var alarm = null as Toybox.WatchUi.Text           ? ;
-    private var vibrate = null as Toybox.WatchUi.Text         ? ;
-    private var background = null as Toybox.WatchUi.Drawable  ? ;
-    private var foreground = null as Toybox.WatchUi.Drawable  ? ;
-    private var dayNightBand = null as WatchUi.BitmapResource ? ;
-    private var secondsClock = null as SecondsClockView       ? ;
-    private var infoWeather = null as InfoWeather             ? ;
-    private var heartRate = null as Toybox.WatchUi.Text       ? ;
-    private var energyLevel = null as Toybox.WatchUi.Text     ? ;
-    private var barometer = null as Toybox.WatchUi.Text       ? ;
-    private var battery = null as Toybox.WatchUi.Text         ? ;
+    private var currentTime = null as Toybox.WatchUi.Text;
+    private var weekDay = null as Toybox.WatchUi.Text;
+    private var month = null as Toybox.WatchUi.Text;
+    private var date = null as Toybox.WatchUi.Text;
+    private var stepsCount = null as Toybox.WatchUi.Text;
+    private var solarCharging = null as Toybox.WatchUi.Text;
+    private var bluetooth = null as Toybox.WatchUi.Text;
+    private var alarm = null as Toybox.WatchUi.Text;
+    private var vibrate = null as Toybox.WatchUi.Text;
+    private var background = null as Toybox.WatchUi.Drawable;
+    private var foreground = null as Toybox.WatchUi.Drawable;
+    private var dayNightBand = null as WatchUi.BitmapResource;
+    private var secondsClock = null as SecondsClockView;
+    private var infoWeather = null as InfoWeather;
+    private var heartRate = null as Toybox.WatchUi.Text;
+    private var energyLevel = null as Toybox.WatchUi.Text;
+    private var barometer = null as Toybox.WatchUi.Text;
+    private var battery = null as Toybox.WatchUi.Text;
     private var barometerData = new[52] as Array<Graphics.Point2D>;
     private var heartRateData = new[52] as Array<Graphics.Point2D>;
     private var stepsData = new[28] as Array<Graphics.Point2D>;
@@ -163,6 +163,9 @@ class WatchFaceView extends WatchUi.WatchFace {
         self.alarm.setFont(WatchUi.loadResource(Rez.Fonts.system12));
         self.vibrate.setFont(WatchUi.loadResource(Rez.Fonts.system12));
         // self.battery.setFont(WatchUi.loadResource(Rez.Fonts.lcdDisplay9));
+
+        dc.setColor(Graphics.COLOR_BLACK, Graphics.COLOR_BLACK);
+        dc.clear();
     }
 
     // Called when this View is brought to the foreground. Restore
@@ -294,7 +297,7 @@ class WatchFaceView extends WatchUi.WatchFace {
             return;
         }
 
-        backBufferdc.setColor(Graphics.COLOR_BLACK, Graphics.COLOR_BLACK);
+        backBufferdc.setColor(Graphics.COLOR_TRANSPARENT, Graphics.COLOR_TRANSPARENT);
         backBufferdc.clear();
 
         // backBufferdc.drawBitmap2(0, 98, self.dayNightBand, self.drawDayNightOptions);

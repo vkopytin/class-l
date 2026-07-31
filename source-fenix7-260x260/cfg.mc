@@ -3,10 +3,10 @@ module cfg {
     const clockX = 130;
     const clockY = 112;
 
-    const hourKnobPivotX = -9.0;
-    const hourKnobPivotY = -39.0;
+    const hourKnobPivotX = -10.0;
+    const hourKnobPivotY = -38.0;
 
-    const minuteKnobPivotX = -8.0;
+    const minuteKnobPivotX = -9.0;
     const minuteKnobPivotY = -59.0;
 
     const secondsClockTextureX = 16;
