@@ -12,6 +12,7 @@
     <bitmap id="batteryLevel" filename="battery-level.png" />
     <bitmap id="moonPhaseTiles" filename="moon-phases-20x20.png" />
     <bitmap id="weatherConditions" filename="weather-conditions.png" />
+    <bitmap id="twilightTiles" filename="sunset-sunrise-tiles-20x20.png" />
     <drawable-list id="background">
         <bitmap id="bg" filename="clock-example.png" y="0" scaleX="260" scaleY="260" />
     </drawable-list>

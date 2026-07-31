@@ -24,6 +24,11 @@ module cfg {
     const moonPhaseX = 40;
     const moonPhaseY = 193;
     const moonPhaseTileSize = 20;
+    const moonTileCoords = [
+        [15, 15],  [48, 15],  [80, 15],  [113, 15], [146, 15],  [178, 15],  [15, 54],   [48, 54],  [80, 54],
+        [113, 54], [146, 54], [178, 54], [15, 94],  [15, 94],   [48, 94],   [80, 94],   [113, 94], [146, 94],
+        [178, 94], [15, 133], [48, 133], [80, 133], [113, 133], [146, 133], [178, 133], [15, 173]
+    ];
 
     const batteryX = 114;
     const batteryY = 228;
@@ -42,4 +47,9 @@ module cfg {
 
     const stepsX = 78;
     const stepsY = 168;
+
+    const twilightX = 200;
+    const twilightY = 184;
+    const twilightTileSize = 24;
+    const twilightCoords = [[0, 0], [33, 0], [66, 0], [98, 0], [133, 0]];
 }

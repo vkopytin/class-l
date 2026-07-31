@@ -42,6 +42,7 @@ class WatchFaceView extends WatchUi.WatchFace {
     private var hand = null as WatchUi.BitmapResource;
     private var handDisk = null as WatchUi.BitmapResource;
     private var moonPhaseTiles = null as WatchUi.BitmapResource;
+    private var twilightTiles = null as WatchUi.BitmapResource;
     private var batteryLevelBitmap = null as WatchUi.BitmapResource;
     private var batteryLevelTexture = null as Graphics.BitmapTexture;
     private var drawBuffer = [null as Graphics.BufferedBitmap, null as Graphics.BufferedBitmap];
@@ -84,7 +85,6 @@ class WatchFaceView extends WatchUi.WatchFace {
     private var vibrate = null as Toybox.WatchUi.Text;
     private var background = null as Toybox.WatchUi.Drawable;
     private var foreground = null as Toybox.WatchUi.Drawable;
-    private var dayNightBand = null as WatchUi.BitmapResource;
     private var secondsClock = null as SecondsClockView;
     private var infoWeather = null as InfoWeather;
     private var heartRate = null as Toybox.WatchUi.Text;
@@ -95,7 +95,7 @@ class WatchFaceView extends WatchUi.WatchFace {
     private var heartRateData = new[52] as Array<Graphics.Point2D>;
     private var stepsData = new[28] as Array<Graphics.Point2D>;
     private var moonPhaseTile = [15, 15] as [Number, Number];
-    private var moonTileCoords = [] as Array<[Number, Number]>;
+    private var twilightTile = [133, 0] as [Number, Number];
     private var renderPhase = false;
 
     function initialize() {
@@ -112,7 +112,6 @@ class WatchFaceView extends WatchUi.WatchFace {
             self.stepsData[i] = [0, 0];
         }
 
-        self.moonTileCoords = Application.loadResource(Rez.JsonData.moonTileCoords);
         self.moonPhaseTiles = WatchUi.loadResource(@Rez.Drawables.moonPhaseTiles);
     }
 
@@ -127,8 +126,8 @@ class WatchFaceView extends WatchUi.WatchFace {
         setLayout(self.backLayout);
 
         self.moonPhaseTiles = WatchUi.loadResource(@Rez.Drawables.moonPhaseTiles);
-        self.dayNightBand = WatchUi.loadResource(Rez.Drawables.dayNightBand);
         self.batteryLevelBitmap = WatchUi.loadResource(Rez.Drawables.batteryLevel);
+        self.twilightTiles = WatchUi.loadResource(@Rez.Drawables.twilightTiles);
         self.background = View.findDrawableById("background");
         self.foreground = View.findDrawableById("foreground") as Toybox.WatchUi.Drawable;
         self.currentTime = View.findDrawableById("currentTime") as Toybox.WatchUi.Text;
@@ -300,7 +299,6 @@ class WatchFaceView extends WatchUi.WatchFace {
         backBufferdc.setColor(Graphics.COLOR_TRANSPARENT, Graphics.COLOR_TRANSPARENT);
         backBufferdc.clear();
 
-        // backBufferdc.drawBitmap2(0, 98, self.dayNightBand, self.drawDayNightOptions);
         self.background.draw(backBufferdc);
 
         // sun set and sunrise arcs
@@ -325,6 +323,11 @@ class WatchFaceView extends WatchUi.WatchFace {
                                  { :bitmapX => self.moonPhaseTile[0], :bitmapY => self.moonPhaseTile[1],
                                    :bitmapWidth => cfg.moonPhaseTileSize,
                                    :bitmapHeight => cfg.moonPhaseTileSize });
+        backBufferdc.drawBitmap2(cfg.twilightX - self.twilightTile[0], cfg.twilightY - self.twilightTile[1],
+                                 self.twilightTiles,
+                                 { :bitmapX => self.twilightTile[0], :bitmapY => self.twilightTile[1],
+                                   :bitmapWidth => cfg.twilightTileSize,
+                                   :bitmapHeight => cfg.twilightTileSize });
     }
 
     function updateFrontBuffer(frontBufferdc as Dc, refresh as Boolean) as Void {
@@ -468,7 +471,28 @@ class WatchFaceView extends WatchUi.WatchFace {
             self.batteryLevel = stats.battery;
 
             var phase = self.moonPhase(now);
-            self.moonPhaseTile = self.moonTileCoords[phase];
+            self.moonPhaseTile = cfg.moonTileCoords[phase];
+
+            var sunriseTime1 = self.min(self.sunriseTime, self.sunsetTime);
+            var sunsetTime1 = self.max(self.sunriseTime, self.sunsetTime);
+            var time = date.hour * 60 * 60 + date.min * 60 + date.sec;
+            var beforeSunriseTime = sunriseTime1 - 60 * 60;
+            var afterSunriseTime = sunriseTime1 + 60 * 60;
+            var beforeSunsetTime = sunsetTime1 - 60 * 60;
+
+            if (time < beforeSunriseTime) {
+                self.twilightTile = cfg.twilightCoords[3];
+            } else if (time < sunriseTime1) {
+                self.twilightTile = cfg.twilightCoords[1];
+            } else if (time < afterSunriseTime) {
+                self.twilightTile = cfg.twilightCoords[0];
+            } else if (time < beforeSunsetTime) {
+                self.twilightTile = cfg.twilightCoords[2];
+            } else if (time < sunsetTime1) {
+                self.twilightTile = cfg.twilightCoords[4];
+            } else {
+                self.twilightTile = cfg.twilightCoords[3];
+            }
 
             self.infoWeather.updateData();
 

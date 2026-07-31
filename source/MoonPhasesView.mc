@@ -18,14 +18,13 @@ class MoonPhasesView extends WatchUi.Drawable {
             self.tileSize = params.get(:tileSize);
         }
 
-        self.moonTileCoords = Application.loadResource(Rez.JsonData.moonTileCoords);
         self.moonPhaseTiles = WatchUi.loadResource(@Rez.Drawables.moonPhaseTiles);
     }
 
     public function updateData(time as Toybox.Time.Moment) {
 
         var phase = self.moonPhase(time);
-        self.moonPhaseTile = self.moonTileCoords[phase];
+        self.moonPhaseTile = cfg.moonTileCoords[phase];
 
     }
 
