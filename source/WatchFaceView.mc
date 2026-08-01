@@ -93,8 +93,8 @@ class WatchFaceView extends WatchUi.WatchFace {
     private var barometerData = new[52] as Array<Graphics.Point2D>;
     private var heartRateData = new[52] as Array<Graphics.Point2D>;
     private var stepsData = new[28] as Array<Graphics.Point2D>;
-    private var moonPhaseTile = [15, 15] as [Number, Number];
-    private var twilightTile = [133, 0] as [Number, Number];
+    private var moonPhaseTile = [15, 15] as Graphics.Point2D;
+    private var twilightTile = [133, 0] as Graphics.Point2D;
     private var renderPhase = false;
 
     function initialize() {
@@ -292,27 +292,10 @@ class WatchFaceView extends WatchUi.WatchFace {
             return;
         }
 
-        backBufferdc.setColor(Graphics.COLOR_TRANSPARENT, Graphics.COLOR_TRANSPARENT);
-        backBufferdc.clear();
+        // backBufferdc.setColor(Graphics.COLOR_TRANSPARENT, Graphics.COLOR_TRANSPARENT);
+        // backBufferdc.clear();
 
         self.background.draw(backBufferdc);
-
-        // sun set and sunrise arcs
-        var arcRadius = cfg.sunsetRadius;
-        var arcX = cfg.sunsetX;
-        var arcY = cfg.sunsetY;
-        backBufferdc.setPenWidth(3);
-        // night arc
-        backBufferdc.setColor(0xFF5555, Graphics.COLOR_TRANSPARENT);
-        var sunriseAngle = 210 - 240 * self.sunriseTime / 86400.0;
-        var sunsetAngle = 210 - 240 * self.sunsetTime / 86400.0;
-        backBufferdc.drawArc(arcX, arcY, arcRadius, Graphics.ARC_CLOCKWISE, 210, sunriseAngle);
-        // day arc
-        backBufferdc.setColor(0xFF5500, Graphics.COLOR_TRANSPARENT);
-        backBufferdc.drawArc(arcX, arcY, arcRadius, Graphics.ARC_CLOCKWISE, sunriseAngle, sunsetAngle);
-        // night arc
-        backBufferdc.setColor(0x555555, Graphics.COLOR_TRANSPARENT);
-        backBufferdc.drawArc(arcX, arcY, arcRadius, Graphics.ARC_CLOCKWISE, sunsetAngle, -30);
 
         backBufferdc.drawBitmap2(cfg.moonPhaseX - self.moonPhaseTile[0], cfg.moonPhaseY - self.moonPhaseTile[1],
                                  self.moonPhaseTiles,
@@ -388,6 +371,10 @@ class WatchFaceView extends WatchUi.WatchFace {
     }
 
     function engineTick(deltaTime) as Void {
+        if (self.renderPhase) {
+            WatchUi.requestUpdate();
+            return;
+        }
         self.clockTime = System.getClockTime();
         self.seconds = self.clockTime.sec;
         // self.secondsDisk.setSeconds(clockTime.sec);
@@ -482,9 +469,9 @@ class WatchFaceView extends WatchUi.WatchFace {
             } else if (time < afterSunriseTime) {
                 self.twilightTile = cfg.twilightCoords[0];
             } else if (time < beforeSunsetTime) {
-                self.twilightTile = cfg.twilightCoords[2];
+                self.twilightTile = cfg.twilightCoords[0];
             } else if (time < sunsetTime1) {
-                self.twilightTile = cfg.twilightCoords[4];
+                self.twilightTile = cfg.twilightCoords[2];
             } else {
                 self.twilightTile = cfg.twilightCoords[3];
             }
@@ -596,6 +583,16 @@ class WatchFaceView extends WatchUi.WatchFace {
         return sum;
     }
 
+    function summ14(a1, a2, a3, a4, a5, a6, a7, a8, a9, a10, a11, a12, a13, a14, def) {
+        return (a1 == null || a1.data == null ? def : a1.data) + (a2 == null || a2.data == null ? def : a2.data) +
+               (a3 == null || a3.data == null ? def : a3.data) + (a4 == null || a4.data == null ? def : a4.data) +
+               (a5 == null || a5.data == null ? def : a5.data) + (a6 == null || a6.data == null ? def : a6.data) +
+               (a7 == null || a7.data == null ? def : a7.data) + (a8 == null || a8.data == null ? def : a8.data) +
+               (a9 == null || a9.data == null ? def : a9.data) + (a10 == null || a10.data == null ? def : a10.data) +
+               (a11 == null || a11.data == null ? def : a11.data) + (a12 == null || a12.data == null ? def : a12.data) +
+               (a13 == null || a13.data == null ? def : a13.data) + (a14 == null || a14.data == null ? def : a14.data);
+    }
+
     function stepsHistoryToArray(offsetX, offsetY, items) {
         var history = ActivityMonitor.getHistory();
         var max = 10000;
@@ -634,13 +631,9 @@ class WatchFaceView extends WatchUi.WatchFace {
             var data = sample.next();
             var value = data.data;
             result = value;
-            value = arraySumm(
-                        [
-                            data, sample.next(), sample.next(), sample.next(), sample.next(), sample.next(),
-                            sample.next(), sample.next(), sample.next(), sample.next(), sample.next(), sample.next(),
-                            sample.next(), sample.next()
-                        ],
-                        min) /
+            value = self.summ14(data, sample.next(), sample.next(), sample.next(), sample.next(), sample.next(),
+                                sample.next(), sample.next(), sample.next(), sample.next(), sample.next(),
+                                sample.next(), sample.next(), sample.next(), min) /
                     14.0;
             for (var i = 0; i < length; i++) {
                 value = (value - min) * height / diff;
@@ -650,13 +643,9 @@ class WatchFaceView extends WatchUi.WatchFace {
                 items[4 * i + 1] = [cfg.graphBarWidth * x, offsetY - value];
                 items[4 * i + 2] = [cfg.graphBarWidth * x + cfg.graphBarGap, offsetY - value];
                 items[4 * i + 3] = [cfg.graphBarWidth * x + cfg.graphBarGap, offsetY];
-                value = arraySumm(
-                            [
-                                sample.next(), sample.next(), sample.next(), sample.next(), sample.next(),
-                                sample.next(), sample.next(), sample.next(), sample.next(), sample.next(),
-                                sample.next(), sample.next(), sample.next(), sample.next()
-                            ],
-                            min) /
+                value = self.summ14(sample.next(), sample.next(), sample.next(), sample.next(), sample.next(),
+                                    sample.next(), sample.next(), sample.next(), sample.next(), sample.next(),
+                                    sample.next(), sample.next(), sample.next(), sample.next(), min) /
                         14.0;
             }
         }

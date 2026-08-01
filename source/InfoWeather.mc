@@ -34,7 +34,7 @@ class InfoWeather extends WatchUi.Drawable {
         Drawable.draw(dc);
 
         self.drawWeatherIcon(dc, self.locX, self.locY, self.locX, self.color);
-        self.drawTemperature(dc, self.locX + 40, self.locY + 2, false, self.color);
+        self.drawTemperature(dc, self.locX + 42, self.locY + 2, false, self.color);
     }
 
     function drawWeatherIcon(dc, x, y, x2, fontColor) {
