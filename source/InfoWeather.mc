@@ -23,11 +23,16 @@ class InfoWeather extends WatchUi.Drawable {
     }
 
     public function updateData() {
-        self.weather = Toybox.Weather.getCurrentConditions();
-        self.cond = weather.condition;
-        self.temperature = weather.temperature;
-        self.minTemp = weather.lowTemperature;
-        self.maxTemp = weather.highTemperature;
+        var currentConditions = Toybox.Weather.getCurrentConditions();
+        if (currentConditions == null) {
+            return;
+        }
+
+        self.weather = currentConditions;
+        self.cond = currentConditions.condition;
+        self.temperature = currentConditions.temperature;
+        self.minTemp = currentConditions.lowTemperature;
+        self.maxTemp = currentConditions.highTemperature;
     }
 
     function draw(dc as Dc) {
@@ -45,17 +50,13 @@ class InfoWeather extends WatchUi.Drawable {
             return false;
         }
         var sunset, sunrise;
+        var currentConditions = self.weather;
 
-        if (cond != null and cond instanceof Number) {
+        if (self.cond != null and self.cond instanceof Number) {
             var clockTime = System.getClockTime().hour;
 
-            // gets the correct symbol (sun/moon) depending on actual sun events
-            var position = Toybox.Weather.getCurrentConditions()
-                               .observationLocationPosition; // or
-                                                             // Activity.Info.currentLocation
-                                                             // if observation is null?
-            var today = Toybox.Weather.getCurrentConditions()
-                            .observationTime; // or new Time.Moment(Time.now().value()); ?
+            var position = currentConditions.observationLocationPosition;
+            var today = currentConditions.observationTime;
 
             if (position != null and today != null) {
                 if (Weather.getSunset(position, today) != null) {
@@ -78,7 +79,7 @@ class InfoWeather extends WatchUi.Drawable {
             // weather icon test
             // cond = Weather.CONDITION_UNKNOWN;
             var tileCoordinates = [10, 26];
-            switch (cond) {
+            switch (self.cond) {
                 case Weather.CONDITION_CLEAR:
                     tileCoordinates = [10, 26];
                     break;
