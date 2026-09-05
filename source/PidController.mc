@@ -19,7 +19,7 @@ class PidController {
     function initialize(kP, kI, kD, dt, iMax) {
         // PID constants
         self.kP = kP;
-        self.kI = kP;
+        self.kI = kI;
         self.kD = kD;
 
         // Interval of time between two updates

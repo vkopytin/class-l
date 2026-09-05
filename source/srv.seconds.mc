@@ -9,7 +9,7 @@ module srv {
         var previousSeconds = 0;
         var seconds = 0;
         var lastStep = 0.0;
-        var pid = PidController.create(0.23, 0.15, 0.05);
+        var pid = PidController.create(0.16, 0.23, 0.15);
         var secTransform = Gfx.createAffineTransform();
 
         function update(seconds as Lang.Numeric) as Void {
