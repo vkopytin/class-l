@@ -12,9 +12,8 @@ class WatchFaceView extends WatchUi.WatchFace {
     private var isBurnInProtection = false;
     private var sleepMode = false;
     private var clockTime = null as System.ClockTime;
-    private var requestedUpdate = false;
-    private var transform = Gfx.createAffineTransform();
-    private var secondsOptions = { :transform => self.transform };
+    private var frameUpdatePending = false;
+    public var partialTransform = Gfx.createAffineTransform();
     private var transformMove = Gfx.createAffineTransform();
     private var buffer = null as Graphics.BufferedBitmap;
 
@@ -52,7 +51,6 @@ class WatchFaceView extends WatchUi.WatchFace {
         if (settings has :requiresBurnInProtection && settings.requiresBurnInProtection) {
             isBurnInProtection = false;
         }
-        srv.seconds.update(100);
         self.syncData();
         self.timer.nextTick();
         self.timer.start();
@@ -75,8 +73,8 @@ class WatchFaceView extends WatchUi.WatchFace {
             dc.clear();
             return;
         }
-        if (self.requestedUpdate) {
-            self.requestedUpdate = false;
+        if (self.frameUpdatePending) {
+            self.frameUpdatePending = false;
         } else {
             self.syncData();
             self.ultraUpdate(self.buffer.getDc());
@@ -91,37 +89,41 @@ class WatchFaceView extends WatchUi.WatchFace {
 
     // Handle the partial update event - 1Hz mode
     function onPartialUpdate(dc as Dc) as Void {
-        var angle = srv.seconds.seconds * ONE_RAD;
+        var angle = srv.seconds.partialAngle();
 
-        var clip = self.transformMove.transformPoints(self.transform.transformPoints(cfg.initClip));
+        var clip = self.transformMove.transformPoints(self.partialTransform.transformPoints(cfg.initClip))
+                       as Array<Graphics.Point2D>;
+        var point0 = clip[0] as Graphics.Point2D;
+        var point1 = clip[1] as Graphics.Point2D;
+        var point2 = clip[2] as Graphics.Point2D;
+        var point3 = clip[3] as Graphics.Point2D;
 
         // dc.setColor(Graphics.COLOR_WHITE, Graphics.COLOR_TRANSPARENT);
         // dc.fillPolygon(clip);
 
-        var minX = srv.min(clip[0][0], srv.min(clip[1][0], srv.min(clip[2][0], clip[3][0])));
-        var minY = srv.min(clip[0][1], srv.min(clip[1][1], srv.min(clip[2][1], clip[3][1])));
-        var maxX = srv.max(clip[0][0], srv.max(clip[1][0], srv.max(clip[2][0], clip[3][0])));
-        var maxY = srv.max(clip[0][1], srv.max(clip[1][1], srv.max(clip[2][1], clip[3][1])));
+        var minX = srv.min(point0[0], srv.min(point1[0], srv.min(point2[0], point3[0])));
+        var minY = srv.min(point0[1], srv.min(point1[1], srv.min(point2[1], point3[1])));
+        var maxX = srv.max(point0[0], srv.max(point1[0], srv.max(point2[0], point3[0])));
+        var maxY = srv.max(point0[1], srv.max(point1[1], srv.max(point2[1], point3[1])));
         dc.setClip(minX, minY, maxX - minX, maxY - minY);
 
-        self.transform.initialize();
-        self.transform.translate(cfg.analogClockX, cfg.analogClockY);
-        self.transform.rotate(angle);
+        self.partialTransform.initialize();
+        self.partialTransform.translate(cfg.analogClockX, cfg.analogClockY);
+        self.partialTransform.rotate(angle);
 
         dc.drawBitmap(cfg.bufferDx, cfg.bufferDy, self.buffer);
-        lib.drawSecondsHand(dc, self.secondsOptions);
+        srv.seconds.drawPartial(dc, self.partialTransform);
 
-        srv.seconds.seconds++;
+        srv.seconds.advancePartial();
     }
 
     function engineTick(deltaTime) as Void {
-        if (self.requestedUpdate) {
-            // self.syncData();
+        if (self.frameUpdatePending) {
             return;
         }
         self.ultraUpdate(self.buffer.getDc());
 
-        self.requestedUpdate = true;
+        self.frameUpdatePending = true;
         WatchUi.requestUpdate();
     }
 
@@ -133,33 +135,14 @@ class WatchFaceView extends WatchUi.WatchFace {
         lib.drawBackground(dc, cfg.bufferDx, cfg.bufferDy);
         dc.clearClip();
 
-        srv.barometer.draw(dc);
-        srv.heartRate.draw(dc);
-        srv.steps.draw(dc);
-        srv.weather.draw(dc);
-        srv.battery.draw(dc);
-        srv.calendar.draw(dc);
-        srv.digital.draw(dc);
-        srv.moonPhase.draw(dc);
-        srv.twilight.draw(dc);
-        srv.clock.draw(dc);
+        srv.drawAll(dc);
     }
 
     // synchronize app state
     function syncData() as Void {
         self.clockTime = System.getClockTime();
-        srv.seconds.update(self.clockTime.sec);
-
-        srv.barometer.update();
-        srv.heartRate.update();
-        srv.steps.update();
-        srv.weather.update();
-        srv.battery.update();
-        srv.calendar.update();
-        srv.digital.update();
-        srv.moonPhase.update();
-        srv.twilight.update();
-        srv.clock.update();
+        srv.seconds.synchronize(self.clockTime.sec);
+        srv.updateAll();
     }
 
 }

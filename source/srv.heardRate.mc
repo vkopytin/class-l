@@ -1,11 +1,12 @@
 using Toybox.Graphics;
+using Toybox.Lang;
 using Toybox.WatchUi;
 using Toybox.Activity;
 
 module srv {
     module heartRate {
 
-        var heartRateData = WatchUi.loadResource(Rez.JsonData.heartRateData);
+        var heartRateData = WatchUi.loadResource(Rez.JsonData.heartRateData) as Lang.Array<Graphics.Point2D>;
         var heartRate = "60";
 
         function update() as Void {

@@ -1,11 +1,17 @@
 project.manifest = manifest.xml
 
 srcBase = source
+resourcesBase = resources
 
 base.sourcePath = $(srcBase);source-fenix7-260x260
+base.resourcePath = $(resourcesBase)
 
 fenix5x.sourcePath = $(srcBase);source-fenix5x-240x240
+fenix5x.resourcePath = $(base.resourcePath);resources-fenix5x
 fenix6.sourcePath = $(srcBase);source-fenix6-260x260
+fenix6.resourcePath = $(base.resourcePath);resources-fenix6
 fenix7.sourcePath = $(srcBase);source-fenix7-260x260
+fenix7.resourcePath = $(base.resourcePath);resources-fenix7
 
 fr965.sourcePath = $(srcBase);source-fr965-454x454
+fr965.resourcePath = $(base.resourcePath);resources-round-454x454

@@ -2,6 +2,7 @@ import Toybox.System;
 import Toybox.Timer;
 
 class MainTimer {
+    const MAX_CATCH_UP_MS = 1000;
     const updateFn = method(:update);
     var timer as Timer.Timer;
     var deltaTime = 100;
@@ -19,8 +20,8 @@ class MainTimer {
         var time = System.getTimer();
         self.accumulatedTime += (time - self.lastTime);
 
-        if (self.accumulatedTime > 1000) {
-            self.accumulatedTime = 1000;
+        if (self.accumulatedTime > self.MAX_CATCH_UP_MS) {
+            self.accumulatedTime = self.MAX_CATCH_UP_MS;
         }
 
         while (self.accumulatedTime > self.deltaTime) {

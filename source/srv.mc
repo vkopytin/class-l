@@ -7,6 +7,32 @@ const ONE_RAD = Toybox.Math.PI * 2.0 / 60.0;
 module srv {
     const graphItemsLength = 13;
 
+    function updateAll() as Void {
+        self.barometer.update();
+        self.heartRate.update();
+        self.steps.update();
+        self.weather.update();
+        self.battery.update();
+        self.calendar.update();
+        self.digital.update();
+        self.moonPhase.update();
+        self.twilight.update();
+        self.clock.update();
+    }
+
+    function drawAll(dc as Graphics.Dc) as Void {
+        self.barometer.draw(dc);
+        self.heartRate.draw(dc);
+        self.steps.draw(dc);
+        self.weather.draw(dc);
+        self.battery.draw(dc);
+        self.calendar.draw(dc);
+        self.digital.draw(dc);
+        self.moonPhase.draw(dc);
+        self.twilight.draw(dc);
+        self.clock.draw(dc);
+    }
+
     function min(a, b) { return a < b ? a : b; }
 
     function max(a, b) { return a > b ? a : b; }
@@ -18,7 +44,8 @@ module srv {
                ((a7 == null || a7.data == null) ? def : a7.data);
     }
 
-    function graphDataToArray(offsetX, offsetY, sample, items) {
+    function graphDataToArray(offsetX as Lang.Number, offsetY as Lang.Number, sample,
+                              items as Lang.Array<Graphics.Point2D>) as Lang.Number {
         var max = sample.getMax();
         var min = sample.getMin();
         var diff = max - min;

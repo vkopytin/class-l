@@ -1,4 +1,5 @@
 using Toybox.Graphics;
+using Toybox.Lang;
 using Toybox.WatchUi;
 
 module srv {
@@ -6,7 +7,7 @@ module srv {
     module barometer {
         var barometerLevel = "1000";
 
-        var barometerData = WatchUi.loadResource(Rez.JsonData.barometerData);
+        var barometerData = WatchUi.loadResource(Rez.JsonData.barometerData) as Lang.Array<Graphics.Point2D>;
 
         function update() as Void {
             if (Toybox.SensorHistory has :getPressureHistory) {
