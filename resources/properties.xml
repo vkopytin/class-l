@@ -1,0 +1,3 @@
+<properties>
+    <property id="owApiKey" type="string"></property>
+</properties>

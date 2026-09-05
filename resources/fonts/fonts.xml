@@ -1,6 +1,10 @@
 <fonts>
-    <font id="WeatherFont" filename="weather-icons-24.fnt" antialias="true" />
-    <font id="system12" filename="system-12.fnt" antialias="true" />
-    <font id="smadigi2" filename="smadigi2.fnt" antialias="true" />
-    <font id="lcdDisplay9" filename="lcd-display-9.fnt" antialias="true" />
+    <font id="weather1" filename="weather-24-1.fnt" antialias="true" />
+    <font id="weather2" filename="weather-24-2.fnt" antialias="true" />
+    <font id="weather3" filename="weather-24-3.fnt" antialias="true" />
+    <font id="weather4" filename="weather-24-4.fnt" antialias="true" />
+    <font id="weather5" filename="weather-24-5.fnt" antialias="true" />
+    <font id="segoe" filename="segoe-20.fnt" antialias="true" />
+    <font id="moonPhases" filename="moon-phases-26x26.fnt" antialias="true" />
+    <font id="twilight" filename="twilight-26x26.fnt"  antialias="true" />
 </fonts>

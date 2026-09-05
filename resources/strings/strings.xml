@@ -1,3 +1,5 @@
 <strings>
-    <string id="AppName">Class L</string>
+    <string id="AppName">Class L (backport)</string>
+    <string id="OpenWeatherApiKeyTitle">O-Weather Api Key</string>
+    <string id="Settings">Settings</string>
 </strings>

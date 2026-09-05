@@ -1,55 +1,73 @@
+using Toybox.Graphics;
+using Toybox.Lang;
+using Toybox.WatchUi;
+
 module cfg {
-    // Screen dimensions: 260 x 260
-    const clockX = 130;
-    const clockY = 112;
+    const bufferWidth = 260;
+    const bufferHeight = 260;
+    const bufferDx = 0;
+    const bufferDy = 0;
 
-    const hourKnobPivotX = -10.0;
-    const hourKnobPivotY = -38.0;
+    const graphHeight = 10.0;
+    const graphWidth = 40.0;
+    const graphBarWidth = 3;
+    const graphBarGap = 1;
 
-    const minuteKnobPivotX = -9.0;
-    const minuteKnobPivotY = -59.0;
+    const minutesClockX = 130.0;
+    const minutesClockY = 112.0;
+    const analogClockX = 130.0;
+    const analogClockY = 112.0;
+    const analogClockClip = [70, 53, 127, 127];
+    const initClip = [[1.0, 76.0], [1.0, 0.0], [12.0, 0.0], [12.0, 76.0]];
 
-    const secondsClockTextureX = 16;
-    const secondsClockTextureY = 132;
+    const digitalX = 130;
+    const digitalY = 168;
 
-    const secondsKnobPivotX = -5.0;
-    const secondsKnobPivotY = -54.0;
+    const chargeIconX = 76;
+    const chargeIconY = 176;
+    const bluetoothIconX = 76;
+    const bluetoothIconY = 190;
+    const alarmIconX = 182;
+    const alarmIconY = 176;
+    const vibrateIconX = 182;
+    const vibrateIconY = 190;
 
-    const secondsClipRegion = [[1.0, 76.0], [1.0, 0.0], [10.0, 0.0], [10.0, 76.0]];
+    const barometerX = 58;
+    const barometerY = 88;
+    const barometerTextX = 55;
+    const barometerTextY = 48;
 
-    const sunsetX = 130;
-    const sunsetY = 130;
-    const sunsetRadius = 130;
+    const heartRateX = 236;
+    const heartRateY = 89;
+    const heartRateTextX = 202;
+    const heartRateTextY = 48;
 
-    const moonPhaseX = 40;
-    const moonPhaseY = 193;
-    const moonPhaseTileSize = 20;
-    const moonTileCoords = [
-        [15, 15],  [48, 15],  [80, 15],  [113, 15], [146, 15],  [178, 15],  [15, 54],   [48, 54],  [80, 54],
-        [113, 54], [146, 54], [178, 54], [15, 94],  [15, 94],   [48, 94],   [80, 94],   [113, 94], [146, 94],
-        [178, 94], [15, 133], [48, 133], [80, 133], [113, 133], [146, 133], [178, 133], [15, 173]
-    ];
+    const stepsX = 240;
+    const stepsY = 170;
+    const stepsTextX = 226;
+    const stepsTextY = 123;
 
     const batteryX = 114;
     const batteryY = 228;
     const batteryWidth = 31;
     const batteryHeight = 9;
+    const batteryTextX = 130;
+    const batteryTextY = 236;
 
-    const barometerX = 19;
-    const barometerY = 88;
+    const calendarDateX = 28;
+    const calendarDateY = 114;
+    const calendarMonthX = 28;
+    const calendarMonthY = 136;
+    const calendarWeekDayX = 30;
+    const calendarWeekDayY = 151;
+    const calendarWeekDayFont = Graphics.FONT_GLANCE;
 
-    const heartRateX = 79;
-    const heartRateY = 88;
-
-    const graphHeight = 10.0;
-    const graphBarWidth = 3;
-    const graphBarGap = 2;
-
-    const stepsX = 78;
-    const stepsY = 168;
+    const moonPhaseX = 40;
+    const moonPhaseY = 193;
 
     const twilightX = 200;
     const twilightY = 184;
-    const twilightTileSize = 24;
-    const twilightCoords = [[0, 0], [33, 0], [66, 0], [98, 0], [133, 0]];
+
+    const weatherX = 130;
+    const weatherY = 14;
 }

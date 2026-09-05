@@ -1,14 +1,9 @@
 import Toybox.Math;
 import Toybox.System;
+import Toybox.Lang;
 
 class PidController {
-    static function create(kP, kI, kD) {
-        return new PidController(kP, kI, kD, 0, 0);
-    }
-
-    static function createWithMax(kP, kI, kD, dt, max) {
-        return new PidController(kP, kI, kD, dt, max);
-    }
+    static function create(kP, kI, kD) as PidController { return new PidController(kP, kI, kD, 0, 0); }
 
     var kP;
     var kI;
@@ -21,7 +16,7 @@ class PidController {
     var lastError;
     var lastTime;
 
-    function initialize (kP, kI, kD, dt, iMax) {
+    function initialize(kP, kI, kD, dt, iMax) {
         // PID constants
         self.kP = kP;
         self.kI = kP;
@@ -41,11 +36,9 @@ class PidController {
         self.target = 0; // default value, can be modified with .setTarget
     }
 
-    function setTarget(target) {
-        self.target = target;
-    }
+    function setTarget(target) as Void { self.target = target; }
 
-    function update(currentValue) {
+    function update(currentValue) as Number {
         self.currentValue = currentValue;
 
         // Calculate dt
@@ -64,7 +57,7 @@ class PidController {
         }
 
         var error = (self.target - self.currentValue);
-        self.sumError = self.sumError + error*dt;
+        self.sumError = self.sumError + error * dt;
         if (self.iMax > 0 && self.sumError.abs() > self.iMax) {
             var sumSign = (self.sumError > 0) ? 1.0 : -1.0;
             self.sumError = sumSign * self.iMax;
@@ -76,7 +69,7 @@ class PidController {
         return (self.kP * error) + (self.kI * self.sumError) + (self.kD * dError);
     }
 
-    function reset() {
+    function reset() as Void {
         self.sumError = 0.0;
         self.lastError = 0.0;
         self.lastTime = 0.0;

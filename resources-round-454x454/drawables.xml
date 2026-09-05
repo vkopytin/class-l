@@ -1,0 +1,10 @@
+<drawables>
+    <bitmap id="background" filename="clock-example.png" />
+    <bitmap id="hourHand" filename="hourHand.png" packingFormat="png"/>
+    <bitmap id="minuteHand" filename="minuteHand.png" packingFormat="png"/>
+    <bitmap id="secondsHand" filename="secondsHand.png" packingFormat="png" />
+    <bitmap id="batteryLevel" filename="battery-level.png" />
+    <bitmap id="weatherConditions" filename="weather-conditions.png" packingFormat="png" />
+    <bitmap id="moonPhaseTiles" filename="moon-phases-30x30.png" packingFormat="png" />
+    <bitmap id="twilightTiles" filename="sunset-sunrise-tiles-40x40.png" packingFormat="png" />
+</drawables>

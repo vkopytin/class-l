@@ -2,12 +2,7 @@ import Toybox.System;
 import Toybox.Timer;
 
 class MainTimer {
-    static function create(instWithEngineTick) {
-        var inst = new MainTimer(instWithEngineTick);
-
-        return inst;
-    }
-
+    const updateFn = method(:update);
     var timer as Timer.Timer;
     var deltaTime = 100;
     var lastTime = System.getTimer();
@@ -20,7 +15,7 @@ class MainTimer {
         self.timer = new Timer.Timer();
     }
 
-    function nextTick() {
+    function nextTick() as Void {
         var time = System.getTimer();
         self.accumulatedTime += (time - self.lastTime);
 
@@ -36,17 +31,11 @@ class MainTimer {
         self.lastTime = time;
     }
 
-    function start() as Void {
-        self.enqueue();
-    }
+    function start() as Void { self.enqueue(); }
 
-    function stop() {
+    function stop() as Void { self.timer.stop(); }
 
-    }
-
-    private function enqueue() as Void {
-        self.timer.start(method(:update), 100, false);
-    }
+    private function enqueue() as Void { self.timer.start(self.updateFn, 100, false); }
 
     function update() as Void {
         self.nextTick();
