@@ -10,7 +10,6 @@ import Toybox.Graphics;
 class WatchFaceView extends WatchUi.WatchFace {
     private const timer = new MainTimer(self);
     private var isBurnInProtection = false;
-    private var seconds = 0;
     private var sleepMode = false;
     private var clockTime = null as System.ClockTime;
     private var requestedUpdate = false;
@@ -92,7 +91,7 @@ class WatchFaceView extends WatchUi.WatchFace {
 
     // Handle the partial update event - 1Hz mode
     function onPartialUpdate(dc as Dc) as Void {
-        var angle = self.seconds * ONE_RAD;
+        var angle = srv.seconds.seconds * ONE_RAD;
 
         var clip = self.transformMove.transformPoints(self.transform.transformPoints(cfg.initClip));
 
@@ -112,7 +111,7 @@ class WatchFaceView extends WatchUi.WatchFace {
         dc.drawBitmap(0, 0, self.buffer);
         lib.drawSecondsHand(dc, self.secondsOptions);
 
-        self.seconds++;
+        srv.seconds.seconds++;
     }
 
     function engineTick(deltaTime) as Void {
@@ -150,7 +149,6 @@ class WatchFaceView extends WatchUi.WatchFace {
     function syncData() as Void {
         self.clockTime = System.getClockTime();
         srv.seconds.update(self.clockTime.sec);
-        self.seconds = self.clockTime.sec;
 
         srv.barometer.update();
         srv.heartRate.update();
