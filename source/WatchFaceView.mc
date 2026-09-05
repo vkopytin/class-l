@@ -108,7 +108,7 @@ class WatchFaceView extends WatchUi.WatchFace {
         self.transform.translate(cfg.analogClockX, cfg.analogClockY);
         self.transform.rotate(angle);
 
-        dc.drawBitmap(0, 0, self.buffer);
+        dc.drawBitmap(cfg.bufferDx, cfg.bufferDy, self.buffer);
         lib.drawSecondsHand(dc, self.secondsOptions);
 
         srv.seconds.seconds++;
