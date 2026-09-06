@@ -8,10 +8,8 @@ import Toybox.Application;
 import Toybox.Graphics;
 
 class WatchFaceView extends WatchUi.WatchFace {
-    private const timer = new MainTimer(self);
     private var isBurnInProtection = false;
     private var sleepMode = false;
-    private var clockTime = null as System.ClockTime;
     private var frameUpdatePending = false;
     public var partialTransform = Gfx.createAffineTransform();
     private var transformMove = Gfx.createAffineTransform();
@@ -20,6 +18,7 @@ class WatchFaceView extends WatchUi.WatchFace {
     function initialize() {
         WatchFace.initialize();
         lib.initialize();
+        MainTimer.initialize(self);
     }
 
     // Load your resources here
@@ -33,16 +32,16 @@ class WatchFaceView extends WatchUi.WatchFace {
     // the state of this View and prepare it to be shown. This includes
     // loading resources into memory.
     function onShow() as Void {
-        self.timer.nextTick();
+        MainTimer.nextTick();
         if (self.sleepMode == false) {
-            self.timer.start();
+            MainTimer.start();
         }
     }
 
     // Called when this View is removed from the screen. Save the
     // state of this View here. This includes freeing resources from
     // memory.
-    function onHide() as Void { self.timer.stop(); }
+    function onHide() as Void { MainTimer.stop(); }
 
     // The user has just looked at their watch. Timers and animations may be started here.
     function onExitSleep() as Void {
@@ -52,8 +51,8 @@ class WatchFaceView extends WatchUi.WatchFace {
             isBurnInProtection = false;
         }
         self.syncData();
-        self.timer.nextTick();
-        self.timer.start();
+        MainTimer.nextTick();
+        MainTimer.start();
     }
 
     // Terminate any active timers and prepare for slow updates.
@@ -63,7 +62,7 @@ class WatchFaceView extends WatchUi.WatchFace {
         if (settings has :requiresBurnInProtection && settings.requiresBurnInProtection) {
             isBurnInProtection = true;
         }
-        self.timer.stop();
+        MainTimer.stop();
     }
 
     // Normal render phase
@@ -140,8 +139,7 @@ class WatchFaceView extends WatchUi.WatchFace {
 
     // synchronize app state
     function syncData() as Void {
-        self.clockTime = System.getClockTime();
-        srv.seconds.synchronize(self.clockTime.sec);
+        srv.seconds.synchronize(System.getClockTime().sec);
         srv.updateAll();
     }
 

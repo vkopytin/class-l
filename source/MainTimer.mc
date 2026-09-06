@@ -1,10 +1,10 @@
 import Toybox.System;
 import Toybox.Timer;
 
-class MainTimer {
+module MainTimer {
     const MAX_CATCH_UP_MS = 1000;
-    const updateFn = method(:update);
-    var timer as Timer.Timer;
+    const updateFn = new Toybox.Lang.Method(MainTimer, :update);
+    var timer = null as Timer.Timer;
     var deltaTime = 100;
     var lastTime = System.getTimer();
     var accumulatedTime = 0;
@@ -36,7 +36,7 @@ class MainTimer {
 
     function stop() as Void { self.timer.stop(); }
 
-    private function enqueue() as Void { self.timer.start(self.updateFn, 100, false); }
+    function enqueue() as Void { self.timer.start(self.updateFn, 100, false); }
 
     function update() as Void {
         self.nextTick();
