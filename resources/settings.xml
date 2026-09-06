@@ -1,5 +1,7 @@
 <settings>
-    <setting propertyKey="@Properties.owApiKey" title="@Strings.OpenWeatherApiKeyTitle">
-        <settingConfig type="alphaNumeric" readonly="true" />
-    </setting>
+    <group id="fenix5x" title="@Strings.Fenix5xSettings">
+        <setting propertyKey="@Properties.owApiKey" title="@Strings.OpenWeatherApiKeyTitle">
+            <settingConfig type="alphaNumeric" />
+        </setting>
+    </group>
 </settings>
