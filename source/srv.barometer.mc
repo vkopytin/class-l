@@ -13,7 +13,7 @@ module srv {
             if (Toybox.SensorHistory has :getPressureHistory) {
                 var sample = Toybox.SensorHistory.getPressureHistory( {});
                 var value = srv.graphDataToArray(cfg.barometerX, cfg.barometerY, sample, self.barometerData);
-                self.barometerLevel = (value * 0.1).format("%d");
+                self.barometerLevel = (value * 0.01).format("%d");
             }
         }
 
