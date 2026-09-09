@@ -69,7 +69,7 @@ module lib {
 
     function drawMoonPhaseTile(dc as Graphics.Dc, phase as Lang.Float) as Void {
         var font = WatchUi.loadResource(Rez.Fonts.moonPhases);
-        var tile = 61589 + (phase * 28).toNumber();
+        var tile = 61590 + (phase * 26).toNumber();
         dc.setColor(0xFFAA00, Graphics.COLOR_TRANSPARENT);
         dc.drawText(cfg.moonPhaseX, cfg.moonPhaseY, font, tile.toChar(), Graphics.TEXT_JUSTIFY_CENTER);
     }
