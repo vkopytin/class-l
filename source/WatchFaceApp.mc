@@ -25,11 +25,10 @@ class WatchFaceApp extends Application.AppBase {
     }
 
     // Receives data transmitted from the background process
-    function onBackgroundData(data) {
-        var weather = data as Dictionary;
+    function onBackgroundData(data) as Void {
         if (data != null) {
-            Application.Storage.setValue("temp", weather["temp"]);
-            Application.Storage.setValue("cond", weather["cond"]);
+            Application.Storage.setValue("temp", (data as Dictionary)["temp"]);
+            Application.Storage.setValue("cond", (data as Dictionary)["cond"]);
             WatchUi.requestUpdate(); // Force watch face redrawing
         }
     }
