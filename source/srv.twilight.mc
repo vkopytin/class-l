@@ -17,13 +17,14 @@ module srv {
 
         function update() as Void {
             var latlon = [0, 0];
-            var info = Position.getInfo();
-            if (info != null && info.position != null) {
-                latlon = info.position.toDegrees();
-            }
             var actInfo = Activity.getActivityInfo();
             if (actInfo != null && actInfo.currentLocation != null) {
                 latlon = actInfo.currentLocation.toDegrees();
+            } else {
+                var info = Position.getInfo();
+                if (info != null && info.position != null) {
+                    latlon = info.position.toDegrees();
+                }                
             }
             var now = Time.now();
             var date = Gregorian.info(now, Time.FORMAT_SHORT);
