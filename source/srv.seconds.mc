@@ -39,7 +39,7 @@ module srv {
             lib.drawSecondsHand(dc, { :transform => self.secTransform });
         }
 
-        function drawPartial(dc as Graphics.Dc, options as { :transform as Gfx.AffineTransform }) as Void {
+        function drawPartial(dc as Graphics.Dc, options) as Void {
             lib.drawSecondsHand(dc, options);
         }
 
