@@ -8,9 +8,7 @@ module srv {
     module battery {
         var batteryLevel = 0;
 
-        function update() as Void {
-            var stats = System.getSystemStats();
-
+        function update(stats as System.Stats) as Void {
             self.batteryLevel = stats.battery;
         }
 

@@ -8,13 +8,14 @@ module srv {
     const graphItemsLength = 13;
 
     function updateAll() as Void {
+        var stats = System.getSystemStats();
         self.barometer.update();
         self.heartRate.update();
         self.steps.update();
         self.weather.update();
-        self.battery.update();
+        self.battery.update(stats);
         self.calendar.update();
-        self.digital.update();
+        self.digital.update(stats);
         self.moonPhase.update();
         self.twilight.update();
         self.clock.update();

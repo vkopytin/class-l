@@ -15,7 +15,7 @@ module srv {
         var chargeColor = 0x000055;
         var clockTime = System.getClockTime();
 
-        function update() as Void {
+        function update(stats as System.Stats) as Void {
             self.clockTime = System.getClockTime();
 
             self.time = Lang.format("$1$:$2$", [self.clockTime.hour.format("%02d"), self.clockTime.min.format("%02d")]);
@@ -41,7 +41,6 @@ module srv {
                 self.vibrateColor = (0x000055);
             }
 
-            var stats = System.getSystemStats();
             if (stats has :solarIntensity && stats.solarIntensity != null) {
                 if (stats.solarIntensity > 49) {
                     self.charge = ("\uE1AC");
