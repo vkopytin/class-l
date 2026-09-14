@@ -46,41 +46,44 @@ module srv {
 
     function graphDataToArray(offsetX as Lang.Number, offsetY as Lang.Number, sample,
                               items as Lang.Array<Graphics.Point2D>) as Lang.Number {
+        if (sample == null) {
+            return 1;
+        }
         var max = sample.getMax();
         var min = sample.getMin();
         var diff = max - min;
         var height = cfg.graphHeight;
         var result = 0.0;
-        if (sample != null) {
-            // iterate over the samples and draw the graph
-            var data = sample.next();
-            var value = data.data;
-            result = value;
 
-            value = (self.summ7(data, sample.next(), sample.next(), sample.next(), sample.next(), sample.next(),
-                                sample.next(), min) +
-                     self.summ7(sample.next(), sample.next(), sample.next(), sample.next(), sample.next(),
+        // iterate over the samples and draw the graph
+        var data = sample.next();
+        var value = data.data;
+        result = value;
+
+        value = (self.summ7(data, sample.next(), sample.next(), sample.next(), sample.next(), sample.next(),
+                            sample.next(), min) +
+                    self.summ7(sample.next(), sample.next(), sample.next(), sample.next(), sample.next(),
+                            sample.next(), sample.next(), min)) /
+                14.0;
+        for (var i = 0; i < self.graphItemsLength; i++) {
+            value = (value - min) * height / diff;
+            var offset = offsetX - cfg.graphBarWidth * i;
+            items[4 * i][0] = offset;
+            items[4 * i][1] = offsetY;
+            items[4 * i + 1][0] = offset;
+            items[4 * i + 1][1] = offsetY - value;
+            items[4 * i + 2][0] = offset + cfg.graphBarGap;
+            items[4 * i + 2][1] = offsetY - value;
+            items[4 * i + 3][0] = offset + cfg.graphBarGap;
+            items[4 * i + 3][1] = offsetY;
+
+            value = (srv.summ7(sample.next(), sample.next(), sample.next(), sample.next(), sample.next(),
+                                sample.next(), sample.next(), min) +
+                        srv.summ7(sample.next(), sample.next(), sample.next(), sample.next(), sample.next(),
                                 sample.next(), sample.next(), min)) /
                     14.0;
-            for (var i = 0; i < self.graphItemsLength; i++) {
-                value = (value - min) * height / diff;
-                var offset = offsetX - cfg.graphBarWidth * i;
-                items[4 * i][0] = offset;
-                items[4 * i][1] = offsetY;
-                items[4 * i + 1][0] = offset;
-                items[4 * i + 1][1] = offsetY - value;
-                items[4 * i + 2][0] = offset + cfg.graphBarGap;
-                items[4 * i + 2][1] = offsetY - value;
-                items[4 * i + 3][0] = offset + cfg.graphBarGap;
-                items[4 * i + 3][1] = offsetY;
-
-                value = (srv.summ7(sample.next(), sample.next(), sample.next(), sample.next(), sample.next(),
-                                   sample.next(), sample.next(), min) +
-                         srv.summ7(sample.next(), sample.next(), sample.next(), sample.next(), sample.next(),
-                                   sample.next(), sample.next(), min)) /
-                        14.0;
-            }
         }
+
         return result;
     }
 

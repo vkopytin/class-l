@@ -14,6 +14,9 @@ module srv {
         function update() as Void {
             self.graphDataToArray(cfg.stepsX, cfg.stepsY, self.stepsData);
             var activityMonitor = ActivityMonitor.getInfo();
+            if (activityMonitor == null) {
+                return;
+            }
             self.stepsCount = activityMonitor.steps.format("%d");
         }
 
@@ -31,26 +34,28 @@ module srv {
         function graphDataToArray(offsetX as Lang.Number, offsetY as Lang.Number, items as Lang.Array<Graphics.Point2D>)
             as Void {
             var history = ActivityMonitor.getHistory();
+
+            if (history == null) {
+                return ;
+            }
+
             var length = srv.min(items.size() / 4, history.size());
             var height = cfg.graphHeight;
-
-            if (history != null) {
-                for (var i = 0; i < length; i++) {
-                    var value = self.min(history[i].steps, maxStepsLevel);
-                    // var value = self.min(stp[i], maxStepsLevel);
-                    value = value * height / maxStepsLevel;
-                    var offset = offsetX - cfg.graphBarWidth * i;
-                    items[4 * i] = [offset, offsetY];
-                    items[4 * i + 1] = [offset, offsetY - value];
-                    items[4 * i + 2] = [offset + cfg.graphBarGap, offsetY - value];
-                    items[4 * i + 3] = [offset + cfg.graphBarGap, offsetY];
-                }
-                for (var i = length; i < items.size() / 4; i++) {
-                    items[4 * i] = [offsetX, offsetY];
-                    items[4 * i + 1] = [offsetX, offsetY];
-                    items[4 * i + 2] = [offsetX, offsetY];
-                    items[4 * i + 3] = [offsetX, offsetY];
-                }
+            for (var i = 0; i < length; i++) {
+                var value = self.min(history[i].steps, maxStepsLevel);
+                // var value = self.min(stp[i], maxStepsLevel);
+                value = value * height / maxStepsLevel;
+                var offset = offsetX - cfg.graphBarWidth * i;
+                items[4 * i] = [offset, offsetY];
+                items[4 * i + 1] = [offset, offsetY - value];
+                items[4 * i + 2] = [offset + cfg.graphBarGap, offsetY - value];
+                items[4 * i + 3] = [offset + cfg.graphBarGap, offsetY];
+            }
+            for (var i = length; i < items.size() / 4; i++) {
+                items[4 * i] = [offsetX, offsetY];
+                items[4 * i + 1] = [offsetX, offsetY];
+                items[4 * i + 2] = [offsetX, offsetY];
+                items[4 * i + 3] = [offsetX, offsetY];
             }
         }
     }
