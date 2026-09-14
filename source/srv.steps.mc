@@ -46,16 +46,24 @@ module srv {
                 // var value = self.min(stp[i], maxStepsLevel);
                 value = value * height / maxStepsLevel;
                 var offset = offsetX - cfg.graphBarWidth * i;
-                items[4 * i] = [offset, offsetY];
-                items[4 * i + 1] = [offset, offsetY - value];
-                items[4 * i + 2] = [offset + cfg.graphBarGap, offsetY - value];
-                items[4 * i + 3] = [offset + cfg.graphBarGap, offsetY];
+                items[4 * i][0] = offset;
+                items[4 * i][1] = offsetY;
+                items[4 * i + 1][0] = offset;
+                items[4 * i + 1][1] = offsetY - value;
+                items[4 * i + 2][0] = offset + cfg.graphBarGap;
+                items[4 * i + 2][1] = offsetY - value;
+                items[4 * i + 3][0] = offset + cfg.graphBarGap;
+                items[4 * i + 3][1] = offsetY;
             }
             for (var i = length; i < items.size() / 4; i++) {
-                items[4 * i] = [offsetX, offsetY];
-                items[4 * i + 1] = [offsetX, offsetY];
-                items[4 * i + 2] = [offsetX, offsetY];
-                items[4 * i + 3] = [offsetX, offsetY];
+                items[4 * i][0] = offsetX;
+                items[4 * i][1] = offsetY;
+                items[4 * i + 1][0] = offsetX;
+                items[4 * i + 1][1] = offsetY;
+                items[4 * i + 2][0] = offsetX;
+                items[4 * i + 2][1] = offsetY;
+                items[4 * i + 3][0] = offsetX;
+                items[4 * i + 3][1] = offsetY;
             }
         }
     }
