@@ -11,7 +11,8 @@ class WatchFaceView extends WatchUi.WatchFace {
     private var isBurnInProtection = false;
     private var sleepMode = false;
     private var frameUpdatePending = false;
-    public var partialTransform = Gfx.createAffineTransform();
+    private var partialTransform = Gfx.createAffineTransform();
+    private var drawPartialOptions = { :transform => self.partialTransform };
     private var transformMove = Gfx.createAffineTransform();
     private var buffer = null as Graphics.BufferedBitmap;
 
@@ -111,7 +112,7 @@ class WatchFaceView extends WatchUi.WatchFace {
         self.partialTransform.rotate(angle);
 
         dc.drawBitmap(cfg.bufferDx, cfg.bufferDy, self.buffer);
-        srv.seconds.drawPartial(dc, self.partialTransform);
+        srv.seconds.drawPartial(dc, self.drawPartialOptions);
 
         srv.seconds.advancePartial();
     }
