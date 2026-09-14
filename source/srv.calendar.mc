@@ -13,14 +13,15 @@ module srv {
         var date = "24";
 
         function update() as Void {
-            var WEEK_DAYS = WatchUi.loadResource(Rez.JsonData.weekDays);
-            var MONTHS = WatchUi.loadResource(Rez.JsonData.monthNames);
-            var now = Time.now();
-            var date = Date.info(now, Time.FORMAT_SHORT);
+            var date = Date.info(Time.now(), Time.FORMAT_SHORT);
 
-            self.weekDay = WEEK_DAYS[date.day_of_week];
+            var WEEK_DAYS_OR_MONTHS = WatchUi.loadResource(Rez.JsonData.weekDays);
+            self.weekDay = WEEK_DAYS_OR_MONTHS[date.day_of_week];
             self.weekDayColor = date.day_of_week == Date.DAY_SUNDAY ? 0xFF5500 : 0x55AAAA;
-            self.month = MONTHS[date.month];
+
+            WEEK_DAYS_OR_MONTHS = WatchUi.loadResource(Rez.JsonData.monthNames);
+            self.month = WEEK_DAYS_OR_MONTHS[date.month];
+
             self.date = date.day.format("%02d");
         }
 
