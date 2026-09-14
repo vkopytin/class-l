@@ -4,8 +4,8 @@ import Toybox.Timer;
 module MainTimer {
     const MAX_CATCH_UP_MS = 1000;
     const updateFn = new Toybox.Lang.Method(MainTimer, :update);
+    const DELTA_TIME = 100;
     var timer = null as Timer.Timer;
-    var deltaTime = 100;
     var lastTime = System.getTimer();
     var accumulatedTime = 0;
 
@@ -24,9 +24,9 @@ module MainTimer {
             self.accumulatedTime = self.MAX_CATCH_UP_MS;
         }
 
-        while (self.accumulatedTime > self.deltaTime) {
-            self.instWithEngineTick.engineTick(self.deltaTime);
-            self.accumulatedTime -= self.deltaTime;
+        while (self.accumulatedTime > self.DELTA_TIME) {
+            self.instWithEngineTick.engineTick(self.DELTA_TIME);
+            self.accumulatedTime -= self.DELTA_TIME;
         }
 
         self.lastTime = time;
