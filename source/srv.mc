@@ -38,13 +38,6 @@ module srv {
 
     function max(a, b) { return a > b ? a : b; }
 
-    function summ7(a1, a2, a3, a4, a5, a6, a7, def) {
-        return ((a1 == null || a1.data == null) ? def : a1.data) + ((a2 == null || a2.data == null) ? def : a2.data) +
-               ((a3 == null || a3.data == null) ? def : a3.data) + ((a4 == null || a4.data == null) ? def : a4.data) +
-               ((a5 == null || a5.data == null) ? def : a5.data) + ((a6 == null || a6.data == null) ? def : a6.data) +
-               ((a7 == null || a7.data == null) ? def : a7.data);
-    }
-
     function graphDataToArray(offsetX as Lang.Number, offsetY as Lang.Number, sample,
                               items as Lang.Array<Graphics.Point2D>) as Lang.Number {
         if (sample == null) {
@@ -53,19 +46,20 @@ module srv {
         var max = sample.getMax();
         var min = sample.getMin();
         var diff = max - min;
+        diff = diff == 0 ? 1 : diff;
         var height = cfg.graphHeight;
         var result = 0.0;
 
         // iterate over the samples and draw the graph
         var data = sample.next();
-        var value = data.data;
+        var value = data == null || data.data == null ? min : data.data;
         result = value;
 
-        value = (self.summ7(data, sample.next(), sample.next(), sample.next(), sample.next(), sample.next(),
-                            sample.next(), min) +
-                    self.summ7(sample.next(), sample.next(), sample.next(), sample.next(), sample.next(),
-                            sample.next(), sample.next(), min)) /
-                14.0;
+        for (var i = 0; i < 13; i++) {
+            var next = sample.next();
+            value += (next == null || next.data == null) ? min : next.data;
+        }
+        value /= 14.0;
         for (var i = 0; i < self.graphItemsLength; i++) {
             value = (value - min) * height / diff;
             var offset = offsetX - cfg.graphBarWidth * i;
@@ -78,11 +72,12 @@ module srv {
             items[4 * i + 3][0] = offset + cfg.graphBarGap;
             items[4 * i + 3][1] = offsetY;
 
-            value = (srv.summ7(sample.next(), sample.next(), sample.next(), sample.next(), sample.next(),
-                                sample.next(), sample.next(), min) +
-                        srv.summ7(sample.next(), sample.next(), sample.next(), sample.next(), sample.next(),
-                                sample.next(), sample.next(), min)) /
-                    14.0;
+            value = 0.0;
+            for (var j = 0; j < 14; j++) {
+                var next = sample.next();
+                value += (next == null || next.data == null) ? min : next.data;
+            }
+            value /= 14.0;
         }
 
         return result;
