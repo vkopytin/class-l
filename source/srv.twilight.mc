@@ -62,7 +62,7 @@ module srv {
         // lon: Longitude in degrees (Float)
         // returns: A Float representing the time of day in hours (UTC), or null if error.
         function computeSunTime(date as Gregorian.Info, isSunrise as Lang.Boolean, lat as Lang.Number,
-                                lon as Lang.Number) as Lang.Float or Null {
+                                lon as Lang.Number) as Lang.Float {
 
             // 1. Calculate the day of the year (approximate N)
             var N = date.day; // Simplification for brevity; works best near current date.
@@ -115,7 +115,7 @@ module srv {
 
             // Check for midnight sun or polar night
             if (cosH > 1.0 || cosH < -1.0) {
-                return null;
+                return 0.0;
             }
 
             // 8. Calculate H and convert to hours
