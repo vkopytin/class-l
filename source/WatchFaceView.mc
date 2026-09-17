@@ -33,6 +33,7 @@ class WatchFaceView extends WatchUi.WatchFace {
     // the state of this View and prepare it to be shown. This includes
     // loading resources into memory.
     function onShow() as Void {
+        self.syncData();
         MainTimer.nextTick();
         if (self.sleepMode == false) {
             MainTimer.start();
@@ -77,7 +78,11 @@ class WatchFaceView extends WatchUi.WatchFace {
             self.frameUpdatePending = false;
         } else {
             self.syncData();
-            self.ultraUpdate(self.buffer.getDc());
+            if (self.sleepMode) {
+                self.ultraUpdate(self.buffer.getDc());
+            } else {
+                return;
+            }
         }
         dc.clearClip();
         // WatchFace.onUpdate(dc);
