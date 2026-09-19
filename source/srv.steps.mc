@@ -28,7 +28,7 @@ module srv {
             dc.clearClip();
 
             dc.setColor(Graphics.COLOR_WHITE, Graphics.COLOR_TRANSPARENT);
-            lib.drawTextXTyni(dc, cfg.stepsTextX, cfg.stepsTextY, self.stepsCount, Graphics.TEXT_JUSTIFY_CENTER);
+            lib.drawTextXTiny(dc, cfg.stepsTextX, cfg.stepsTextY, self.stepsCount, Graphics.TEXT_JUSTIFY_CENTER);
         }
 
         function graphDataToArray(offsetX as Lang.Number, offsetY as Lang.Number, items as Lang.Array<Graphics.Point2D>)
@@ -36,7 +36,7 @@ module srv {
             var history = ActivityMonitor.getHistory();
 
             if (history == null) {
-                return ;
+                return;
             }
 
             var length = srv.min(items.size() / 4, history.size());

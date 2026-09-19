@@ -2,6 +2,8 @@ using Toybox.Graphics;
 using Toybox.Lang;
 using Toybox.WatchUi;
 
+typedef DrawHandOptions as { :transform as Graphics.AffineTransform };
+
 module lib {
     const moonPhaseTiles = WatchUi.loadResource(Rez.Drawables.moonPhaseTiles);
     const moonTileCoords = [
@@ -25,17 +27,17 @@ module lib {
 
     function initialize() {}
 
-    function drawHourHand(dc as Graphics.Dc, options as { :transform as Graphics.AffineTransform }) {
+    function drawHourHand(dc as Graphics.Dc, options as DrawHandOptions) {
         options[:transform].translate(-10.0, -38.0);
         dc.drawBitmap2(0, 0, self.hourHandResource, options);
     }
 
-    function drawMinuteHand(dc as Graphics.Dc, options as { :transform as Graphics.AffineTransform }) {
+    function drawMinuteHand(dc as Graphics.Dc, options as DrawHandOptions) {
         options[:transform].translate(-9.0, -59.0);
         dc.drawBitmap2(0, 0, self.minuteHandResource, options);
     }
 
-    function drawSecondsHand(dc as Graphics.Dc, options as { :transform as Graphics.AffineTransform }) {
+    function drawSecondsHand(dc as Graphics.Dc, options as DrawHandOptions) {
         options[:transform].translate(-5.0, -53.0);
         dc.drawBitmap2(0, 0, self.secondsHandResource, options);
     }
@@ -44,7 +46,7 @@ module lib {
         dc.drawBitmap(0, 0, WatchUi.loadResource(Rez.Drawables.background));
     }
 
-    function drawTextXTyni(dc as Graphics.Dc, x as Lang.Number, y as Lang.Number, value as Lang.String,
+    function drawTextXTiny(dc as Graphics.Dc, x as Lang.Number, y as Lang.Number, value as Lang.String,
                            justification as Graphics.TextJustification) as Void {
         dc.drawText(x, y, Graphics.FONT_XTINY, value, justification);
     }

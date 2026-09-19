@@ -1,10 +1,4 @@
 <resources>
-    <jsonData id="mySettingsJson">
-        {"name": "GarminRunner", "interval": 30, "enabled": true}
-    </jsonData>
-    <jsonData id="myArrayJson">
-        [10, 20, 30, 40]
-    </jsonData>
     <jsonData id="barometerData">
     [
         [0, 0], [0, 0], [0, 0], [0, 0], [0, 0], [0, 0], [0, 0], [0, 0], [0, 0], [0, 0], [0, 0], [0, 0], [0, 0],

@@ -28,7 +28,7 @@ module srv {
             dc.clearClip();
 
             dc.setColor(Graphics.COLOR_WHITE, Graphics.COLOR_TRANSPARENT);
-            lib.drawTextXTyni(dc, cfg.barometerTextX, cfg.barometerTextY, self.barometerLevel,
+            lib.drawTextXTiny(dc, cfg.barometerTextX, cfg.barometerTextY, self.barometerLevel,
                               Graphics.TEXT_JUSTIFY_CENTER);
         }
     }

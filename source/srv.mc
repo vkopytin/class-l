@@ -43,25 +43,24 @@ module srv {
         if (sample == null) {
             return 1;
         }
-        var max = sample.getMax();
-        var min = sample.getMin();
-        var diff = max - min;
+        var miValue = sample.getMin();
+        var diff = sample.getMax() - miValue;
         diff = diff == 0 ? 1 : diff;
         var height = cfg.graphHeight;
         var result = 0.0;
 
         // iterate over the samples and draw the graph
         var data = sample.next();
-        var value = data == null || data.data == null ? min : data.data;
+        var value = data == null || data.data == null ? miValue : data.data;
         result = value;
 
         for (var i = 0; i < 13; i++) {
             var next = sample.next();
-            value += (next == null || next.data == null) ? min : next.data;
+            value += (next == null || next.data == null) ? miValue : next.data;
         }
         value /= 14.0;
         for (var i = 0; i < self.graphItemsLength; i++) {
-            value = (value - min) * height / diff;
+            value = (value - miValue) * height / diff;
             var offset = offsetX - cfg.graphBarWidth * i;
             items[4 * i][0] = offset;
             items[4 * i][1] = offsetY;
@@ -75,7 +74,7 @@ module srv {
             value = 0.0;
             for (var j = 0; j < 14; j++) {
                 var next = sample.next();
-                value += (next == null || next.data == null) ? min : next.data;
+                value += (next == null || next.data == null) ? miValue : next.data;
             }
             value /= 14.0;
         }

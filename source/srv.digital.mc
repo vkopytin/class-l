@@ -73,7 +73,7 @@ module srv {
             var font = WatchUi.loadResource(Rez.Fonts.system);
             dc.setColor(self.chargeColor, Graphics.COLOR_TRANSPARENT);
             dc.drawText(cfg.chargeIconX, cfg.chargeIconY, font, self.charge, Graphics.TEXT_JUSTIFY_CENTER);
-            dc.setColor(bluetoothColor, Graphics.COLOR_TRANSPARENT);
+            dc.setColor(self.bluetoothColor, Graphics.COLOR_TRANSPARENT);
             dc.drawText(cfg.bluetoothIconX, cfg.bluetoothIconY, font, self.bluetooth, Graphics.TEXT_JUSTIFY_CENTER);
             dc.setColor(self.alarmColor, Graphics.COLOR_TRANSPARENT);
             dc.drawText(cfg.alarmIconX, cfg.alarmIconY, font, "\uE190", Graphics.TEXT_JUSTIFY_CENTER);

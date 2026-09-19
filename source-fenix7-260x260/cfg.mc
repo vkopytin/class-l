@@ -3,10 +3,11 @@ using Toybox.Lang;
 using Toybox.WatchUi;
 
 module cfg {
-    const bufferWidth = 260;
-    const bufferHeight = 260;
     const bufferDx = 0;
     const bufferDy = 0;
+
+    const bufferWidth = 260;
+    const bufferHeight = 260;
 
     const graphHeight = 10.0;
     const graphWidth = 40.0;

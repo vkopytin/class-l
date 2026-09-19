@@ -2,6 +2,8 @@ using Toybox.Graphics;
 using Toybox.Lang;
 using Toybox.WatchUi;
 
+typedef DrawHandOptions as { :transform as Gfx.AffineTransform };
+
 module lib {
 
     const pieces = [
@@ -15,7 +17,7 @@ module lib {
 
     }
 
-    function drawHourHand(dc as Graphics.Dc, options as { :transform as Gfx.AffineTransform }) {
+    function drawHourHand(dc as Graphics.Dc, options as DrawHandOptions) {
         var hourHandCoords = WatchUi.loadResource(Rez.JsonData.hourCoordinates);
         var coords = options[:transform].transformPoints(hourHandCoords) as Lang.Array<Graphics.Point2D>;
 
@@ -31,7 +33,7 @@ module lib {
         dc.drawCircle(cfg.minutesClockX, cfg.minutesClockY, 3);
     }
 
-    function drawMinuteHand(dc as Graphics.Dc, options as { :transform as Gfx.AffineTransform }) {
+    function drawMinuteHand(dc as Graphics.Dc, options as DrawHandOptions) {
         var minuteHandCoords = WatchUi.loadResource(Rez.JsonData.minuteCoordinates);
         var coords = options[:transform].transformPoints(minuteHandCoords) as Lang.Array<Graphics.Point2D>;
 
@@ -43,7 +45,7 @@ module lib {
         dc.fillPolygon(coords);
     }
 
-    function drawSecondsHand(dc as Graphics.Dc, options as { :transform as Gfx.AffineTransform }) as Void {
+    function drawSecondsHand(dc as Graphics.Dc, options as DrawHandOptions) as Void {
 
         var transformedCoords = options[:transform].transformPoints(cfg.secondsHandCoordinates)
                                     as Lang.Array<Graphics.Point2D>;
@@ -60,7 +62,7 @@ module lib {
         }
     }
 
-    function drawTextXTyni(dc as Graphics.Dc, x as Lang.Number, y as Lang.Number, value as Lang.String,
+    function drawTextXTiny(dc as Graphics.Dc, x as Lang.Number, y as Lang.Number, value as Lang.String,
                            justification as Graphics.TextJustification) as Void {
         var font = WatchUi.loadResource(Rez.Fonts.segoe);
         dc.drawText(x, y, font, value, justification);

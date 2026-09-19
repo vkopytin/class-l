@@ -12,7 +12,6 @@ module srv {
         var lastStep = 0.0;
         var pid = PidController.create(0.16, 0.23, 0.15);
         var secTransform = Gfx.createAffineTransform();
-        var drawSecondsOptiions = { :transform => null };
 
         function synchronize(second as Lang.Numeric) as Void {
             self.previousSeconds = self.canonicalSecond;
@@ -39,9 +38,7 @@ module srv {
             lib.drawSecondsHand(dc, { :transform => self.secTransform });
         }
 
-        function drawPartial(dc as Graphics.Dc, options) as Void {
-            lib.drawSecondsHand(dc, options);
-        }
+        function drawPartial(dc as Graphics.Dc, options) as Void { lib.drawSecondsHand(dc, options); }
 
         function partialAngle() as Lang.Numeric { return self.partialSecond * ONE_RAD; }
     }

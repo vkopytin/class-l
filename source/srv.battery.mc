@@ -8,9 +8,7 @@ module srv {
     module battery {
         var batteryLevel = 0;
 
-        function update(stats as System.Stats) as Void {
-            self.batteryLevel = stats.battery;
-        }
+        function update(stats as System.Stats) as Void { self.batteryLevel = stats.battery; }
 
         function draw(dc as Graphics.Dc) as Void {
             var batteryLevelBitmap = WatchUi.loadResource(Rez.Drawables.batteryLevel);
@@ -22,7 +20,7 @@ module srv {
 
             var level = Lang.format("$1$%", [self.batteryLevel.format("%d")]);
             dc.setColor(Graphics.COLOR_WHITE, Graphics.COLOR_TRANSPARENT);
-            lib.drawTextXTyni(dc, cfg.batteryTextX, cfg.batteryTextY, level, Graphics.TEXT_JUSTIFY_CENTER);
+            lib.drawTextXTiny(dc, cfg.batteryTextX, cfg.batteryTextY, level, Graphics.TEXT_JUSTIFY_CENTER);
         }
     }
 }
