@@ -7,4 +7,6 @@
     <bitmap id="weatherConditions" filename="weather-conditions.png" packingFormat="png" />
     <bitmap id="moonPhaseTiles" filename="moon-phases-30x30.png" packingFormat="png" />
     <bitmap id="twilightTiles" filename="sunset-sunrise-tiles-40x40.png" packingFormat="png" />
+    <bitmap id="aod" filename="aod-1.png" packingFormat="png" />
+    <bitmap id="aodAlt" filename="aod-1-alt.png" packingFormat="png" />
 </drawables>

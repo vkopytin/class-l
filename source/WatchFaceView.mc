@@ -69,11 +69,6 @@ class WatchFaceView extends WatchUi.WatchFace {
 
     // Normal render phase
     function onUpdate(dc as Dc) as Void {
-        if (isBurnInProtection) {
-            dc.clearClip();
-            dc.clear();
-            return;
-        }
         if (self.frameUpdatePending) {
             self.frameUpdatePending = false;
         } else {
@@ -89,7 +84,11 @@ class WatchFaceView extends WatchUi.WatchFace {
         lib.drawBackground(dc, 0, 0);
         dc.drawBitmap(cfg.bufferDx, cfg.bufferDy, self.buffer);
 
-        srv.seconds.draw(dc);
+        if (isBurnInProtection) {
+            Gfx.drawAlwaysOn(dc);
+        } else {
+            srv.seconds.draw(dc);
+        }
     }
 
     // Handle the partial update event - 1Hz mode

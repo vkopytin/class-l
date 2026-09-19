@@ -71,4 +71,6 @@ module Gfx {
         as Graphics.BufferedBitmap {
         return new Graphics.BufferedBitmap(options);
     }
+
+    function drawAlwaysOn(dc as Graphics.Dc) as Void {}
 }
