@@ -1,0 +1,19 @@
+<drawables>
+    <bitmap id="bg_tl_tl" filename="bg-tl-tl.png" />
+    <bitmap id="bg_tl_tr" filename="bg-tl-tr.png" />
+    <bitmap id="bg_tl_bl" filename="bg-tl-bl.png" />
+    <bitmap id="bg_tl_br" filename="bg-tl-br.png" />
+    <bitmap id="bg_tr_tl" filename="bg-tr-tl.png" />
+    <bitmap id="bg_tr_tr" filename="bg-tr-tr.png" />
+    <bitmap id="bg_tr_bl" filename="bg-tr-bl.png" />
+    <bitmap id="bg_tr_br" filename="bg-tr-br.png" />
+    <bitmap id="bg_bl_tl" filename="bg-bl-tl.png" />
+    <bitmap id="bg_bl_tr" filename="bg-bl-tr.png" />
+    <bitmap id="bg_bl_bl" filename="bg-bl-bl.png" />
+    <bitmap id="bg_bl_br" filename="bg-bl-br.png" />
+    <bitmap id="bg_br_tl" filename="bg-br-tl.png" />
+    <bitmap id="bg_br_tr" filename="bg-br-tr.png" />
+    <bitmap id="bg_br_bl" filename="bg-br-bl.png" />
+    <bitmap id="bg_br_br" filename="bg-br-br.png" />
+    <bitmap id="batteryLevel" filename="battery-level.png" />
+</drawables>
