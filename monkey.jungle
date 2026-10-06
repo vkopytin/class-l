@@ -12,9 +12,9 @@ fenix6.sourcePath = $(srcBase);source-fenix6-260x260
 fenix6.resourcePath = $(base.resourcePath);resources-fenix6
 approachs62.sourcePath = $(srcBase);source-approachs62-260x260
 approachs62.resourcePath = $(base.resourcePath);resources-approachs62
+
 fenix7.sourcePath = $(srcBase);source-fenix7-260x260
 fenix7.resourcePath = $(base.resourcePath);resources-fenix7
-
 fr255.sourcePath = $(fenix7.sourcePath)
 fr255.resourcePath = $(fenix7.resourcePath)
 
