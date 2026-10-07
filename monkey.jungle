@@ -8,6 +8,9 @@ base.resourcePath = $(resourcesBase)
 
 fenix5x.sourcePath = $(srcBase);source-fenix5x-240x240
 fenix5x.resourcePath = $(base.resourcePath);resources-fenix5x
+vivoactive3.sourcePath = $(srcBase);source-vivoactive3-240x240
+vivoactive3.resourcePath = $(base.resourcePath);resources-fenix5x
+
 fenix6.sourcePath = $(srcBase);source-fenix6-260x260
 fenix6.resourcePath = $(base.resourcePath);resources-fenix6
 approachs62.sourcePath = $(srcBase);source-approachs62-260x260
