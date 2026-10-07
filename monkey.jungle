@@ -13,18 +13,25 @@ vivoactive3.resourcePath = $(base.resourcePath);resources-fenix5x
 
 fenix6.sourcePath = $(srcBase);source-fenix6-260x260
 fenix6.resourcePath = $(base.resourcePath);resources-fenix6
-approachs62.sourcePath = $(srcBase);source-approachs62-260x260
-approachs62.resourcePath = $(base.resourcePath);resources-approachs62
+
+vivoactive4.sourcePath = $(srcBase);source-vivoactive4-260x260
+vivoactive4.resourcePath = $(base.resourcePath);resources-vivoactive4
 
 fenix7.sourcePath = $(srcBase);source-fenix7-260x260
 fenix7.resourcePath = $(base.resourcePath);resources-fenix7
 fenix7pro.sourcePath = $(srcBase);source-fenix7-260x260
 fenix7pro.resourcePath = $(base.resourcePath);resources-fenix7
+fenix7pronowifi.sourcePath = $(srcBase);source-fenix7-260x260
+fenix7pronowifi.resourcePath = $(base.resourcePath);resources-fenix7
 fr255.sourcePath = $(fenix7.sourcePath)
 fr255.resourcePath = $(fenix7.resourcePath)
 
 fenix7x.sourcePath = $(srcBase);source-fenix7x-280x280
 fenix7x.resourcePath = $(base.resourcePath);resources-fenix7x
+fenix7xpro.sourcePath = $(srcBase);source-fenix7x-280x280
+fenix7xpro.resourcePath = $(base.resourcePath);resources-fenix7x
+fenix7xpronowifi.sourcePath = $(srcBase);source-fenix7x-280x280
+fenix7xpronowifi.resourcePath = $(base.resourcePath);resources-fenix7x
 
 fr965.sourcePath = $(srcBase);source-fr965-454x454
 fr965.resourcePath = $(base.resourcePath);resources-round-454x454
