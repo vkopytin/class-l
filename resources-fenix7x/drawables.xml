@@ -1,0 +1,10 @@
+<drawables>
+    <bitmap id="hourHand" filename="hourHand.png" dithering="none" />
+    <bitmap id="minuteHand" filename="minuteHand.png" dithering="none" />
+    <bitmap id="secondsHand" filename="secondsHand.png" dithering="none" />
+    <bitmap id="background" filename="clock-example.png" dithering="none" />
+    <bitmap id="batteryLevel" filename="battery-level.png" dithering="none" />
+    <bitmap id="weatherConditions" filename="weather-conditions.png" />
+    <bitmap id="moonPhaseTiles" filename="moon-phases-20x20.png" dithering="none" />
+    <bitmap id="twilightTiles" filename="sunset-sunrise-tiles-20x20.png" />
+</drawables>
