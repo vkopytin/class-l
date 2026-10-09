@@ -43,3 +43,5 @@ fr965.sourcePath = $(srcBase);source-fr965-454x454
 fr965.resourcePath = $(base.resourcePath);resources-round-454x454
 fenix847mm.sourcePath = $(srcBase);source-fr965-454x454
 fenix847mm.resourcePath = $(base.resourcePath);resources-round-454x454
+fenix8pro47mm.sourcePath = $(srcBase);source-fr965-454x454
+fenix8pro47mm.resourcePath = $(base.resourcePath);resources-round-454x454
