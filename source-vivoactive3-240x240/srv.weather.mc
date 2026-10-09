@@ -43,8 +43,8 @@ module srv {
 
             dc.drawText(x, y, Graphics.FONT_XTINY, self.temperature, Graphics.TEXT_JUSTIFY_LEFT);
             dc.setColor(0x55AAAA, Graphics.COLOR_TRANSPARENT);
-            dc.drawText(x + dc.getTextWidthInPixels(self.temperature, Graphics.FONT_XTINY), y,
-                        Graphics.FONT_XTINY, self.units, Graphics.TEXT_JUSTIFY_LEFT);
+            dc.drawText(x + dc.getTextWidthInPixels(self.temperature, Graphics.FONT_XTINY), y, Graphics.FONT_XTINY,
+                        self.units, Graphics.TEXT_JUSTIFY_LEFT);
         }
     }
 }

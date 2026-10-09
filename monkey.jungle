@@ -10,6 +10,12 @@ fenix5x.sourcePath = $(srcBase);source-fenix5x-240x240
 fenix5x.resourcePath = $(base.resourcePath);resources-fenix5x
 vivoactive3.sourcePath = $(srcBase);source-vivoactive3-240x240
 vivoactive3.resourcePath = $(base.resourcePath);resources-fenix5x
+vivoactive3d.sourcePath = $(srcBase);source-vivoactive3-240x240
+vivoactive3d.resourcePath = $(base.resourcePath);resources-fenix5x
+vivoactive3m.sourcePath = $(srcBase);source-vivoactive3-240x240
+vivoactive3m.resourcePath = $(base.resourcePath);resources-fenix5x
+vivoactive3mlte.sourcePath = $(srcBase);source-vivoactive3-240x240
+vivoactive3mlte.resourcePath = $(base.resourcePath);resources-fenix5x
 
 fenix6.sourcePath = $(srcBase);source-fenix6-260x260
 fenix6.resourcePath = $(base.resourcePath);resources-fenix6

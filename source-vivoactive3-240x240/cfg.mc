@@ -59,7 +59,7 @@ module cfg {
     const calendarDateX = 28 - bufferDx;
     const calendarDateY = 104 - bufferDy;
     const calendarMonthX = 28 - bufferDx;
-    const calendarMonthY = 121 - bufferDy;
+    const calendarMonthY = 125 - bufferDy;
     const calendarWeekDayX = 30 - bufferDx;
     const calendarWeekDayY = 138 - bufferDy;
     const calendarWeekDayFont = :segoe;
