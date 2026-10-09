@@ -8,6 +8,7 @@ base.resourcePath = $(resourcesBase)
 
 fenix5x.sourcePath = $(srcBase);source-fenix5x-240x240
 fenix5x.resourcePath = $(base.resourcePath);resources-fenix5x
+
 vivoactive3.sourcePath = $(srcBase);source-vivoactive3-240x240
 vivoactive3.resourcePath = $(base.resourcePath);resources-fenix5x
 vivoactive3d.sourcePath = $(srcBase);source-vivoactive3-240x240
@@ -17,8 +18,13 @@ vivoactive3m.resourcePath = $(base.resourcePath);resources-fenix5x
 vivoactive3mlte.sourcePath = $(srcBase);source-vivoactive3-240x240
 vivoactive3mlte.resourcePath = $(base.resourcePath);resources-fenix5x
 
+marqadventurer.sourcePath = $(srcBase);source-marqadventurer-240x240
+marqadventurer.resourcePath = $(base.resourcePath);resources-fenix5x
+
 fenix6.sourcePath = $(srcBase);source-fenix6-260x260
 fenix6.resourcePath = $(base.resourcePath);resources-fenix6
+legacysagadarthvader.sourcePath = $(srcBase);source-fenix6-260x260
+legacysagadarthvader.resourcePath = $(resourcesBase);resources-fenix6
 
 vivoactive4.sourcePath = $(srcBase);source-vivoactive4-260x260
 vivoactive4.resourcePath = $(base.resourcePath);resources-vivoactive4
@@ -45,3 +51,5 @@ fenix847mm.sourcePath = $(srcBase);source-fr965-454x454
 fenix847mm.resourcePath = $(base.resourcePath);resources-round-454x454
 fenix8pro47mm.sourcePath = $(srcBase);source-fr965-454x454
 fenix8pro47mm.resourcePath = $(base.resourcePath);resources-round-454x454
+venu3.sourcePath = $(srcBase);source-fr965-454x454
+venu3.resourcePath = $(base.resourcePath);resources-round-454x454
