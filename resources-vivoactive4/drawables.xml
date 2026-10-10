@@ -16,4 +16,5 @@
     <bitmap id="bg_br_bl" filename="bg-br-bl.png" />
     <bitmap id="bg_br_br" filename="bg-br-br.png" />
     <bitmap id="batteryLevel" filename="battery-level.png" />
+    <bitmap id="weatherConditions" filename="weather-conditions.png" />
 </drawables>

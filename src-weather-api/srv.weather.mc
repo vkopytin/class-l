@@ -9,7 +9,6 @@ import Toybox.Application;
 
 module srv {
 
-    // TODO: Implement weather support for Fenix 7.
     module weather {
         var weatherConditions = WatchUi.loadResource(@Rez.Drawables.weatherConditions);
         var weather = null as Toybox.Weather.CurrentConditions;
