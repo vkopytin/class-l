@@ -7,14 +7,6 @@ using Toybox.System;
 typedef DrawHandOptions as { :transform as Gfx.AffineTransform };
 
 module lib {
-
-    const pieces = [
-        Rez.Drawables.bg_tl_tl, Rez.Drawables.bg_tl_tr, Rez.Drawables.bg_tr_tl, Rez.Drawables.bg_tr_tr,
-        Rez.Drawables.bg_tl_bl, Rez.Drawables.bg_tl_br, Rez.Drawables.bg_tr_bl, Rez.Drawables.bg_tr_br,
-        Rez.Drawables.bg_bl_tl, Rez.Drawables.bg_bl_tr, Rez.Drawables.bg_br_tl, Rez.Drawables.bg_br_tr,
-        Rez.Drawables.bg_bl_bl, Rez.Drawables.bg_bl_br, Rez.Drawables.bg_br_bl, Rez.Drawables.bg_br_br
-    ];
-
     function initialize() as Void {
 
     }
@@ -57,11 +49,7 @@ module lib {
     }
 
     function drawBackground(dc as Graphics.Dc, dx as Lang.Number, dy as Lang.Number) as Void {
-        for (var i = 0; i < 16; i++) {
-            var x = (i % 4) * 65 - dx;
-            var y = (i / 4) * 65 - dy;
-            dc.drawBitmap(x, y, WatchUi.loadResource(self.pieces[i]));
-        }
+        dc.drawBitmap(0, 0, WatchUi.loadResource(Rez.Drawables.background));
     }
 
     function drawTextXTiny(dc as Graphics.Dc, x as Lang.Number, y as Lang.Number, value as Lang.String,

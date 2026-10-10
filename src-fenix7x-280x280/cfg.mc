@@ -70,6 +70,6 @@ module cfg {
     const twilightX = 215;
     const twilightY = 198;
 
-    const weatherX = 140;
+    const weatherX = 136;
     const weatherY = 15;
 }
