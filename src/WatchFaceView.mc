@@ -11,6 +11,7 @@ class WatchFaceView extends WatchUi.WatchFace {
     private var isBurnInProtection = false;
     private var sleepMode = false;
     private var frameUpdatePending = false;
+    private var bufferSecond = null;
     private var partialTransform = Gfx.createAffineTransform();
     private var drawPartialOptions = { :transform => self.partialTransform };
     private var transformMove = Gfx.createAffineTransform();
@@ -25,6 +26,7 @@ class WatchFaceView extends WatchUi.WatchFace {
     // Load your resources here
     function onLayout(dc as Dc) as Void {
         self.frameUpdatePending = false;
+        self.bufferSecond = null;
         self.buffer = Gfx.createBufferedBitmap({ :width => cfg.bufferWidth,
             :height => cfg.bufferHeight,
         });
@@ -36,7 +38,7 @@ class WatchFaceView extends WatchUi.WatchFace {
     // loading resources into memory.
     function onShow() as Void {
         self.frameUpdatePending = false;
-        self.syncData();
+        self.bufferSecond = null;
         MainTimer.nextTick();
         if (self.sleepMode == false) {
             MainTimer.start();
@@ -49,7 +51,7 @@ class WatchFaceView extends WatchUi.WatchFace {
     // memory.
     function onHide() as Void {
         MainTimer.stop();
-        self.engineTick(MainTimer.DELTA_TIME);
+        self.frameUpdatePending = false;
     }
 
     // The user has just looked at their watch. Timers and animations may be started here.
@@ -60,7 +62,7 @@ class WatchFaceView extends WatchUi.WatchFace {
         if (settings has :requiresBurnInProtection && settings.requiresBurnInProtection) {
             isBurnInProtection = false;
         }
-        self.syncData();
+        self.bufferSecond = null;
         self.engineTick(MainTimer.DELTA_TIME);
         MainTimer.start();
     }
@@ -78,12 +80,8 @@ class WatchFaceView extends WatchUi.WatchFace {
 
     // Normal render phase
     function onUpdate(dc as Dc) as Void {
-        if (self.frameUpdatePending) {
-            self.frameUpdatePending = false;
-        } else {
-            self.syncData();
-            return;
-        }
+        self.frameUpdatePending = false;
+        self.updateBuffer(Time.now().value());
         dc.clearClip();
         // WatchFace.onUpdate(dc);
         lib.drawBackground(dc, 0, 0);
@@ -130,13 +128,21 @@ class WatchFaceView extends WatchUi.WatchFace {
         if (self.frameUpdatePending) {
             return;
         }
-        self.ultraUpdate(self.buffer.getDc());
-
         self.frameUpdatePending = true;
         WatchUi.requestUpdate();
     }
 
-    // Ultra fast render phase
+    // Refresh data and render once per clock second; other frames reuse the bitmap.
+    function updateBuffer(second as Number) as Void {
+        if (self.bufferSecond == second) {
+            return;
+        }
+        self.syncData();
+        self.ultraUpdate(self.buffer.getDc());
+        self.bufferSecond = second;
+    }
+
+    // Render the cached background and data, excluding the animated seconds hand.
     function ultraUpdate(dc as Graphics.Dc) as Void {
         dc.setColor(Graphics.COLOR_TRANSPARENT, Graphics.COLOR_TRANSPARENT);
         dc.clear();

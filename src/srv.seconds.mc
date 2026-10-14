@@ -10,7 +10,7 @@ module srv {
         var canonicalSecond = 0;
         var partialSecond = 0;
         var lastStep = 0.0;
-        var pid = PidController.create(0.28, 0.15, 0.03);
+        var pid = PidController.create(0.5, 0.09, 0.001);
         var secTransform = Gfx.createAffineTransform();
 
         function synchronize(second as Lang.Numeric) as Void {
