@@ -24,36 +24,44 @@ class WatchFaceView extends WatchUi.WatchFace {
 
     // Load your resources here
     function onLayout(dc as Dc) as Void {
+        self.frameUpdatePending = false;
         self.buffer = Gfx.createBufferedBitmap({ :width => cfg.bufferWidth,
             :height => cfg.bufferHeight,
         });
+        self.engineTick(MainTimer.DELTA_TIME);
     }
 
     // Called when this View is brought to the foreground. Restore
     // the state of this View and prepare it to be shown. This includes
     // loading resources into memory.
     function onShow() as Void {
+        self.frameUpdatePending = false;
         self.syncData();
         MainTimer.nextTick();
         if (self.sleepMode == false) {
             MainTimer.start();
         }
+        self.engineTick(MainTimer.DELTA_TIME);
     }
 
     // Called when this View is removed from the screen. Save the
     // state of this View here. This includes freeing resources from
     // memory.
-    function onHide() as Void { MainTimer.stop(); }
+    function onHide() as Void {
+        MainTimer.stop();
+        self.engineTick(MainTimer.DELTA_TIME);
+    }
 
     // The user has just looked at their watch. Timers and animations may be started here.
     function onExitSleep() as Void {
+        self.frameUpdatePending = false;
         self.sleepMode = false;
         var settings = System.getDeviceSettings();
         if (settings has :requiresBurnInProtection && settings.requiresBurnInProtection) {
             isBurnInProtection = false;
         }
         self.syncData();
-        MainTimer.nextTick();
+        self.engineTick(MainTimer.DELTA_TIME);
         MainTimer.start();
     }
 
@@ -65,6 +73,7 @@ class WatchFaceView extends WatchUi.WatchFace {
             isBurnInProtection = true;
         }
         MainTimer.stop();
+        self.engineTick(MainTimer.DELTA_TIME);
     }
 
     // Normal render phase
@@ -73,11 +82,7 @@ class WatchFaceView extends WatchUi.WatchFace {
             self.frameUpdatePending = false;
         } else {
             self.syncData();
-            if (self.sleepMode) {
-                self.ultraUpdate(self.buffer.getDc());
-            } else {
-                return;
-            }
+            return;
         }
         dc.clearClip();
         // WatchFace.onUpdate(dc);
