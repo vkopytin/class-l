@@ -1,0 +1,13 @@
+<drawables>
+    <!-- FR965 artwork scaled by 416/454 at compile time. -->
+    <bitmap id="background" filename="../resources-round-454x454/clock-example.png" scaleX="416" scaleY="416" />
+    <bitmap id="hourHand" filename="../resources-round-454x454/hourHand.png" packingFormat="png" scaleX="26" scaleY="75" />
+    <bitmap id="minuteHand" filename="../resources-round-454x454/minuteHand.png" packingFormat="png" scaleX="19" scaleY="91" />
+    <bitmap id="secondsHand" filename="../resources-round-454x454/secondsHand.png" packingFormat="png" scaleX="15" scaleY="121" />
+    <bitmap id="batteryLevel" filename="../resources-round-454x454/battery-level.png" scaleX="57" scaleY="16" />
+    <bitmap id="weatherConditions" filename="../resources-round-454x454/weather-conditions.png" packingFormat="png" scaleX="623" scaleY="379" />
+    <bitmap id="moonPhaseTiles" filename="../resources-round-454x454/moon-phases-30x30.png" packingFormat="png" scaleX="288" scaleY="288" />
+    <bitmap id="twilightTiles" filename="../resources-round-454x454/sunset-sunrise-tiles-40x40.png" packingFormat="png" scaleX="290" scaleY="44" />
+    <bitmap id="aod" filename="../resources-round-454x454/aod-1.png" packingFormat="png" scaleX="416" scaleY="416" />
+    <bitmap id="aodAlt" filename="../resources-round-454x454/aod-1-alt.png" packingFormat="png" scaleX="416" scaleY="416" />
+</drawables>

@@ -28,7 +28,7 @@ Hardware specifications come from the bundled SDK 9.2.0 [Device Reference](~/App
 | [ ]     | fenix5                  | fenix5x        | 240x240 | [x]     | [ ]  | —   |
 | [ ]     | fenix5plus              | fenix5x        | 240x240 | [x]     | [ ]  | —   |
 | [ ]     | fenix5splus             | fenix5x        | 240x240 | [x]     | [ ]  | —   |
-| [ ]     | fenix5x                 | fenix5x        | 240x240 | [x]     | [ ]  | —   |
+| [x]     | fenix5x                 | fenix5x        | 240x240 | [x]     | [ ]  | —   |
 | [ ]     | fenix5xplus             | fenix5x        | 240x240 | [x]     | [ ]  | 3.3 |
 | [ ]     | fenix6s                 | fenix5x        | 240x240 | [x]     | [ ]  | —   |
 | [ ]     | fenix6spro              | fenix5x        | 240x240 | [x]     | [ ]  | —   |
@@ -55,7 +55,7 @@ Hardware specifications come from the bundled SDK 9.2.0 [Device Reference](~/App
 | [ ]     | vivoactive3m            | fenix5x        | 240x240 | [x]     | [ ]  | 3.2 |
 | [ ]     | vivoactive3mlte         | fenix5x        | 240x240 | [x]     | [ ]  | 3.1 |
 | [ ]     | approachs62             | fenix6         | 260x260 | [x]     | [ ]  | 3.0 |
-| [ ]     | fenix6                  | fenix6         | 260x260 | [x]     | [ ]  | 3.4 |
+| [x]     | fenix6                  | fenix6         | 260x260 | [x]     | [ ]  | 3.4 |
 | [ ]     | fenix6pro               | fenix6         | 260x260 | [x]     | [ ]  | 3.4 |
 | [ ]     | fenix7                  | fenix7         | 260x260 | [ ]     | [ ]  | 5.2 |
 | [ ]     | fenix7pro               | fenix7         | 260x260 | [ ]     | [ ]  | 5.2 |
@@ -103,7 +103,7 @@ Hardware specifications come from the bundled SDK 9.2.0 [Device Reference](~/App
 | [ ]     | fenixe                  | venu2          | 416x416 | [ ]     | [x]  | —   |
 | [ ]     | fr265                   | venu2          | 416x416 | [ ]     | [x]  | —   |
 | [ ]     | instinct3amoled50mm     | venu2          | 416x416 | [ ]     | [x]  | —   |
-| [ ]     | venu2                   | venu2          | 416x416 | [ ]     | [x]  | 5.0 |
+| [x]     | venu2                   | venu2          | 416x416 | [ ]     | [x]  | 5.0 |
 | [ ]     | venu2plus               | venu2          | 416x416 | [ ]     | [x]  | 5.0 |
 | [ ]     | approachs7047mm         | fr965          | 454x454 | [ ]     | [x]  | —   |
 | [ ]     | d2mach2                 | fr965          | 454x454 | [ ]     | [x]  | —   |

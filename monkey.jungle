@@ -91,3 +91,7 @@ fenix8pro47mm.sourcePath = $(fr965.sourcePath)
 fenix8pro47mm.resourcePath = $(fr965.resourcePath)
 venu3.sourcePath = $(fr965.sourcePath)
 venu3.resourcePath = $(fr965.resourcePath)
+
+# 416x416 OLED layout and artwork derived from FR965.
+venu2.sourcePath = $(srcBase);src-venu2-416x416
+venu2.resourcePath = $(base.resourcePath);resources-round-416x416
