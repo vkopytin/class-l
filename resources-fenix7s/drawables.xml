@@ -1,0 +1,12 @@
+<drawables>
+    <!-- Fenix 6S artwork is mapped to resources-fenix5x. -->
+    <bitmap id="background" filename="background.png" />
+    <bitmap id="batteryLevel" filename="../resources-fenix5x/battery-level.png" />
+    <!-- Bitmap-only assets absent from Fenix 6S are scaled from Fenix 7. -->
+    <bitmap id="hourHand" filename="../resources-fenix7/hourHand.png" scaleX="18" scaleY="44" />
+    <bitmap id="minuteHand" filename="../resources-fenix7/minuteHand.png" scaleX="17" scaleY="60" />
+    <bitmap id="secondsHand" filename="../resources-fenix7/secondsHand.png" scaleX="10" scaleY="70" />
+    <bitmap id="weatherConditions" filename="../resources-fenix7/weather-conditions.png" scaleX="628" scaleY="382" />
+    <bitmap id="moonPhaseTiles" filename="../resources-fenix7/moon-phases-20x20.png" scaleX="197" scaleY="197" />
+    <bitmap id="twilightTiles" filename="../resources-fenix7/sunset-sunrise-tiles-20x20.png" scaleX="146" scaleY="22" />
+</drawables>

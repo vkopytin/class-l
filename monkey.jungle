@@ -50,9 +50,15 @@ fr945lte.sourcePath = $(marqadventurer.sourcePath)
 fr945lte.resourcePath = $(marqadventurer.resourcePath)
 descentmk2s.sourcePath = $(marqadventurer.sourcePath)
 descentmk2s.resourcePath = $(marqadventurer.resourcePath)
+fenix6s.sourcePath = $(marqadventurer.sourcePath)
+fenix6s.resourcePath = $(marqadventurer.resourcePath)
+fenix6spro.sourcePath = $(marqadventurer.sourcePath)
+fenix6spro.resourcePath = $(marqadventurer.resourcePath)
 
 fenix6.sourcePath = $(srcBase);src-fenix6-260x260;src-weather-api-compact
 fenix6.resourcePath = $(base.resourcePath);resources-fenix6
+fenix6pro.sourcePath = $(fenix6.sourcePath)
+fenix6pro.resourcePath = $(fenix6.resourcePath)
 
 # Fenix 6X uses Fenix 6 low-memory rendering with Fenix 7X artwork.
 fenix6xpro.sourcePath = $(srcBase);src-fenix6x-280x280;src-weather-api-compact
@@ -63,6 +69,12 @@ legacysagadarthvader.resourcePath = $(fenix6.resourcePath)
 
 vivoactive4.sourcePath = $(srcBase);src-vivoactive4-260x260;src-weather-api-compact
 vivoactive4.resourcePath = $(base.resourcePath);resources-vivoactive4
+
+# Fenix 7S uses Fenix 6S artwork with Fenix 7 bitmap rendering.
+fenix7s.sourcePath = $(srcBase);src-fenix7s-240x240
+fenix7s.resourcePath = $(base.resourcePath);resources-fenix7s
+fenix7spro.sourcePath = $(fenix7s.sourcePath)
+fenix7spro.resourcePath = $(fenix7s.resourcePath)
 
 fenix7.sourcePath = $(srcBase);src-fenix7-260x260;src-weather-api
 fenix7.resourcePath = $(base.resourcePath);resources-fenix7
@@ -100,3 +112,23 @@ venu3.resourcePath = $(fr965.resourcePath)
 # 416x416 OLED layout and artwork derived from FR965.
 venu2.sourcePath = $(srcBase);src-venu2-416x416
 venu2.resourcePath = $(base.resourcePath);resources-round-416x416
+
+# Additional Fenix 8/9 variants reuse matching display implementations.
+fenix843mm.sourcePath = $(venu2.sourcePath)
+fenix843mm.resourcePath = $(venu2.resourcePath)
+fenix8solar51mm.sourcePath = $(fenix7x.sourcePath)
+fenix8solar51mm.resourcePath = $(fenix7x.resourcePath)
+fenix943mm.sourcePath = $(venu2.sourcePath)
+fenix943mm.resourcePath = $(venu2.resourcePath)
+fenix947mm.sourcePath = $(fr965.sourcePath)
+fenix947mm.resourcePath = $(fr965.resourcePath)
+fenix9pro43mm.sourcePath = $(venu2.sourcePath)
+fenix9pro43mm.resourcePath = $(venu2.resourcePath)
+fenix9pro47mm.sourcePath = $(fr965.sourcePath)
+fenix9pro47mm.resourcePath = $(fr965.resourcePath)
+fenix9prosolar51mm.sourcePath = $(fenix7x.sourcePath)
+fenix9prosolar51mm.resourcePath = $(fenix7x.resourcePath)
+
+# Fenix 9 Pro 51mm: FR965 OLED rendering scaled to 466x466.
+fenix9pro51mm.sourcePath = $(srcBase);src-fenix9pro51mm-466x466
+fenix9pro51mm.resourcePath = $(base.resourcePath);resources-round-466x466
