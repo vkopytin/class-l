@@ -53,6 +53,11 @@ descentmk2s.resourcePath = $(marqadventurer.resourcePath)
 
 fenix6.sourcePath = $(srcBase);src-fenix6-260x260;src-weather-api-compact
 fenix6.resourcePath = $(base.resourcePath);resources-fenix6
+
+# Fenix 6X uses Fenix 6 low-memory rendering with Fenix 7X artwork.
+fenix6xpro.sourcePath = $(srcBase);src-fenix6x-280x280;src-weather-api-compact
+fenix6xpro.resourcePath = $(base.resourcePath);resources-fenix6x
+
 legacysagadarthvader.sourcePath = $(fenix6.sourcePath)
 legacysagadarthvader.resourcePath = $(fenix6.resourcePath)
 

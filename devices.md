@@ -56,6 +56,9 @@ Hardware specifications come from the bundled SDK 9.2.0 [Device Reference](~/App
 | [ ]     | vivoactive3mlte         | fenix5x        | 240x240 | [x]     | [ ]  | 3.1 |
 | [ ]     | approachs62             | fenix6         | 260x260 | [x]     | [ ]  | 3.0 |
 | [x]     | fenix6                  | fenix6         | 260x260 | [x]     | [ ]  | 3.4 |
+| [ ]     | legacyherofirstavenger  | fenix6         | 260x260 | [x]     | [ ]  | 3.3 |
+| [ ]     | legacysagadarthvader    | fenix6         | 260x260 | [x]     | [ ]  | 3.3 |
+| [ ]     | vivoactive4             | fenix6         | 260x260 | [x]     | [ ]  | 3.3 |
 | [ ]     | fenix6pro               | fenix6         | 260x260 | [x]     | [ ]  | 3.4 |
 | [ ]     | fenix7                  | fenix7         | 260x260 | [ ]     | [ ]  | 5.2 |
 | [ ]     | fenix7pro               | fenix7         | 260x260 | [ ]     | [ ]  | 5.2 |
@@ -64,13 +67,10 @@ Hardware specifications come from the bundled SDK 9.2.0 [Device Reference](~/App
 | [ ]     | fr255                   | fenix7         | 260x260 | [ ]     | [ ]  | 5.2 |
 | [ ]     | fr255m                  | fenix7         | 260x260 | [ ]     | [ ]  | 5.2 |
 | [ ]     | fr955                   | fenix7         | 260x260 | [ ]     | [ ]  | 5.2 |
-| [ ]     | legacyherofirstavenger  | fenix6         | 260x260 | [x]     | [ ]  | 3.3 |
-| [ ]     | legacysagadarthvader    | fenix6         | 260x260 | [x]     | [ ]  | 3.3 |
-| [ ]     | vivoactive4             | fenix6         | 260x260 | [x]     | [ ]  | 3.3 |
 | [ ]     | descentmk2              | fenix6x        | 280x280 | [x]     | [ ]  | —   |
 | [ ]     | enduro                  | fenix6x        | 280x280 | [x]     | [ ]  | —   |
 | [ ]     | enduro3                 | fenix7x        | 280x280 | [ ]     | [ ]  | —   |
-| [ ]     | fenix6xpro              | fenix6x        | 280x280 | [x]     | [ ]  | —   |
+| [x]     | fenix6xpro              | fenix6x        | 280x280 | [x]     | [ ]  | —   |
 | [ ]     | fenix7x                 | fenix7x        | 280x280 | [ ]     | [ ]  | —   |
 | [ ]     | fenix7xpro              | fenix7x        | 280x280 | [ ]     | [ ]  | —   |
 | [ ]     | fenix7xpronowifi        | fenix7x        | 280x280 | [ ]     | [ ]  | —   |
