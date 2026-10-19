@@ -144,9 +144,13 @@ class WatchFaceView extends WatchUi.WatchFace {
 
     // Render the cached background and data, excluding the animated seconds hand.
     function ultraUpdate(dc as Graphics.Dc) as Void {
-        dc.setColor(Graphics.COLOR_TRANSPARENT, Graphics.COLOR_TRANSPARENT);
+        // Legacy OLED buffers cannot retain anti-aliased text over transparency.
+        var opaque = (cfg has :opaqueBuffer) && cfg.opaqueBuffer;
+        dc.setColor(Graphics.COLOR_TRANSPARENT, opaque ? Graphics.COLOR_BLACK : Graphics.COLOR_TRANSPARENT);
         dc.clear();
-        dc.setClip(cfg.analogClockClip[0], cfg.analogClockClip[1], cfg.analogClockClip[2], cfg.analogClockClip[3]);
+        if (!opaque) {
+            dc.setClip(cfg.analogClockClip[0], cfg.analogClockClip[1], cfg.analogClockClip[2], cfg.analogClockClip[3]);
+        }
         lib.drawBackground(dc, cfg.bufferDx, cfg.bufferDy);
         dc.clearClip();
 

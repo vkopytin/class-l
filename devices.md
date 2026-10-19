@@ -82,7 +82,7 @@ Hardware specifications come from the bundled SDK 9.2.0 [Device Reference](~/App
 | [ ]     | approachs50             | —              | 390x390 | —       | [x]  | 5.1 |
 | [ ]     | approachs7042mm         | —              | 390x390 | —       | [x]  | —   |
 | [ ]     | d2air                   | —              | 390x390 | —       | [x]  | 3.2 |
-| [ ]     | venu                    | —              | 390x390 | —       | [x]  | 3.3 |
+| [x]     | venu                    | venu           | 390x390 | [x]     | [x]  | 3.3 |
 | [ ]     | descentg2               | —              | 390x390 | —       | [x]  | —   |
 | [ ]     | descentmk343mm          | —              | 390x390 | —       | [x]  | —   |
 | [ ]     | epix2pro42mm            | —              | 390x390 | —       | [x]  | —   |

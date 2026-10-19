@@ -132,3 +132,7 @@ fenix9prosolar51mm.resourcePath = $(fenix7x.resourcePath)
 # Fenix 9 Pro 51mm: FR965 OLED rendering scaled to 466x466.
 fenix9pro51mm.sourcePath = $(srcBase);src-fenix9pro51mm-466x466
 fenix9pro51mm.resourcePath = $(base.resourcePath);resources-round-466x466
+
+# Original Venu: scaled FR965 artwork with API 3.3 compatible rendering.
+venu.sourcePath = $(srcBase);src-venu-390x390
+venu.resourcePath = $(base.resourcePath);resources-venu
