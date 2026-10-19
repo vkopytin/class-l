@@ -9,6 +9,9 @@ and rotated with software affine transforms. Background tiles and individual
 moon, twilight, and weather icons keep transient bitmap memory bounded.
 The frame buffer includes the complete opaque background so Venu blends
 anti-aliased text edges against the artwork instead of transparent pixels.
+In AOD mode, the background switches to `board/390x390/background-aod.png`,
+copied at its native size and split into 16 tiles for Venu's memory limit.
+Waking the watch restores the active FR965 artwork immediately.
 Always-on masks are generated at 390x390 rather than rescaled from FR965.
 Each exposes at most 9.1% of the circular screen even over an entirely white
 frame, and their openings are disjoint so each pixel turns off every other

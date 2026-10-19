@@ -48,8 +48,16 @@ module lib {
         dc.fillPolygon(transformedCoords);
     }
 
+    function setBackgroundColor(dc as Graphics.Dc) as Void {
+        dc.setColor(Graphics.COLOR_TRANSPARENT, Graphics.COLOR_TRANSPARENT);
+    }
+
     function drawBackground(dc as Graphics.Dc, dx as Lang.Number, dy as Lang.Number) as Void {
         dc.drawBitmap(0, 0, WatchUi.loadResource(Rez.Drawables.background));
+    }
+
+    function drawBackgroundAod(dc as Graphics.Dc, dx as Lang.Number, dy as Lang.Number) as Void {
+        self.drawBackground(dc, dx, dy);
     }
 
     function drawTextXTiny(dc as Graphics.Dc, x as Lang.Number, y as Lang.Number, value as Lang.String,

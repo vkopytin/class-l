@@ -56,12 +56,20 @@ module lib {
         dc.fillPolygon(transformedCoords);
     }
 
+    function setBackgroundColor(dc as Graphics.Dc) as Void {
+        dc.setColor(Graphics.COLOR_TRANSPARENT, Graphics.COLOR_TRANSPARENT);
+    }
+
     function drawBackground(dc as Graphics.Dc, dx as Lang.Number, dy as Lang.Number) as Void {
         for (var i = 0; i < 16; i++) {
             var x = (i % 4) * 65 - dx;
             var y = (i / 4) * 65 - dy;
             dc.drawBitmap(x, y, WatchUi.loadResource(self.pieces[i]));
         }
+    }
+
+    function drawBackgroundAod(dc as Graphics.Dc, dx as Lang.Number, dy as Lang.Number) as Void {
+        self.drawBackground(dc, dx, dy);
     }
 
     function drawTextXTiny(dc as Graphics.Dc, x as Lang.Number, y as Lang.Number, value as Lang.String,

@@ -15,9 +15,7 @@ module lib {
         Rez.Drawables.bg_bl_bl, Rez.Drawables.bg_bl_br, Rez.Drawables.bg_br_bl, Rez.Drawables.bg_br_br
     ];
 
-    function initialize() as Void {
-
-    }
+    function initialize() as Void {}
 
     function drawHourHand(dc as Graphics.Dc, options as DrawHandOptions) {
         var hourHandCoords = WatchUi.loadResource(Rez.JsonData.hourCoordinates);
@@ -56,12 +54,20 @@ module lib {
         dc.fillPolygon(transformedCoords);
     }
 
+    function setBackgroundColor(dc as Graphics.Dc) as Void {
+        dc.setColor(Graphics.COLOR_TRANSPARENT, Graphics.COLOR_TRANSPARENT);
+    }
+
     function drawBackground(dc as Graphics.Dc, dx as Lang.Number, dy as Lang.Number) as Void {
         for (var i = 0; i < 16; i++) {
             var x = (i % 4) * 70 - dx;
             var y = (i / 4) * 70 - dy;
             dc.drawBitmap(x, y, WatchUi.loadResource(self.pieces[i]));
         }
+    }
+
+    function drawBackgroundAod(dc as Graphics.Dc, dx as Lang.Number, dy as Lang.Number) as Void {
+        self.drawBackground(dc, dx, dy);
     }
 
     function drawTextXTiny(dc as Graphics.Dc, x as Lang.Number, y as Lang.Number, value as Lang.String,
@@ -215,5 +221,4 @@ module lib {
                 return ["\uF00D", Rez.Fonts.weather1];
         }
     }
-
 }

@@ -15,6 +15,22 @@
     <bitmap id="background13" filename="background13.png" />
     <bitmap id="background14" filename="background14.png" />
     <bitmap id="background15" filename="background15.png" />
+    <bitmap id="backgroundAod0" filename="backgroundAod0.png" />
+    <bitmap id="backgroundAod1" filename="backgroundAod1.png" />
+    <bitmap id="backgroundAod2" filename="backgroundAod2.png" />
+    <bitmap id="backgroundAod3" filename="backgroundAod3.png" />
+    <bitmap id="backgroundAod4" filename="backgroundAod4.png" />
+    <bitmap id="backgroundAod5" filename="backgroundAod5.png" />
+    <bitmap id="backgroundAod6" filename="backgroundAod6.png" />
+    <bitmap id="backgroundAod7" filename="backgroundAod7.png" />
+    <bitmap id="backgroundAod8" filename="backgroundAod8.png" />
+    <bitmap id="backgroundAod9" filename="backgroundAod9.png" />
+    <bitmap id="backgroundAod10" filename="backgroundAod10.png" />
+    <bitmap id="backgroundAod11" filename="backgroundAod11.png" />
+    <bitmap id="backgroundAod12" filename="backgroundAod12.png" />
+    <bitmap id="backgroundAod13" filename="backgroundAod13.png" />
+    <bitmap id="backgroundAod14" filename="backgroundAod14.png" />
+    <bitmap id="backgroundAod15" filename="backgroundAod15.png" />
     <bitmap id="batteryLevel" filename="battery-level.png" />
     <bitmap id="aod" filename="aod-1.png" />
     <bitmap id="aodAlt" filename="aod-1-alt.png" />

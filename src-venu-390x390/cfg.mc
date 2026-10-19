@@ -4,7 +4,6 @@ using Toybox.WatchUi;
 
 // FR965 OLED layout scaled to 390x390 for the original Venu.
 module cfg {
-    const opaqueBuffer = true;
     const bufferDx = 0;
     const bufferDy = 0;
     const bufferWidth = 390;
@@ -19,7 +18,8 @@ module cfg {
     const minutesClockY = 167.511;
     const analogClockX = 195.0;
     const analogClockY = 167.511;
-    const analogClockClip = [110, 82, 170, 171];
+    // Fill the entire buffer so text blends against the opaque artwork.
+    const analogClockClip = [0, 0, bufferWidth, bufferHeight];
     const initClip = [[-9.0, -81.0], [-9.0, 36.0], [9.0, 36.0], [9.0, -81.0]];
 
     const digitalX = 195;

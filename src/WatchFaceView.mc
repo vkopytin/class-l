@@ -75,6 +75,7 @@ class WatchFaceView extends WatchUi.WatchFace {
             isBurnInProtection = true;
         }
         MainTimer.stop();
+        self.bufferSecond = null;
         self.engineTick(MainTimer.DELTA_TIME);
     }
 
@@ -84,12 +85,13 @@ class WatchFaceView extends WatchUi.WatchFace {
         self.updateBuffer(Time.now().value());
         dc.clearClip();
         // WatchFace.onUpdate(dc);
-        lib.drawBackground(dc, 0, 0);
-        dc.drawBitmap(cfg.bufferDx, cfg.bufferDy, self.buffer);
-
         if (isBurnInProtection) {
+            lib.drawBackgroundAod(dc, 0, 0);
+            dc.drawBitmap(cfg.bufferDx, cfg.bufferDy, self.buffer);
             Gfx.drawAlwaysOn(dc);
         } else {
+            lib.drawBackground(dc, 0, 0);
+            dc.drawBitmap(cfg.bufferDx, cfg.bufferDy, self.buffer);
             srv.seconds.draw(dc);
         }
     }
@@ -144,14 +146,15 @@ class WatchFaceView extends WatchUi.WatchFace {
 
     // Render the cached background and data, excluding the animated seconds hand.
     function ultraUpdate(dc as Graphics.Dc) as Void {
-        // Legacy OLED buffers cannot retain anti-aliased text over transparency.
-        var opaque = (cfg has :opaqueBuffer) && cfg.opaqueBuffer;
-        dc.setColor(Graphics.COLOR_TRANSPARENT, opaque ? Graphics.COLOR_BLACK : Graphics.COLOR_TRANSPARENT);
+        lib.setBackgroundColor(dc);
         dc.clear();
-        if (!opaque) {
-            dc.setClip(cfg.analogClockClip[0], cfg.analogClockClip[1], cfg.analogClockClip[2], cfg.analogClockClip[3]);
+        dc.setClip(cfg.analogClockClip[0], cfg.analogClockClip[1], cfg.analogClockClip[2], cfg.analogClockClip[3]);
+        // toDO: move this logic to the per device lib module
+        if (isBurnInProtection) {
+            lib.drawBackgroundAod(dc, cfg.bufferDx, cfg.bufferDy);
+        } else {
+            lib.drawBackground(dc, cfg.bufferDx, cfg.bufferDy);
         }
-        lib.drawBackground(dc, cfg.bufferDx, cfg.bufferDy);
         dc.clearClip();
 
         srv.drawAll(dc);
