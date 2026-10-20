@@ -70,6 +70,12 @@ legacysagadarthvader.resourcePath = $(fenix6.resourcePath)
 vivoactive4.sourcePath = $(srcBase);src-vivoactive4-260x260;src-weather-api-compact
 vivoactive4.resourcePath = $(base.resourcePath);resources-vivoactive4
 
+# Vivoactive 4S uses Fenix 6X low-memory rendering with native 218x218 artwork.
+vivoactive4s.sourcePath = $(srcBase);src-vivoactive4s-218x218;src-weather-api-compact
+vivoactive4s.resourcePath = $(base.resourcePath);resources-vivoactive4s
+legacyherocaptainmarvel.sourcePath = $(vivoactive4s.sourcePath)
+legacyherocaptainmarvel.resourcePath = $(vivoactive4s.resourcePath)
+
 # Fenix 7S uses Fenix 6S artwork with Fenix 7 bitmap rendering.
 fenix7s.sourcePath = $(srcBase);src-fenix7s-240x240
 fenix7s.resourcePath = $(base.resourcePath);resources-fenix7s

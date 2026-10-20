@@ -15,9 +15,9 @@ Hardware specifications come from the bundled SDK 9.2.0 [Device Reference](~/App
 | [ ]     | fenix5s                 | —              | 218x218 | —       | [ ]  | 3.1 |
 | [ ]     | fr255s                  | —              | 218x218 | —       | [ ]  | 5.2 |
 | [ ]     | fr255sm                 | —              | 218x218 | —       | [ ]  | 5.2 |
-| [ ]     | legacyherocaptainmarvel | —              | 218x218 | —       | [ ]  | —   |
+| [ ]     | legacyherocaptainmarvel | —              | 218x218 | —       | [ ]  | 3.3 |
 | [ ]     | legacysagarey           | —              | 218x218 | —       | [ ]  | —   |
-| [ ]     | vivoactive4s            | —              | 218x218 | —       | [ ]  | 3.3 |
+| [x]     | vivoactive4s            | vivoactive4s   | 218x218 | [x]     | [ ]  | 3.3 |
 | [ ]     | approachs60             | —              | 240x240 | —       | [ ]  | 2.4 |
 | [ ]     | d2charlie               | —              | 240x240 | —       | [ ]  | —   |
 | [ ]     | d2delta                 | —              | 240x240 | —       | [ ]  | —   |
