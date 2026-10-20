@@ -22,17 +22,17 @@ module lib {
     function initialize() {}
 
     function drawHourHand(dc as Graphics.Dc, options as DrawHandOptions) {
-        options[:transform].translate(-8.3846, -31.8615);
+        options[:transform].translate(-8.0, -31.0);
         dc.drawBitmap2(0, 0, self.hourHandResource, options);
     }
 
     function drawMinuteHand(dc as Graphics.Dc, options as DrawHandOptions) {
-        options[:transform].translate(-7.5462, -49.4692);
+        options[:transform].translate(-7.0, -49.0);
         dc.drawBitmap2(0, 0, self.minuteHandResource, options);
     }
 
     function drawSecondsHand(dc as Graphics.Dc, options as DrawHandOptions) {
-        options[:transform].translate(-4.1923, -44.4385);
+        options[:transform].translate(-4.0, -44.0);
         dc.drawBitmap2(0, 0, self.secondsHandResource, options);
     }
 
