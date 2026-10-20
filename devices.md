@@ -12,10 +12,10 @@ Hardware specifications come from the bundled SDK 9.2.0 [Device Reference](~/App
 
 | Enabled | Device ID               | Base Impl      | Screen  | Low mem | OLED | API |
 | ------- | ----------------------- | -------------- | ------- | ------- | ---- | --- |
-| [ ]     | fenix5s                 | —              | 218x218 | —       | [ ]  | 3.1 |
-| [ ]     | fr255s                  | —              | 218x218 | —       | [ ]  | 5.2 |
-| [ ]     | fr255sm                 | —              | 218x218 | —       | [ ]  | 5.2 |
-| [ ]     | legacyherocaptainmarvel | —              | 218x218 | —       | [ ]  | 3.3 |
+| [x]     | fenix5s                 | fenix5s        | 218x218 | —       | [ ]  | 3.1 |
+| [x]     | fr255s                  | fr255s         | 218x218 | [ ]     | [ ]  | 5.2 |
+| [x]     | fr255sm                 | —              | 218x218 | —       | [ ]  | 5.2 |
+| [x]     | legacyherocaptainmarvel | vivoactive4s   | 218x218 | —       | [ ]  | 3.3 |
 | [ ]     | legacysagarey           | —              | 218x218 | —       | [ ]  | —   |
 | [x]     | vivoactive4s            | vivoactive4s   | 218x218 | [x]     | [ ]  | 3.3 |
 | [ ]     | approachs60             | —              | 240x240 | —       | [ ]  | 2.4 |

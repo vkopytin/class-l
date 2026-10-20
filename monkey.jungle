@@ -6,6 +6,15 @@ resourcesBase = resources
 base.sourcePath = $(srcBase)
 base.resourcePath = $(resourcesBase)
 
+fenix5s.sourcePath = $(srcBase);src-fenix5s-218x218;src-weather-open
+fenix5s.resourcePath = $(base.resourcePath);resources-vivoactive4s;res-weather-open
+
+# FR255S: Fenix 7 native bitmap rendering with 218x218 board artwork.
+fr255s.sourcePath = $(srcBase);src-fr255s-218x218
+fr255s.resourcePath = $(base.resourcePath);resources-fr255s
+fr255sm.sourcePath = $(srcBase);src-fr255s-218x218
+fr255sm.resourcePath = $(base.resourcePath);resources-fr255s
+
 fenix5x.sourcePath = $(srcBase);src-fenix5x-240x240;src-weather-open
 fenix5x.resourcePath = $(base.resourcePath);resources-fenix5x;res-weather-open
 fr645.sourcePath = $(srcBase);src-fenix5x-240x240;src-weather-open
