@@ -84,6 +84,8 @@ vivoactive4s.sourcePath = $(srcBase);src-vivoactive4s-218x218;src-weather-api-co
 vivoactive4s.resourcePath = $(base.resourcePath);resources-vivoactive4s
 legacyherocaptainmarvel.sourcePath = $(vivoactive4s.sourcePath)
 legacyherocaptainmarvel.resourcePath = $(vivoactive4s.resourcePath)
+legacysagarey.sourcePath = $(vivoactive4s.sourcePath)
+legacysagarey.resourcePath = $(vivoactive4s.resourcePath)
 
 # Fenix 7S uses Fenix 6S artwork with Fenix 7 bitmap rendering.
 fenix7s.sourcePath = $(srcBase);src-fenix7s-240x240
