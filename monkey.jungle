@@ -17,17 +17,19 @@ fr255sm.resourcePath = $(base.resourcePath);resources-fr255s
 
 fenix5x.sourcePath = $(srcBase);src-fenix5x-240x240;src-weather-open
 fenix5x.resourcePath = $(base.resourcePath);resources-fenix5x;res-weather-open
-fr645.sourcePath = $(srcBase);src-fenix5x-240x240;src-weather-open
-fr645.resourcePath = $(base.resourcePath);resources-fenix5x
-fr645m.sourcePath = $(srcBase);src-fenix5x-240x240;src-weather-open
-fr645m.resourcePath = $(base.resourcePath);resources-fenix5x
+fr645.sourcePath = $(fenix5x.sourcePath)
+fr645.resourcePath = $(fenix5x.resourcePath)
+fr645m.sourcePath = $(fenix5x.sourcePath)
+fr645m.resourcePath = $(fenix5x.resourcePath)
+fr935.sourcePath = $(fenix5x.sourcePath)
+fr935.resourcePath = $(fenix5x.resourcePath)
 
 vivoactive3.sourcePath = $(srcBase);src-vivoactive3-240x240;src-weather-open
 vivoactive3.resourcePath = $(base.resourcePath);resources-fenix5x;res-weather-open
-vivoactive3d.sourcePath = $(srcBase);src-vivoactive3-240x240;src-weather-open
-vivoactive3d.resourcePath = $(base.resourcePath);resources-fenix5x;res-weather-open
-vivoactive3mlte.sourcePath = $(srcBase);src-vivoactive3-240x240;src-weather-open
-vivoactive3mlte.resourcePath = $(base.resourcePath);resources-fenix5x;res-weather-open
+vivoactive3d.sourcePath = $(vivoactive3.sourcePath)
+vivoactive3d.resourcePath = $(vivoactive3.resourcePath)
+vivoactive3mlte.sourcePath = $(vivoactive3.sourcePath)
+vivoactive3mlte.resourcePath = $(vivoactive3.resourcePath)
 
 vivoactive3m.sourcePath = $(srcBase);src-vivoactive3-240x240;src-weather-api-compact
 vivoactive3m.resourcePath = $(base.resourcePath);resources-fenix5x
@@ -68,13 +70,14 @@ fenix6.sourcePath = $(srcBase);src-fenix6-260x260;src-weather-api-compact
 fenix6.resourcePath = $(base.resourcePath);resources-fenix6
 fenix6pro.sourcePath = $(fenix6.sourcePath)
 fenix6pro.resourcePath = $(fenix6.resourcePath)
+legacysagadarthvader.sourcePath = $(fenix6.sourcePath)
+legacysagadarthvader.resourcePath = $(fenix6.resourcePath)
+legacyherofirstavenger.sourcePath = $(fenix6.sourcePath)
+legacyherofirstavenger.resourcePath = $(fenix6.resourcePath)
 
 # Fenix 6X uses Fenix 6 low-memory rendering with Fenix 7X artwork.
 fenix6xpro.sourcePath = $(srcBase);src-fenix6x-280x280;src-weather-api-compact
 fenix6xpro.resourcePath = $(base.resourcePath);resources-fenix6x
-
-legacysagadarthvader.sourcePath = $(fenix6.sourcePath)
-legacysagadarthvader.resourcePath = $(fenix6.resourcePath)
 
 vivoactive4.sourcePath = $(srcBase);src-vivoactive4-260x260;src-weather-api-compact
 vivoactive4.resourcePath = $(base.resourcePath);resources-vivoactive4
