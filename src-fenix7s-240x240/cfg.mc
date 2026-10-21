@@ -34,13 +34,13 @@ module cfg {
     const vibrateIconX = 168;
     const vibrateIconY = 175;
 
-    const barometerX = 54;
-    const barometerY = 81;
+    const barometerX = 51;
+    const barometerY = 83;
     const barometerTextX = 51;
     const barometerTextY = 44;
 
-    const heartRateX = 218;
-    const heartRateY = 82;
+    const heartRateX = 221;
+    const heartRateY = 83;
     const heartRateTextX = 186;
     const heartRateTextY = 44;
 
