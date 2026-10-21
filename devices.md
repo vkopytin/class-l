@@ -25,13 +25,13 @@ Hardware specifications come from the bundled SDK 9.2.0 [Device Reference](~/App
 | [ ]     | d2deltas                | —              | 240x240 | —       | [ ]  | —   |           |
 | [ ]     | descentmk1              | —              | 240x240 | —       | [ ]  | —   |           |
 | [x]     | descentmk2s             | marqadventurer | 240x240 | [x]     | [ ]  | —   | x         |
-| [x]     | fenix5                  | fenix5x        | 240x240 | —       | [ ]  | —   |           |
-| [ ]     | fenix5plus              | —              | 240x240 | —       | [ ]  | —   |           |
-| [ ]     | fenix5splus             | —              | 240x240 | —       | [ ]  | —   |           |
+| [x]     | fenix5                  | fenix5x        | 240x240 | —       | [ ]  | —   | x         |
+| [x]     | fenix5plus              | fenix5plus     | 240x240 | —       | [ ]  | —   | x         |
+| [x]     | fenix5splus             | fenix5plus     | 240x240 | —       | [ ]  | —   | x         |
 | [x]     | fenix5x                 | fenix5x        | 240x240 | [x]     | [ ]  | —   | x         |
-| [ ]     | fenix5xplus             | —              | 240x240 | [x]     | [ ]  | 3.3 |           |
+| [x]     | fenix5xplus             | fenix5plus     | 240x240 | [x]     | [ ]  | 3.3 |           |
 | [x]     | fenix6s                 | marqadventurer | 240x240 | [x]     | [ ]  | —   |           |
-| [x]     | fenix6spro              | —              | 240x240 | —       | [ ]  | —   |           |
+| [x]     | fenix6spro              | marqadventurer | 240x240 | [x]     | [ ]  | —   |           |
 | [ ]     | fr245                   | —              | 240x240 | —       | [ ]  | 3.3 |           |
 | [ ]     | fr245m                  | —              | 240x240 | —       | [ ]  | 3.3 |           |
 | [x]     | fr645                   | fenix5x        | 240x240 | [x]     | [ ]  | 3.1 |           |
