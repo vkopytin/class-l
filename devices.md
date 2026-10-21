@@ -25,7 +25,7 @@ Hardware specifications come from the bundled SDK 9.2.0 [Device Reference](~/App
 | [ ]     | d2deltas                | —              | 240x240 | —       | [ ]  | —   |           |
 | [ ]     | descentmk1              | —              | 240x240 | —       | [ ]  | —   |           |
 | [x]     | descentmk2s             | marqadventurer | 240x240 | [x]     | [ ]  | —   | x         |
-| [ ]     | fenix5                  | —              | 240x240 | —       | [ ]  | —   |           |
+| [x]     | fenix5                  | fenix5x        | 240x240 | —       | [ ]  | —   |           |
 | [ ]     | fenix5plus              | —              | 240x240 | —       | [ ]  | —   |           |
 | [ ]     | fenix5splus             | —              | 240x240 | —       | [ ]  | —   |           |
 | [x]     | fenix5x                 | fenix5x        | 240x240 | [x]     | [ ]  | —   | x         |

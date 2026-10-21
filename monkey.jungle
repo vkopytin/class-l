@@ -23,6 +23,8 @@ fr645m.sourcePath = $(fenix5x.sourcePath)
 fr645m.resourcePath = $(fenix5x.resourcePath)
 fr935.sourcePath = $(fenix5x.sourcePath)
 fr935.resourcePath = $(fenix5x.resourcePath)
+fenix5.sourcePath = $(fenix5x.sourcePath)
+fenix5.resourcePath = $(fenix5x.resourcePath)
 
 vivoactive3.sourcePath = $(srcBase);src-vivoactive3-240x240;src-weather-open
 vivoactive3.resourcePath = $(base.resourcePath);resources-fenix5x;res-weather-open
