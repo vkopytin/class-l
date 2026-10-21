@@ -33,6 +33,13 @@ vivoactive3d.resourcePath = $(vivoactive3.resourcePath)
 vivoactive3mlte.sourcePath = $(vivoactive3.sourcePath)
 vivoactive3mlte.resourcePath = $(vivoactive3.resourcePath)
 
+fenix5plus.sourcePath = $(srcBase);src-fenix5plus-240x240;src-weather-open
+fenix5plus.resourcePath = $(base.resourcePath);resources-fenix5x;res-weather-open
+fenix5splus.sourcePath = $(fenix5plus.sourcePath)
+fenix5splus.resourcePath = $(fenix5plus.resourcePath)
+fenix5xplus.sourcePath = $(fenix5plus.sourcePath)
+fenix5xplus.resourcePath = $(fenix5plus.resourcePath)
+
 vivoactive3m.sourcePath = $(srcBase);src-vivoactive3-240x240;src-weather-api-compact
 vivoactive3m.resourcePath = $(base.resourcePath);resources-fenix5x
 # toDO: replace barometer with stress levels
