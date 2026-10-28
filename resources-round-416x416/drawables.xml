@@ -8,6 +8,6 @@
     <bitmap id="weatherConditions" filename="../resources-round-454x454/weather-conditions.png" packingFormat="png" scaleX="623" scaleY="379" />
     <bitmap id="moonPhaseTiles" filename="../resources-round-454x454/moon-phases-30x30.png" packingFormat="png" scaleX="288" scaleY="288" />
     <bitmap id="twilightTiles" filename="../resources-round-454x454/sunset-sunrise-tiles-40x40.png" packingFormat="png" scaleX="290" scaleY="44" />
-    <bitmap id="aod" filename="../resources-round-454x454/aod-1.png" packingFormat="png" scaleX="416" scaleY="416" />
-    <bitmap id="aodAlt" filename="../resources-round-454x454/aod-1-alt.png" packingFormat="png" scaleX="416" scaleY="416" />
+    <bitmap id="aod" filename="aod-1.png" packingFormat="png" />
+    <bitmap id="aodAlt" filename="aod-1-alt.png" packingFormat="png" />
 </drawables>

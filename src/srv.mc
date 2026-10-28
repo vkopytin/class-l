@@ -44,7 +44,13 @@ module srv {
             return 1;
         }
         var miValue = sample.getMin();
-        var diff = sample.getMax() - miValue;
+        var maxValue = sample.getMax();
+        // An iterator can exist without valid history (for example, when HR is off).
+        // Preserve the cached graph just as we do for an unavailable iterator.
+        if (miValue == null || maxValue == null) {
+            return 1;
+        }
+        var diff = maxValue - miValue;
         diff = diff == 0 ? 1 : diff;
         var height = cfg.graphHeight;
         var result = 0.0;

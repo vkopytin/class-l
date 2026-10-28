@@ -1,0 +1,14 @@
+<drawables>
+    <!-- FR965 artwork scaled by 416/454 at compile time. -->
+    <bitmap id="background" filename="../resources-round-454x454/clock-example.png" scaleX="416" scaleY="416" />
+    <!-- Without enhanced graphics, drawBitmap2 requires native-color sources. -->
+    <bitmap id="hourHand" filename="../resources-round-454x454/hourHand.png" automaticPalette="false" scaleX="26" scaleY="75" />
+    <bitmap id="minuteHand" filename="../resources-round-454x454/minuteHand.png" automaticPalette="false" scaleX="19" scaleY="91" />
+    <bitmap id="secondsHand" filename="../resources-round-454x454/secondsHand.png" automaticPalette="false" scaleX="15" scaleY="121" />
+    <bitmap id="batteryLevel" filename="../resources-round-454x454/battery-level.png" scaleX="57" scaleY="16" />
+    <bitmap id="weatherConditions" filename="../resources-round-454x454/weather-conditions.png" automaticPalette="false" scaleX="623" scaleY="379" />
+    <bitmap id="moonPhaseTiles" filename="../resources-round-454x454/moon-phases-30x30.png" automaticPalette="false" scaleX="288" scaleY="288" />
+    <bitmap id="twilightTiles" filename="../resources-round-454x454/sunset-sunrise-tiles-40x40.png" automaticPalette="false" scaleX="290" scaleY="44" />
+    <bitmap id="aod" filename="aod-1.png" />
+    <bitmap id="aodAlt" filename="aod-1-alt.png" />
+</drawables>

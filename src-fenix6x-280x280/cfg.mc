@@ -4,10 +4,10 @@ using Toybox.WatchUi;
 
 // Fenix 6 low-memory layout scaled to 280x280 (14/13).
 module cfg {
-    const bufferDx = 5;
-    const bufferDy = 5;
-    const bufferWidth = 275 - bufferDx;
-    const bufferHeight = 275 - bufferDy;
+    const bufferDx = 15;
+    const bufferDy = 14;
+    const bufferWidth = 265 - bufferDx;
+    const bufferHeight = 271 - bufferDy;
 
     const graphHeight = 10.7692;
     const graphWidth = 43.0769;
@@ -51,9 +51,9 @@ module cfg {
     const stepsTextY = 132 - bufferDy;
 
     const batteryX = 123 - bufferDx;
-    const batteryY = 246 - bufferDy;
+    const batteryY = 245 - bufferDy;
     const batteryWidth = 33;
-    const batteryHeight = 12;
+    const batteryHeight = 10;
     const batteryTextX = 140 - bufferDx;
     const batteryTextY = 254 - bufferDy;
 

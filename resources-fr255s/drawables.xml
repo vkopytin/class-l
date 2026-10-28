@@ -1,0 +1,12 @@
+<drawables>
+    <!-- Native board artwork is loaded without scaling. -->
+    <bitmap id="background" filename="../board/218x218/background.png" />
+    <bitmap id="batteryLevel" filename="../board/218x218/battery-level.png" />
+    <!-- Fenix 7 bitmap assets scaled by 218/260. -->
+    <bitmap id="hourHand" filename="../resources-fenix7/hourHand.png" scaleX="17" scaleY="40" />
+    <bitmap id="minuteHand" filename="../resources-fenix7/minuteHand.png" scaleX="15" scaleY="55" />
+    <bitmap id="secondsHand" filename="../resources-fenix7/secondsHand.png" scaleX="9" scaleY="64" />
+    <bitmap id="weatherConditions" filename="../resources-fenix7/weather-conditions.png" scaleX="570" scaleY="347" />
+    <bitmap id="moonPhaseTiles" filename="../resources-fenix7/moon-phases-20x20.png" scaleX="179" scaleY="179" />
+    <bitmap id="twilightTiles" filename="../resources-fenix7/sunset-sunrise-tiles-20x20.png" scaleX="132" scaleY="20" />
+</drawables>

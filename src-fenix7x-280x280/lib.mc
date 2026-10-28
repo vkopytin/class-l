@@ -7,8 +7,8 @@ typedef DrawHandOptions as { :transform as Graphics.AffineTransform };
 module lib {
     const moonPhaseTiles = WatchUi.loadResource(Rez.Drawables.moonPhaseTiles);
     const moonTileCoords = [
-        [16, 16],  [52, 16],  [86, 16],  [122, 16], [157, 16],  [192, 16],  [16, 58],   [52, 58],  [86, 58],
-        [122, 58], [157, 58], [192, 58], [16, 101],  [16, 101],   [52, 101],   [86, 101],   [122, 101], [157, 101],
+        [16, 16],   [52, 16],  [86, 16],  [122, 16], [157, 16],  [192, 16],  [16, 58],   [52, 58],   [86, 58],
+        [122, 58],  [157, 58], [192, 58], [16, 101], [16, 101],  [52, 101],  [86, 101],  [122, 101], [157, 101],
         [192, 101], [16, 143], [52, 143], [86, 143], [122, 143], [157, 143], [192, 143], [16, 186]
     ];
 
@@ -42,8 +42,16 @@ module lib {
         dc.drawBitmap2(0, 0, self.secondsHandResource, options);
     }
 
+    function setBackgroundColor(dc as Graphics.Dc) as Void {
+        dc.setColor(Graphics.COLOR_TRANSPARENT, Graphics.COLOR_TRANSPARENT);
+    }
+
     function drawBackground(dc as Graphics.Dc, dx as Lang.Number, dy as Lang.Number) as Void {
         dc.drawBitmap(0, 0, WatchUi.loadResource(Rez.Drawables.background));
+    }
+
+    function drawBackgroundAod(dc as Graphics.Dc, dx as Lang.Number, dy as Lang.Number) as Void {
+        self.drawBackground(dc, dx, dy);
     }
 
     function drawTextXTiny(dc as Graphics.Dc, x as Lang.Number, y as Lang.Number, value as Lang.String,

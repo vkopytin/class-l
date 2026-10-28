@@ -42,8 +42,8 @@ module cfg {
     const heartRateTextX = 356;
     const heartRateTextY = 83;
 
-    const stepsX = 240;
-    const stepsY = 170;
+    const stepsX = 419;
+    const stepsY = 297;
     const stepsTextX = 396;
     const stepsTextY = 215;
 
