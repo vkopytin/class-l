@@ -2,12 +2,16 @@ using Toybox.Graphics;
 using Toybox.Lang;
 using Toybox.WatchUi;
 
-typedef DrawHandOptions as { :transform as Gfx.AffineTransform };
+typedef DrawHandOptions as { :transform as Graphics.AffineTransform };
 
 module lib {
-    const hourRectangles = WatchUi.loadResource(Rez.JsonData.hourHandRectangles);
-    const minuteRectangles = WatchUi.loadResource(Rez.JsonData.minuteHandRectangles);
-    const secondsRectangles = WatchUi.loadResource(Rez.JsonData.secondsHandRectangles);
+    var textFonts = null;
+    const hourHandResource = WatchUi.loadResource(Rez.Drawables.hourHand);
+    const minuteHandResource = WatchUi.loadResource(Rez.Drawables.minuteHand);
+    const secondsHandResource = WatchUi.loadResource(Rez.Drawables.secondsHand);
+    const handScale = 390.0 / 454.0;
+    const handTransform = new Graphics.AffineTransform();
+    const handOptions = { :transform => self.handTransform, :filterMode => Graphics.FILTER_MODE_BILINEAR };
     const backgroundPieces = [
         [Rez.Drawables.background0, 0, 0], [Rez.Drawables.background1, 98, 0], [Rez.Drawables.background2, 195, 0],
         [Rez.Drawables.background3, 293, 0], [Rez.Drawables.background4, 0, 98], [Rez.Drawables.background5, 98, 98],
@@ -63,20 +67,22 @@ module lib {
 
     function initialize() {}
 
-    function drawHand(dc as Graphics.Dc, options as DrawHandOptions, rectangles) as Void {
-        for (var i = 0; i < rectangles.size(); i++) {
-            dc.setColor(rectangles[i][0], Graphics.COLOR_TRANSPARENT);
-            dc.fillPolygon(options[:transform].transformPoints(rectangles[i][1]));
-        }
+    function drawHand(dc as Graphics.Dc, options as DrawHandOptions, bitmap, pivotX, pivotY) as Void {
+        // Keep the caller's pivot transform intact for partial-update clipping.
+        self.handTransform.setToTranslation(0.0, 0.0);
+        self.handTransform.concatenate(options[:transform]);
+        self.handTransform.scale(self.handScale, self.handScale);
+        self.handTransform.translate(-pivotX, -pivotY);
+        dc.drawBitmap2(0, 0, bitmap, self.handOptions);
     }
     function drawHourHand(dc as Graphics.Dc, options as DrawHandOptions) as Void {
-        self.drawHand(dc, options, self.hourRectangles);
+        self.drawHand(dc, options, self.hourHandResource, 13.0, 66.0);
     }
     function drawMinuteHand(dc as Graphics.Dc, options as DrawHandOptions) as Void {
-        self.drawHand(dc, options, self.minuteRectangles);
+        self.drawHand(dc, options, self.minuteHandResource, 10.0, 88.0);
     }
     function drawSecondsHand(dc as Graphics.Dc, options as DrawHandOptions) as Void {
-        self.drawHand(dc, options, self.secondsRectangles);
+        self.drawHand(dc, options, self.secondsHandResource, 8.0, 92.0);
     }
     // Venu needs an opaque background for anti-aliased text.
     function setBackgroundColor(dc as Graphics.Dc) as Void {
@@ -97,7 +103,7 @@ module lib {
     }
     function drawTextXTiny(dc as Graphics.Dc, x as Lang.Number, y as Lang.Number, value as Lang.String,
                            justification as Graphics.TextJustification) as Void {
-        dc.drawText(x, y, Graphics.FONT_XTINY, value, justification);
+        dc.drawText(x, y, lib.textFont(Graphics.FONT_XTINY), value, justification);
     }
     function drawMoonPhaseTile(dc as Graphics.Dc, phase as Lang.Float) as Void {
         dc.drawBitmap(cfg.moonPhaseX, cfg.moonPhaseY, WatchUi.loadResource(self.moonTiles[(phase * 25).toNumber()]));
@@ -118,5 +124,18 @@ module lib {
                 return;
             }
         }
+    }
+    (:per_base)
+    function textFont(font as Graphics.FontDefinition) {
+        if (self.textFonts == null) {
+            self.textFonts = {};
+        }
+        if (!self.textFonts.hasKey(font)) {
+            // Selecting by FONT_* returns null on MARQ. Request its named
+            // face at the original line height to preserve the layout.
+            var scalable = Graphics.getVectorFont({ :face => "RobotoCondensedBold", :size => Graphics.getFontHeight(font) });
+            self.textFonts[font] = scalable == null ? font : scalable;
+        }
+        return self.textFonts[font];
     }
 }

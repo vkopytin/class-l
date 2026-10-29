@@ -314,9 +314,10 @@ module srv {
 
                 temp = temp.format("%d");
 
-                dc.drawText(x, y + offset, self.font, temp, Graphics.TEXT_JUSTIFY_LEFT);
+                var font = lib.textFont(self.font);
+                dc.drawText(x, y + offset, font, temp, Graphics.TEXT_JUSTIFY_LEFT);
                 dc.setColor(fontColor, Graphics.COLOR_TRANSPARENT);
-                dc.drawText(x + dc.getTextWidthInPixels(temp, self.font), y + offset, self.font, units,
+                dc.drawText(x + dc.getTextWidthInPixels(temp, font), y + offset, font, units,
                             Graphics.TEXT_JUSTIFY_LEFT);
             }
         }

@@ -31,7 +31,7 @@ module srv {
             dc.clearClip();
 
             dc.setColor(Graphics.COLOR_WHITE, Graphics.COLOR_TRANSPARENT);
-            dc.drawText(cfg.heartRateTextX, cfg.heartRateTextY, Graphics.FONT_XTINY, self.heartRate,
+            dc.drawText(cfg.heartRateTextX, cfg.heartRateTextY, lib.textFont(Graphics.FONT_XTINY), self.heartRate,
                         Graphics.TEXT_JUSTIFY_CENTER);
         }
     }

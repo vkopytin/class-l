@@ -1,0 +1,6 @@
+<drawables>
+    <!-- Filter the original hand artwork while scaling and rotating it. -->
+    <bitmap id="hourHand" filename="../resources-round-454x454/hourHand.png" packingFormat="png" />
+    <bitmap id="minuteHand" filename="../resources-round-454x454/minuteHand.png" packingFormat="png" />
+    <bitmap id="secondsHand" filename="../resources-round-454x454/secondsHand.png" packingFormat="png" />
+</drawables>

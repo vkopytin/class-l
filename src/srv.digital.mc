@@ -68,7 +68,8 @@ module srv {
 
         function draw(dc as Graphics.Dc) as Void {
             dc.setColor(Graphics.COLOR_WHITE, Graphics.COLOR_TRANSPARENT);
-            dc.drawText(cfg.digitalX, cfg.digitalY, Graphics.FONT_LARGE, self.time, Graphics.TEXT_JUSTIFY_CENTER);
+            dc.drawText(cfg.digitalX, cfg.digitalY, lib.textFont(Graphics.FONT_LARGE), self.time,
+                        Graphics.TEXT_JUSTIFY_CENTER);
 
             var font = WatchUi.loadResource(Rez.Fonts.system);
             dc.setColor(self.chargeColor, Graphics.COLOR_TRANSPARENT);
