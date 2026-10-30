@@ -1,0 +1,13 @@
+<drawables>
+    <!-- FR965 artwork at native Venu 2S resolution. -->
+    <bitmap id="background" filename="../resources-round-454x454/clock-example.png" scaleX="360" scaleY="360" packingFormat="png" />
+    <bitmap id="batteryLevel" filename="../resources-round-454x454/battery-level.png" scaleX="49" scaleY="14" packingFormat="png" />
+    <bitmap id="weatherConditions" filename="../resources-round-454x454/weather-conditions.png" scaleX="539" scaleY="328" packingFormat="png" />
+    <bitmap id="moonPhaseTiles" filename="../resources-round-454x454/moon-phases-30x30.png" scaleX="249" scaleY="249" packingFormat="png" />
+    <bitmap id="twilightTiles" filename="../resources-round-454x454/sunset-sunrise-tiles-40x40.png" scaleX="251" scaleY="38" packingFormat="png" />
+    <bitmap id="hourHand" filename="../resources-round-454x454/hourHand.png" packingFormat="png" automaticPalette="false" />
+    <bitmap id="minuteHand" filename="../resources-round-454x454/minuteHand.png" packingFormat="png" automaticPalette="false" />
+    <bitmap id="secondsHand" filename="../resources-round-454x454/secondsHand.png" packingFormat="png" automaticPalette="false" />
+    <bitmap id="aod" filename="aod-1.png" packingFormat="png" />
+    <bitmap id="aodAlt" filename="aod-1-alt.png" packingFormat="png" />
+</drawables>

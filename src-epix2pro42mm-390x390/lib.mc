@@ -125,7 +125,7 @@ module lib {
             }
         }
     }
-    (:per_base)
+    (:vector_font)
     function textFont(font as Graphics.FontDefinition) {
         if (self.textFonts == null) {
             self.textFonts = {};

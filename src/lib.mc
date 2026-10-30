@@ -2,6 +2,6 @@ import Toybox.Graphics;
 
 module lib {
 
-    (:per_device)
+    (:generic_font)
     function textFont(font as Graphics.FontDefinition) { return font; }
 }

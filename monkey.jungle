@@ -181,6 +181,12 @@ fenix947mm.resourcePath = $(fr965.resourcePath)
 fenix9pro47mm.sourcePath = $(fr965.sourcePath)
 fenix9pro47mm.resourcePath = $(fr965.resourcePath)
 
+# Venu 2S: FR965 OLED layout and artwork scaled to 360x360.
+venu2s.sourcePath = $(srcBase);src-venu2s-360x360
+venu2s.resourcePath = $(base.resourcePath);resources-round-360x360
+fr265s.sourcePath = $(venu2s.sourcePath)
+fr265s.resourcePath = $(venu2s.resourcePath)
+
 # 416x416 OLED layout and artwork derived from FR965.
 venu2.sourcePath = $(srcBase);src-venu2-416x416
 venu2.resourcePath = $(base.resourcePath);resources-round-416x416
@@ -234,7 +240,7 @@ descentg2.excludeAnnotations = $(instinctcrossoveramoled.excludeAnnotations)
 
 epix2pro42mm.sourcePath = $(srcBase);src-epix2pro42mm-390x390
 epix2pro42mm.resourcePath = $(base.resourcePath);resources-venu;resources-epix2pro42mm-390x390
-epix2pro42mm.excludeAnnotations = per_base
+epix2pro42mm.excludeAnnotations = vector_font
 venu3s.sourcePath = $(epix2pro42mm.sourcePath)
 venu3s.resourcePath = $(epix2pro42mm.resourcePath)
 venu3s.excludeAnnotations = $(epix2pro42mm.excludeAnnotations)
@@ -243,10 +249,10 @@ venu441mm.resourcePath = $(epix2pro42mm.resourcePath)
 venu441mm.excludeAnnotations = $(epix2pro42mm.excludeAnnotations)
 marq2.sourcePath = $(epix2pro42mm.sourcePath)
 marq2.resourcePath = $(epix2pro42mm.resourcePath)
-marq2.excludeAnnotations = per_device
+marq2.excludeAnnotations = generic_font
 marq2aviator.sourcePath = $(epix2pro42mm.sourcePath);src-marq2aviator
 marq2aviator.resourcePath = $(epix2pro42mm.resourcePath)
-marq2aviator.excludeAnnotations = per_device
+marq2aviator.excludeAnnotations = generic_font
 fr57042mm.sourcePath = $(epix2pro42mm.sourcePath)
 fr57042mm.resourcePath = $(epix2pro42mm.resourcePath)
 fr57042mm.excludeAnnotations = $(epix2pro42mm.excludeAnnotations)

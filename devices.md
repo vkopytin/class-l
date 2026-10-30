@@ -81,8 +81,8 @@ Hardware specifications come from the bundled SDK 9.2.0 [Device Reference](~/App
 | [x]     | fenix7xpronowifi        | fenix7x                 | 280x280 | [ ]     | [ ]  | —   | [x]       |
 | [x]     | fenix8solar51mm         | fenix7x                 | 280x280 | [ ]     | [ ]  | 6.0 | [x]       |
 | [x]     | fenix9prosolar51mm      | fenix7x                 | 280x280 | [ ]     | [ ]  | 6.0 | [x]       |
-| [ ]     | fr265s                  | —                       | 360x360 | —       | [x]  | 5.2 | [x]       |
-| [ ]     | venu2s                  | —                       | 360x360 | —       | [x]  | 5.0 | [x]       |
+| [x]     | fr265s                  | venu2s                  | 360x360 | —       | [x]  | 5.2 | [x]       |
+| [x]     | venu2s                  | venu2s                  | 360x360 | [ ]     | [x]  | 5.0 | [x]       |
 | [ ]     | approachs50             | —                       | 390x390 | —       | [x]  | 5.1 | [ ]       |
 | [x]     | approachs7042mm         | —                       | 390x390 | —       | [x]  | —   | [x]       |
 | [ ]     | d2air                   | —                       | 390x390 | —       | [x]  | 3.2 | [x]       |
