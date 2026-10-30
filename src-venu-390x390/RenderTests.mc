@@ -6,8 +6,14 @@ import Toybox.WatchUi;
 
 (:test)
 class VenuRenderTestView extends WatchFaceView {
+    var renders = 0;
+
     function initialize() { WatchFaceView.initialize(); }
     function engineTick(deltaTime) as Void {}
+    function ultraUpdate(dc as Graphics.Dc) as Void {
+        WatchFaceView.ultraUpdate(dc);
+        self.renders += 1;
+    }
 }
 
 (:test)
@@ -20,21 +26,26 @@ function venuLegacyOledRendering(logger) {
     var view = new VenuRenderTestView();
     view.onLayout(dc);
     view.onUpdate(dc);
-    Test.assert(lib.backgroundPieces == lib.activeBackgroundPieces);
     // A mode change must refresh the cached background within the same second.
     view.updateBuffer(100);
+    var rendersBeforeSleep = view.renders;
     view.onEnterSleep();
     view.updateBuffer(100);
-    Test.assert(lib.backgroundPieces == lib.alwaysOnBackgroundPieces);
-    for (var pieceIndex = 0; pieceIndex < lib.alwaysOnBackgroundPieces.size(); pieceIndex++) {
-        var piece = lib.alwaysOnBackgroundPieces[pieceIndex];
-        var tile = WatchUi.loadResource(piece[0]);
-        Test.assert(piece[1] + tile.getWidth() <= 390);
-        Test.assert(piece[2] + tile.getHeight() <= 390);
+    Test.assert(view.renders == rendersBeforeSleep + 1);
+    var backgrounds = [lib.backgroundPieces, lib.alwaysOnBackgroundPieces];
+    for (var backgroundIndex = 0; backgroundIndex < backgrounds.size(); backgroundIndex++) {
+        var pieces = backgrounds[backgroundIndex];
+        for (var pieceIndex = 0; pieceIndex < pieces.size(); pieceIndex++) {
+            var piece = pieces[pieceIndex];
+            var tile = WatchUi.loadResource(piece[0]);
+            Test.assert(piece[1] + tile.getWidth() <= 390);
+            Test.assert(piece[2] + tile.getHeight() <= 390);
+        }
     }
+    var rendersBeforeWake = view.renders;
     view.onExitSleep();
     view.updateBuffer(100);
-    Test.assert(lib.backgroundPieces == lib.activeBackgroundPieces);
+    Test.assert(view.renders == rendersBeforeWake + 1);
     for (var phase = 0; phase < lib.moonTiles.size(); phase++) {
         lib.drawMoonPhaseTile(dc, phase / 25.0);
     }

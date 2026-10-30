@@ -72,6 +72,8 @@ module Gfx {
         return new Graphics.BufferedBitmap(options);
     }
 
+    // Venu supplies its own always-on drawing in its device sources.
+    (:gfx_shim_no_aod)
     function drawAlwaysOn(dc as Graphics.Dc) as Void {}
 
 }
