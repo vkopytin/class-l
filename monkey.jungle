@@ -10,9 +10,9 @@ fenix5s.sourcePath = $(srcBase);src-fenix5s-218x218;src-gfx-shim;src-weather-ope
 fenix5s.resourcePath = $(base.resourcePath);resources-vivoactive4s;res-weather-open
 
 # FR255S: Fenix 7 native bitmap rendering with 218x218 board artwork.
-fr255s.sourcePath = $(srcBase);src-fr255s-218x218
+fr255s.sourcePath = $(srcBase);src-fr255s-218x218;src-gfx
 fr255s.resourcePath = $(base.resourcePath);resources-fr255s
-fr255sm.sourcePath = $(srcBase);src-fr255s-218x218
+fr255sm.sourcePath = $(srcBase);src-fr255s-218x218;src-gfx
 fr255sm.resourcePath = $(base.resourcePath);resources-fr255s
 
 fenix5x.sourcePath = $(srcBase);src-fenix5x-240x240;src-gfx-shim;src-weather-open
@@ -115,12 +115,12 @@ legacysagarey.sourcePath = $(vivoactive4s.sourcePath)
 legacysagarey.resourcePath = $(vivoactive4s.resourcePath)
 
 # Fenix 7S uses Fenix 6S artwork with Fenix 7 bitmap rendering.
-fenix7s.sourcePath = $(srcBase);src-fenix7s-240x240
+fenix7s.sourcePath = $(srcBase);src-fenix7s-240x240;src-gfx
 fenix7s.resourcePath = $(base.resourcePath);resources-fenix7s
 fenix7spro.sourcePath = $(fenix7s.sourcePath)
 fenix7spro.resourcePath = $(fenix7s.resourcePath)
 
-fenix7.sourcePath = $(srcBase);src-fenix7-260x260;src-weather-api
+fenix7.sourcePath = $(srcBase);src-fenix7-260x260;src-gfx;src-weather-api
 fenix7.resourcePath = $(base.resourcePath);resources-fenix7
 fenix7pro.sourcePath = $(fenix7.sourcePath)
 fenix7pro.resourcePath = $(fenix7.resourcePath)
@@ -137,7 +137,7 @@ fenix8solar47mm.resourcePath = $(fenix7.resourcePath)
 fenix9prosolar47mm.sourcePath = $(fenix7.sourcePath)
 fenix9prosolar47mm.resourcePath = $(fenix7.resourcePath)
 
-fenix7x.sourcePath = $(srcBase);src-fenix7x-280x280;src-weather-api
+fenix7x.sourcePath = $(srcBase);src-fenix7x-280x280;src-gfx;src-weather-api
 fenix7x.resourcePath = $(base.resourcePath);resources-fenix7x
 fenix7xpro.sourcePath = $(fenix7x.sourcePath)
 fenix7xpro.resourcePath = $(fenix7x.resourcePath)
@@ -152,71 +152,100 @@ fenix8solar51mm.resourcePath = $(fenix7x.resourcePath)
 fenix9prosolar51mm.sourcePath = $(fenix7x.sourcePath)
 fenix9prosolar51mm.resourcePath = $(fenix7x.resourcePath)
 
-fr965.sourcePath = $(srcBase);src-fr965-454x454
+fr965.sourcePath = $(srcBase);src-fr965-454x454;src-gfx
 fr965.resourcePath = $(base.resourcePath);resources-round-454x454
+fr965.excludeAnnotations = gfx_no_aod
 fenix847mm.sourcePath = $(fr965.sourcePath)
+fenix847mm.excludeAnnotations = $(fr965.excludeAnnotations)
 fenix847mm.resourcePath = $(fr965.resourcePath)
 fenix8pro47mm.sourcePath = $(fr965.sourcePath)
+fenix8pro47mm.excludeAnnotations = $(fr965.excludeAnnotations)
 fenix8pro47mm.resourcePath = $(fr965.resourcePath)
 venu3.sourcePath = $(fr965.sourcePath)
+venu3.excludeAnnotations = $(fr965.excludeAnnotations)
 venu3.resourcePath = $(fr965.resourcePath)
 venu445mm.sourcePath = $(fr965.sourcePath)
+venu445mm.excludeAnnotations = $(fr965.excludeAnnotations)
 venu445mm.resourcePath = $(fr965.resourcePath)
 fr970.sourcePath = $(fr965.sourcePath)
+fr970.excludeAnnotations = $(fr965.excludeAnnotations)
 fr970.resourcePath = $(fr965.resourcePath)
 fr57047mm.sourcePath = $(fr965.sourcePath)
+fr57047mm.excludeAnnotations = $(fr965.excludeAnnotations)
 fr57047mm.resourcePath = $(fr965.resourcePath)
 epix2pro51mm.sourcePath = $(fr965.sourcePath)
+epix2pro51mm.excludeAnnotations = $(fr965.excludeAnnotations)
 epix2pro51mm.resourcePath = $(fr965.resourcePath)
 descentmk351mm.sourcePath = $(fr965.sourcePath)
+descentmk351mm.excludeAnnotations = $(fr965.excludeAnnotations)
 descentmk351mm.resourcePath = $(fr965.resourcePath)
 d2mach2.sourcePath = $(fr965.sourcePath)
+d2mach2.excludeAnnotations = $(fr965.excludeAnnotations)
 d2mach2.resourcePath = $(fr965.resourcePath)
 d2mach2pro.sourcePath = $(fr965.sourcePath)
+d2mach2pro.excludeAnnotations = $(fr965.excludeAnnotations)
 d2mach2pro.resourcePath = $(fr965.resourcePath)
 approachs7247mm.sourcePath = $(fr965.sourcePath)
+approachs7247mm.excludeAnnotations = $(fr965.excludeAnnotations)
 approachs7247mm.resourcePath = $(fr965.resourcePath)
 fenix947mm.sourcePath = $(fr965.sourcePath)
+fenix947mm.excludeAnnotations = $(fr965.excludeAnnotations)
 fenix947mm.resourcePath = $(fr965.resourcePath)
 fenix9pro47mm.sourcePath = $(fr965.sourcePath)
+fenix9pro47mm.excludeAnnotations = $(fr965.excludeAnnotations)
 fenix9pro47mm.resourcePath = $(fr965.resourcePath)
 
 # Venu 2S: FR965 OLED layout and artwork scaled to 360x360.
-venu2s.sourcePath = $(srcBase);src-venu2s-360x360
+venu2s.sourcePath = $(srcBase);src-venu2s-360x360;src-gfx
 venu2s.resourcePath = $(base.resourcePath);resources-round-360x360
+venu2s.excludeAnnotations = gfx_no_aod
 fr265s.sourcePath = $(venu2s.sourcePath)
 fr265s.resourcePath = $(venu2s.resourcePath)
+fr265s.excludeAnnotations = $(venu2s.excludeAnnotations)
 
 # 416x416 OLED layout and artwork derived from FR965.
-venu2.sourcePath = $(srcBase);src-venu2-416x416
+venu2.sourcePath = $(srcBase);src-venu2-416x416;src-gfx
 venu2.resourcePath = $(base.resourcePath);resources-round-416x416
+venu2.excludeAnnotations = gfx_no_aod
 venu2plus.sourcePath = $(venu2.sourcePath)
+venu2plus.excludeAnnotations = $(venu2.excludeAnnotations)
 venu2plus.resourcePath = $(venu2.resourcePath)
 epix2.sourcePath = $(venu2.sourcePath)
+epix2.excludeAnnotations = $(venu2.excludeAnnotations)
 epix2.resourcePath = $(venu2.resourcePath)
 epix2pro47mm.sourcePath = $(venu2.sourcePath)
+epix2pro47mm.excludeAnnotations = $(venu2.excludeAnnotations)
 epix2pro47mm.resourcePath = $(venu2.resourcePath)
 d2airx10.sourcePath = $(venu2.sourcePath)
+d2airx10.excludeAnnotations = $(venu2.excludeAnnotations)
 d2airx10.resourcePath = $(venu2.resourcePath)
 d2mach1.sourcePath = $(venu2.sourcePath)
+d2mach1.excludeAnnotations = $(venu2.excludeAnnotations)
 d2mach1.resourcePath = $(venu2.resourcePath)
 fr265.sourcePath = $(venu2.sourcePath)
+fr265.excludeAnnotations = $(venu2.excludeAnnotations)
 fr265.resourcePath = $(venu2.resourcePath)
 fenixe.sourcePath = $(venu2.sourcePath)
+fenixe.excludeAnnotations = $(venu2.excludeAnnotations)
 fenixe.resourcePath = $(venu2.resourcePath)
 fenix843mm.sourcePath = $(venu2.sourcePath)
+fenix843mm.excludeAnnotations = $(venu2.excludeAnnotations)
 fenix843mm.resourcePath = $(venu2.resourcePath)
 fenix943mm.sourcePath = $(venu2.sourcePath)
+fenix943mm.excludeAnnotations = $(venu2.excludeAnnotations)
 fenix943mm.resourcePath = $(venu2.resourcePath)
 fenix9pro43mm.sourcePath = $(venu2.sourcePath)
+fenix9pro43mm.excludeAnnotations = $(venu2.excludeAnnotations)
 fenix9pro43mm.resourcePath = $(venu2.resourcePath)
 
-instinct3amoled50mm.sourcePath = $(srcBase);src-instinct3amoled50mm-416x416
+instinct3amoled50mm.sourcePath = $(srcBase);src-instinct3amoled50mm-416x416;src-gfx
 instinct3amoled50mm.resourcePath = $(base.resourcePath);resources-instinct3amoled50mm-416x416
+instinct3amoled50mm.excludeAnnotations = gfx_no_aod
 
 # Fenix 9 Pro 51mm: FR965 OLED rendering scaled to 466x466.
-fenix9pro51mm.sourcePath = $(srcBase);src-fenix9pro51mm-466x466
+fenix9pro51mm.sourcePath = $(srcBase);src-fenix9pro51mm-466x466;src-gfx
 fenix9pro51mm.resourcePath = $(base.resourcePath);resources-round-466x466
+fenix9pro51mm.excludeAnnotations = gfx_no_aod
 
 # Original Venu: scaled FR965 artwork with API 3.3 compatible rendering.
 venu.sourcePath = $(srcBase);src-venu-390x390;src-gfx-shim
@@ -239,9 +268,9 @@ descentg2.sourcePath = $(instinctcrossoveramoled.sourcePath)
 descentg2.resourcePath = $(instinctcrossoveramoled.resourcePath)
 descentg2.excludeAnnotations = $(instinctcrossoveramoled.excludeAnnotations)
 
-epix2pro42mm.sourcePath = $(srcBase);src-epix2pro42mm-390x390
+epix2pro42mm.sourcePath = $(srcBase);src-epix2pro42mm-390x390;src-gfx
 epix2pro42mm.resourcePath = $(base.resourcePath);resources-venu;resources-epix2pro42mm-390x390
-epix2pro42mm.excludeAnnotations = vector_font
+epix2pro42mm.excludeAnnotations = vector_font;gfx_no_aod
 venu3s.sourcePath = $(epix2pro42mm.sourcePath)
 venu3s.resourcePath = $(epix2pro42mm.resourcePath)
 venu3s.excludeAnnotations = $(epix2pro42mm.excludeAnnotations)
@@ -250,10 +279,10 @@ venu441mm.resourcePath = $(epix2pro42mm.resourcePath)
 venu441mm.excludeAnnotations = $(epix2pro42mm.excludeAnnotations)
 marq2.sourcePath = $(epix2pro42mm.sourcePath)
 marq2.resourcePath = $(epix2pro42mm.resourcePath)
-marq2.excludeAnnotations = generic_font
+marq2.excludeAnnotations = generic_font;gfx_no_aod
 marq2aviator.sourcePath = $(epix2pro42mm.sourcePath);src-marq2aviator
 marq2aviator.resourcePath = $(epix2pro42mm.resourcePath)
-marq2aviator.excludeAnnotations = generic_font
+marq2aviator.excludeAnnotations = generic_font;gfx_no_aod
 fr57042mm.sourcePath = $(epix2pro42mm.sourcePath)
 fr57042mm.resourcePath = $(epix2pro42mm.resourcePath)
 fr57042mm.excludeAnnotations = $(epix2pro42mm.excludeAnnotations)
