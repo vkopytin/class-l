@@ -44,8 +44,8 @@ module cfg {
     const heartRateTextX = 186 - bufferDx;
     const heartRateTextY = 43 - bufferDy;
 
-    const stepsX = 180 - bufferDx;
-    const stepsY = 100 - bufferDy;
+    const stepsX = 222 - bufferDx;
+    const stepsY = 156 - bufferDy;
     const stepsTextX = 206 - bufferDx;
     const stepsTextY = 112 - bufferDy;
 

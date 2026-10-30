@@ -43,8 +43,8 @@ module cfg {
     const heartRateTextX = 365;
     const heartRateTextY = 85;
 
-    const stepsX = 246;
-    const stepsY = 174;
+    const stepsX = 426;
+    const stepsY = 304;
     const stepsTextX = 406;
     const stepsTextY = 221;
 
@@ -71,5 +71,4 @@ module cfg {
 
     const weatherX = 233;
     const weatherY = 31;
-
 }
